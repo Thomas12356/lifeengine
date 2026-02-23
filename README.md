@@ -42,6 +42,7 @@ The development of this project is purposed for a computer science bachelor's de
 Thomas Eardley:
 * University Email - [te215@kent.ac.uk](te215@kent.ac.uk).
 * Personal Email - [thomaseardley123@gmail.com](thomaseardley123@gmail.com).
+
 Daniel Dixon:
 * University Email - [djd41@kent.ac.uk](djd41@kent.ac.uk).
 
