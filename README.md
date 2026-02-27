@@ -1,9 +1,9 @@
 # LifeEngine
 
 ## Supervisor Weekly Updates and Minutes
-Click [Here](https://livekentac-my.sharepoint.com/:f:/g/personal/te215_kent_ac_uk/IgCK6fdCNx1BSYUQCXkJK7S9AYrHyPEUXVlg6XbdPyGVcug?e=ycjpPG) to access the folder containing all weekly supervisor updates. Each supervisor weekly update is a word document containing:
-
 Official Weekly Minutes Created with the given template are stored in **Docs/Weekly Minutes/**.
+
+Click [Here](https://livekentac-my.sharepoint.com/:f:/g/personal/te215_kent_ac_uk/IgCK6fdCNx1BSYUQCXkJK7S9AYrHyPEUXVlg6XbdPyGVcug?e=ycjpPG) to access the folder containing all weekly supervisor updates. Each supervisor weekly update is a word document containing:
 
 1. Weekly meeting minutes from the last weeks meeting.
 2. A completed todo list from the week that has just passed.
