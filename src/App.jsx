@@ -5,7 +5,8 @@ import { Box } from "@chakra-ui/react"
 //Components
 import NavBar from "@/features/navbar/NavBar"
 //Pages
-import Home from "@/pages/Home"
+import Home from "@pages/Home"
+import CalendarPage from "@pages/CalendarPage"
 
 export default function App() {
     return (
@@ -27,7 +28,7 @@ export default function App() {
 
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/calendar" element={<h1>Calendar</h1>} />
+                    <Route path="/calendar" element={<CalendarPage />} />
                 </Routes>
             
             </BrowserRouter>
