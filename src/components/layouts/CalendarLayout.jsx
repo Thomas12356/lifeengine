@@ -1,11 +1,15 @@
 import { VStack } from "@chakra-ui/react"
 
+import CalendarMenu from "@ui-components/calendar/CalendarMenu"
+import CalendarHeader from "@ui-components/calendar/CalendarHeader"
+import CalendarBody from "@ui-components/calendar/CalendarBody"
+
 export default function CalendarLayout() {
     return (
         <VStack>
-            <h1>Calendar Menu</h1>
-            <h1>Calendar Header</h1>
-            <h1>Calendar Body</h1>
+            <CalendarMenu />
+            <CalendarHeader />
+            <CalendarBody />
         </VStack>
     )
 }
