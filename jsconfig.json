@@ -9,6 +9,7 @@
       "@/*": ["src/*"],
       "@pages/*": ["src/components/pages/*"],
       "@sections/*": ["src/components/sections/*"],
+      "@layouts/*": ["src/components/layouts/*"],
       "@ui-components/*": ["src/components/ui-components/*"],
       "@resource-card-collection/*": ["src/components/ui-components/resource-card-collection/*"],
       "@text/*" : ["src/components/ui-components/text/*"],
