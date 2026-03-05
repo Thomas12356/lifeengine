@@ -2,6 +2,13 @@ import { createSystem, defaultConfig } from "@chakra-ui/react"
 import { defineConfig } from "@chakra-ui/react";
 
 const customConfig = defineConfig( {
+    globalCss: {
+        body: {
+            margin: 0,
+            padding: 0,
+            fontFamily: "mukta, sans-sans-serif",
+        },
+    },
     theme:{
         tokens: {
             colors: {
@@ -13,19 +20,28 @@ const customConfig = defineConfig( {
             },
             fontSizes: {
                 //not final decision on sizing !
-                sm: { value: "0.875rem" },
-                md: { value: "1rem" },
-                lg: { value: "2rem" },
-                xl: { value: "2.25rem" },
+                "sm": { value: "1rem" },
+                "md": { value: "1.5rem" },
+                "lg": { value: "1.75rem" },
+                "xl": { value: "2.25rem" },
             },
             radii: {
                 "widgetRadii": { value: "1.5rem" },
             },
             spacing: {
-                "MWidgetLeftRight": { value: "1rem" },
-                "MWidgetTop": { value: "0.5rem" },
-                "PWidgetLeftRight": { value: "1.5rem" },
-                "PWidgetTopBottom": { value: "0.5rem" },
+                general: {
+                    "xsSpacing": { value: "0.5rem" },
+                    "smSpacing": { value: "1.5rem" },
+                    "mdSpacing": { value: "2rem" },
+                    "lgSpacing": { value: "2.5rem" },
+                },
+                widget: {
+                    "mLeftRight": { value: "1.75rem" },
+                    "mTop": { value: "1.75rem" },
+                    "pLeftRight": { value: "1.5rem" },
+                    "pTopBottom": { value: "0.75rem" },
+                },
+
             },
         },
     },
