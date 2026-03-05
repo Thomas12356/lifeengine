@@ -1,6 +1,10 @@
 //-----Imports-----//
 import { Provider } from "@/components/ui/provider"
+import { Provider } from "@/components/ui/provider"
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Box } from "@chakra-ui/react"
+//Components
+import NavBar from "@layouts/NavBar"
 import { Box } from "@chakra-ui/react"
 //Components
 import NavBar from "@layouts/NavBar"
