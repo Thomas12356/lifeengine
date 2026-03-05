@@ -5,6 +5,8 @@ import LifeEngineLogo from "@ui-components/LifeEngineLogo";
 //test icons
 import { FaBeer } from "react-icons/fa";
 
+//TODO style logo properly 
+
 
 const NavLinkStyles = {
     display: "flex",
@@ -24,8 +26,10 @@ const NavButton = ({ to, Icon, text}) => {
                     {...NavLinkStyles}
                     color={isActive ? "brand.blueLight" : "brand.gray"}
                 >
+                    {/* TODO: icon size is hardcoded for now, will need to be changed when we have real icons */}
                     <ChakraIcon as={Icon} boxSize="20px" />
-                    <Text>{text}</Text>
+                    {/* TODO: font size is hardcoded for now, will need to be changed when we have real text */}
+                    <Text fontSize = "sm">{text}</Text>
                 </Box>
             )}
         </NavLink>
@@ -34,15 +38,18 @@ const NavButton = ({ to, Icon, text}) => {
 
 export default function NavBar() {
     return(
-        <Box>
-            <Flex justifyContent="space-between">
+        <Box bg="white" borderRadius="widgetRadii" marginLeft="MWidgetLeftRight" marginRight="MWidgetLeftRight" marginTop="MWidgetTop" paddingLeft="PWidgetLeftRight" paddingRight="PWidgetLeftRight" paddingTop="PWidgetTopBottom" paddingBottom="PWidgetTopBottom">
+            <Flex justifyContent="space-between" alignItems="center">
 
                 <LifeEngineLogo />
 
                 <nav>
-                    {NavButtons.map((button) => (
-                        <NavButton key={button.to} {...button} />
-                    ))}
+                    {/* TODO: Style the nav buttons, currently just using the same icon for all of them */}
+                    <HStack>
+                        {NavButtons.map((button) => (
+                            <NavButton key={button.to} {...button} />
+                        ))}
+                    </HStack>
                 </nav>
 
             </Flex>
