@@ -1,5 +1,6 @@
 
 import { HStack, VStack, Text, Box } from "@chakra-ui/react"
+import { calculateEventPosition } from "src/components/ui-components/calendar/utils/dateHelpers.js"
 
 const GridBackground = () => {
     return (
@@ -27,39 +28,46 @@ const GridBackground = () => {
 
 const EventLayer = () => {
 
+    // Dummy event data for testing
     const events = [
-        { id: 1, title: "Event 1", start: "2024-06-01T09:00:00", end: "2024-06-01T10:00:00" },
-        { id: 2, title: "Event 2", start: "2024-06-01T11:00:00", end: "2024-06-01T12:30:00" },
-        { id: 3, title: "Event 3", start: "2024-06-01T17:00:00", end: "2024-06-01T19:00:00" },
+        {
+            title: "Meeting",
+            start: "2026-03-02T14:00:00", // Monday 2:00 PM
+            end: "2026-03-02T15:00:00"
+        },
+        {
+            title: "Lunch",
+            start: "2026-03-03T12:00:00", // Tuesday 12:00 PM
+            end: "2026-03-03T13:00:00"
+        },
+        {
+            title: "Workout",
+            start: "2026-03-04T18:00:00", // Wednesday 6:00 PM
+            end: "2026-03-04T19:30:00"
+        }
     ]
 
     return (
-        <Box position="absolute" top="0" left="0" w="100%" h="100%">
-            {events.map(event => {
-                const start = new Date(event.start)
-                const end = new Date(event.end)
-                const topPosition = (start.getHours() * 60 + start.getMinutes()) / 1440 * 100
-                const height = (end - start) / (1000 * 60) / 1440 * 100
-
+        <Box position="absolute" top="0" left="0" w="100%" h="1440px">
+            {events.map((event, index) => {
+                const { top, height, left, width } = calculateEventPosition(event)
                 return (
                     <Box
-                        key={event.id}
+                        key={index}
                         position="absolute"
-                        top={`${topPosition}%`}
-                        left="0"
-                        flex="1"
+                        top={`${top}%`}
+                        left={`${left}%`}
+                        w={`${width}%`}
                         h={`${height}%`}
                         bg="blue.500"
                         color="white"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
+                        p={2}
                     >
                         {event.title}
                     </Box>
                 )
             })}
-         </Box>
+        </Box>
     )
 }
 

@@ -3,18 +3,16 @@
 **WIP - NO LOGIC OR STYLING**
 
 *TODO*
-1. Fix event box positioning
-    - Decide on grid layout (day columns or x-axis position calculation)
-    - Use minute-to-pixel scale for clean y-alignment
+    1. Integrate DateSelectMenu state logic with calendar body
 
-## Sub-components
-- Calendar Menu
-    1. DateSelectMenu (Date picker)
-    2. ViewSelectMenu (Day/week/month)
-- Calendar Header
+## Sub-components Roadmap
+- Calendar Menu **WIP**
+    1. DateSelectMenu (Date picker) **WIP - Integrate with calendar body**
+    2. ViewSelectMenu (Day/week/month) **WIP - Integrate with calendar body**
+- Calendar Header **WIP - Integrate with menu state logic**
 - Calendar Body **WIP**
-    1. Time labels
+    1. Time labels [x]
     2. Grid layers container
-        - Background grid
-        - Event box layer
-        - Time indicator
+        - Background grid [x]
+        - Event box layer [0] **WIP - Integrate with menu state logic**
+        - Time indicator [x]

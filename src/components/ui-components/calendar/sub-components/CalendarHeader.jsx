@@ -13,13 +13,13 @@ const CalendarHeaderDate = ({ weekday, date }) => {
 export default function CalendarHeader() {
 
     const days = [
-        { weekday: "Mon", date: "1" },
-        { weekday: "Tue", date: "2" },
-        { weekday: "Wed", date: "3" },
-        { weekday: "Thu", date: "4" },
-        { weekday: "Fri", date: "5" },
-        { weekday: "Sat", date: "6" },
-        { weekday: "Sun", date: "7" },
+        { weekday: "Mon", date: "2" },
+        { weekday: "Tue", date: "3" },
+        { weekday: "Wed", date: "4" },
+        { weekday: "Thu", date: "5" },
+        { weekday: "Fri", date: "6" },
+        { weekday: "Sat", date: "7" },
+        { weekday: "Sun", date: "8" },
     ]
 
     return (
