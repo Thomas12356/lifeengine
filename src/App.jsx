@@ -10,7 +10,9 @@ import Home from "@pages/Home"
 export default function App() {
     return (
         <Provider>
+
             <BrowserRouter>
+
             <Box
                 position="fixed"
                 top="0"
@@ -18,15 +20,18 @@ export default function App() {
                 w="100vw"
                 h="100vh"
                 bg="radial-gradient(circle, white, #EDEDED)"
-                zIndex="-1"
-            >
+                zIndex="-1">
+            </Box>
+
                 <NavBar />
+
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/calendar" element={<h1>Calendar</h1>} />
                 </Routes>
-            </Box>
+            
             </BrowserRouter>
+
         </Provider>
     )
 }
