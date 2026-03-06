@@ -14,12 +14,15 @@ import { FaBeer } from "react-icons/fa";
 
 {/* -------------------- Styling -------------------- */}
 {/* NavLink Styles */}
-const navLinkStyles = {
+const navButtonLinkStyles = {
     display: "flex",
     alignItems:"center",
     marginRight: "general.mdSpacing",
 }
-const navLinkTextStyles = {
+const iconNavButtonLinkStyles = {
+    marginLeft: "general.xsSpacing",
+}
+const navButtonLinkTextStyles = {
     fontSize: "sm",
     marginLeft: "general.xsSpacing",
 }
@@ -51,19 +54,39 @@ const navButtons = [
     { to: "/social", Icon: FaBeer, text: "Social" },
 ];
 
+const IconNavButtons = [
+    { to: "/notifications", Icon: FaBeer },
+    { to: "/settings", Icon: FaBeer },
+]
+
 {/* -------------------- Local Components -------------------- */}
 const NavButton = ({ to, Icon, text}) => {
     return(
-        <NavLink to={to} style={{ textDecoration: 'none', display: 'block', ...navLinkStyles }}>
+        <NavLink to={to} style={{ textDecoration: 'none', display: 'block' }}>
             {({ isActive }) => (
                 <Box
-                    {...navLinkStyles}
+                    {...navButtonLinkStyles}
                     color={isActive ? "brand.blueLight" : "brand.gray"}
                 >
                     {/* TODO: icon size is hardcoded for now, will need to be changed when we have real icons */}
                     <ChakraIcon as={Icon} {...navBarIconStyles} />
                     {/* TODO: font size is hardcoded for now, will need to be changed when we have real text */}
-                    <Text {...navLinkTextStyles}>{text}</Text>
+                    <Text {...navButtonLinkTextStyles}>{text}</Text>
+                </Box>
+            )}
+        </NavLink>
+    )
+}
+
+const IconNavButton = ({ to, Icon }) => {
+    return(
+        <NavLink to={to} style={{ textDecoration: 'none', display: 'block'}}>
+            {({ isActive }) => (
+                <Box
+                    {...iconNavButtonLinkStyles}
+                    color={isActive ? "brand.blueLight" : "brand.gray"}
+                >
+                    <ChakraIcon as={Icon} {...navBarIconStyles} />
                 </Box>
             )}
         </NavLink>
@@ -88,7 +111,11 @@ export default function NavBar() {
                     </nav>
                 </HStack>
 
-                <Text>TODO: Notifications and Settings</Text>
+                <HStack height="100%">
+                    {IconNavButtons.map((button) => (
+                        <IconNavButton key={button.to} {...button} />
+                    ))}
+                </HStack>
 
             </Flex>
         </Box>
