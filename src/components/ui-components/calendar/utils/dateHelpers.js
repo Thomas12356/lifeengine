@@ -15,7 +15,7 @@ import { startOfWeek } from "date-fns"
 /**
  * getWeekDays returns an array of objects representing the days of the week (Monday to Sunday) for a given date.
  * @param {Date} selectedDate - The date for which to calculate the week days.
- * @returns {Array} An array of objects, each containing the weekday name and date number for each day of the week.
+ * @returns {Array} An array of date objects representing the days of the week for the given date.
  */
 export const getWeekDays = (selectedDate) => {
     const days = []
@@ -23,10 +23,7 @@ export const getWeekDays = (selectedDate) => {
     for (let i = 0; i < 7; i++) { // Loop through the 7 days of the week and calculate the date for each day
         const date = new Date(weekStart)
         date.setDate(weekStart.getDate() + i) // Increment the date
-        days.push({
-            weekday: date.toLocaleString('en-US', { weekday: 'short' }), // Short weekday name (e.g., "Mon", "Tue")
-            date: date.getDate() // Date number (e.g., 1, 2, 3)
-        })
+        days.push(date) // Add the date to the array
     }
     return days
 }
@@ -74,3 +71,4 @@ export const calculateEventPosition = (event) => {
         width: (1 / 7) * 100 // percentage of the week for one day
     }
 }
+

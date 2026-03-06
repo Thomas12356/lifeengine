@@ -28,8 +28,8 @@ export default function CalendarHeader({ selectedDate }) {
             <Box w="60px"/>
             {days.map((day, index) => ( // Loop through the days of the week and render a header cell for each day
                 <VStack flex="1">
-                    <Text>{day.weekday}</Text>
-                    <Text>{day.date}</Text>
+                    <Text>{day.toLocaleString('en-US', { weekday: 'short' })}</Text>
+                    <Text>{day.getDate()}</Text>
                 </VStack>
             ))}
          </HStack>
