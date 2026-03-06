@@ -1,6 +1,6 @@
 
 import { HStack, VStack, Text, Box } from "@chakra-ui/react"
-import { calculateEventPosition } from "src/components/ui-components/calendar/utils/dateHelpers.js"
+import { calculateEventPosition } from "../utils/dateHelpers.js"
 
 const GridBackground = () => {
     return (

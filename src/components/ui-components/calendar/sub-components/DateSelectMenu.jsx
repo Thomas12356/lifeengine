@@ -3,7 +3,7 @@ import { Portal } from '@ark-ui/react/portal'
 import { Text, Button } from '@chakra-ui/react'
 import { LuChevronDown, LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 
-import { useArkCalendar } from "@ui-components/calendar/hooks/useArkCalendar"
+import { useArkCalendar } from "../hooks/useArkCalendar.js"
 
 export default function DateSelectMenu({ selectedDate, setSelectedDate }) {
 
