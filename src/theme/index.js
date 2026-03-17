@@ -24,6 +24,12 @@ const customConfig = defineConfig( {
             }
             
         },
+        recipes: {
+            button: {
+                button: {
+                }
+            },
+        },
         tokens: {
             colors: {
                 brand:{
