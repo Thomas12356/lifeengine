@@ -50,9 +50,9 @@ const customConfig = defineConfig( {
                 "xl": { value: "2.25rem" },
             },
             fontWeights: {
-                normal: { value: "400" },
-                medium: { value: "500" },
-                bold: { value: "700" },
+                "normal": { value: "400" },
+                "medium": { value: "500" },
+                "bold": { value: "700" },
             },
             radii: {
                 "widgetRadii": { value: "1.5rem" },
