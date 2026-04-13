@@ -12,12 +12,12 @@
 import { Box } from "@chakra-ui/react";
 
 import ResourceSelect from "@ui-components/ResourceSelect";
+import ResourceSelectorHeading from "@layouts/ResourceSelectorHeading";
 
 export default function Home() {
     return (
         <Box>
-        <h1>Hello World</h1>
-        <ResourceSelect resource={"Focus"}/>
+        <ResourceSelectorHeading username={"Thomas"}/>
         </Box>
     )
 }
