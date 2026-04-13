@@ -1,6 +1,5 @@
 import { createSystem, defaultConfig } from "@chakra-ui/react"
 import { defineConfig } from "@chakra-ui/react";
-import { GiApc } from "react-icons/gi";
 
 const customConfig = defineConfig( {
     globalCss: {
