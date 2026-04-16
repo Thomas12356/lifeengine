@@ -9,15 +9,18 @@
  * Last updated: 21/02/2026
  */
 
+/* ---------- Imports Chakra UI ----------*/
 import { Box } from "@chakra-ui/react";
 
-import ResourceSelect from "@ui-components/ResourceSelect";
+/* ---------- Imports Custom Layout Components ----------*/
 import ResourceSelectorHeading from "@layouts/ResourceSelectorHeading";
+import NextEvent from "@layouts/NextEvent";
 
 export default function Home() {
     return (
         <Box>
-        <ResourceSelectorHeading username={"Thomas"}/>
+            <ResourceSelectorHeading username={"Thomas"}/>
+            <NextEvent/>
         </Box>
     )
 }
