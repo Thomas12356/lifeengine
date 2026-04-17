@@ -14,7 +14,7 @@
  * - Add Styling and Theming
  */
 
-import ResourceSelect from "@ui-components/ResourceSelect"
+import ResourceSelect from "@/features/navbar/resource-indicator/ResourceSelect"
 import { HStack, VStack, Text, Stack } from "@chakra-ui/react";
 
 export default function ResourceSelectorHeading({ username }) {
