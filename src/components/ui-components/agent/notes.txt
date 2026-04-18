@@ -1,18 +1,3 @@
-
-
-
-- Data flow :
-
-    - Cursor / index value stored in state
-    - fetchMessage() hook to load chat history from index
-    - store messages in state
-
-- Triggers :
-
-    - Latest message on mount
-    - Load older messages on scroll
-    - Append new message on message trigger
-
 Flow :
 
     services:

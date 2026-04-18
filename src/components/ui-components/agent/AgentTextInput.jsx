@@ -1,9 +1,15 @@
+import { HStack, Button, Input, IconButton } from "@chakra-ui/react"
+
+import { IoMdSend } from "react-icons/io";
 
 
 export default function AgentTextInput() {
     return (
-        <div className="agent-text-input">
-            <input type="text" placeholder="Type your message..." />
-        </div>
+        <HStack>
+            <Input placeholder="Type your message..." />
+            <IconButton colorScheme="blue">
+                <IoMdSend />
+            </IconButton>
+        </HStack>
     )
 }

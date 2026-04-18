@@ -1,9 +1,11 @@
 
+import { HStack, Text } from "@chakra-ui/react"
 
 export default function AgentChatHeader() {
     return (
-        <div className="agent-chat-header">
-            <h2>Agent Chat Header</h2>
-        </div>
+        <HStack>
+            <Text fontSize="2xl" fontWeight="bold">ELLIE</Text>
+            <Text fontSize="md" color="gray.500">Action history</Text>
+        </HStack>
     )
 }
