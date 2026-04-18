@@ -4,16 +4,20 @@ import AgentSuggestionWindow from "@/features/agent-chat/components/AgentSuggest
 import AgentTextInput from "@/features/agent-chat/components/AgentTextInput"
 
 import { VStack, HStack } from "@chakra-ui/react"
+import useChatHistory from "./hooks/useChatHistory"
 
 export default function AgentLayout() {
+
+    const { chatHistory, sendMessage } = useChatHistory("dummy-id") // NOTE : Move state logic to parent and pass messages as props
+
     return (
         <VStack>
             <AgentChatHeader />
             <HStack>
-                <AgentChatWindow />
+                <AgentChatWindow chatHistory={chatHistory} />
                 <AgentSuggestionWindow />
             </HStack>
-            <AgentTextInput />
+            <AgentTextInput onSendMessage={sendMessage} />
         </VStack>
     )
 }

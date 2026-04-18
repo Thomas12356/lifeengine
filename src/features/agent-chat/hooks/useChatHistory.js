@@ -19,5 +19,18 @@ export default function useChatHistory(conversationId) {
         setChatHistory(data.messages)
     }
 
-    return { chatHistory }
+    async function sendMessage(message) {
+        // Simulate API call to send message and get response
+        const response = {
+            id: Date.now(),
+            sender: "agent",
+            content: `Echo: ${message}`,
+            timestamp: new Date().toISOString()
+        }
+
+        // Update chat history with new message and response
+        setChatHistory(prev => [...prev, { id: Date.now(), sender: "user", content: message, timestamp: new Date().toISOString() }, response])
+    }
+
+    return { chatHistory, sendMessage }
 }
