@@ -10,7 +10,7 @@
  * 
  * TODO:
  * - Theming and Styling
- * 
+ * - Data Passing
  */
 
 /* ---------- Imports Chakra UI ----------*/

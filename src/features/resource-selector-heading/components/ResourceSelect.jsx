@@ -13,6 +13,7 @@ import { HStack, Text, Menu, Button } from "@chakra-ui/react";
 import { useState } from "react";
 
 export default function ResourceSelect({ resource, options = ['Low', "Normal", "High"] }) {
+    {/* API needed for option number that is set on load from DB */}
     const [selected, setSelected] = useState(options[1]);
     
     return(
