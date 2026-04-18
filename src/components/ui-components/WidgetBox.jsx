@@ -12,6 +12,7 @@ export function WidgetBox({ children, ...props }){
         ml={"widget.mLeftRight"}
         mr={"widget.mLeftRight"}
         mt={"widget.mTopBottom"}
+        height={"fit-content"}
         {...props}>
             {children}
         </Box>
