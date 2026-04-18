@@ -13,8 +13,8 @@
 import { Box } from "@chakra-ui/react";
 
 /* ---------- Imports Custom Layout Components ----------*/
-import ResourceSelectorHeading from "@layouts/ResourceSelectorHeading";
-import NextEvent from "@layouts/NextEvent";
+import ResourceSelectorHeading from "@/features/resource-selector-heading/ResourceSelectorHeading";
+import NextEvent from "@/features/next-event-widget/NextEventWidget";
 
 export default function Home() {
     return (

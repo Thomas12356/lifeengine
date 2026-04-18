@@ -3,9 +3,9 @@ import { Provider } from "@/components/ui/provider"
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import { Box } from "@chakra-ui/react"
 //Components
-import NavBar from "@layouts/NavBar"
+import NavBar from "@/features/navbar/NavBar"
 //Pages
-import Home from "@pages/Home"
+import Home from "@/pages/Home"
 
 export default function App() {
     return (
