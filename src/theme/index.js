@@ -39,6 +39,7 @@ const customConfig = defineConfig( {
                     blueDark: {value: "#004A89"},
                     gray: {value: "#9A9A9A"},
                     grayLight: {value: "#F5F5F5"},
+                    white: {value: "#FFFFFF"},
                 },
                 text: {
                     solid: { value: "#393939"},
