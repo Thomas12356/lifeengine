@@ -1,7 +1,7 @@
-import AgentLayout from "@features/agent-chat/AgentLayout"
+import AgentChat from "@/features/agent-chat/AgentChat"
 
 export default function Agent() {
     return (
-        <AgentLayout />
+        <AgentChat />
     )
 }
