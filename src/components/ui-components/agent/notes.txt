@@ -1,0 +1,30 @@
+
+
+
+- Data flow :
+
+    - Cursor / index value stored in state
+    - fetchMessage() hook to load chat history from index
+    - store messages in state
+
+- Triggers :
+
+    - Latest message on mount
+    - Load older messages on scroll
+    - Append new message on message trigger
+
+Flow :
+
+    services:
+    - fetchMessages calls some endpoint and gets a chat history of size limit 
+    - cursor value updated after history is fetched
+    - message history stored in state
+
+    hooks:
+    - useChatHistory hook contains initial load trigger, scroll trigger and message send trigger
+
+    ui:
+    - message history, scroll and send message hooks loaded in from state on chatWindow component mount
+    - messageList component contains handleScroll listener, which triggers scroll load hook when reaching the top of the scroll area
+        -> NOTE : Scroll position must be preserved when loading from scroll
+        -> Track the height when loading
