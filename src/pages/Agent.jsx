@@ -1,4 +1,4 @@
-import AgentLayout from "../layouts/AgentLayout"
+import AgentLayout from "../features/agent-chat/AgentLayout"
 
 
 export default function Agent() {

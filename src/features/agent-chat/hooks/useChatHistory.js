@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 
 // Dummy API data
-import { chatHistory as dummyChatHistory } from "../../../components/ui-components/agent/chatService"
+import { chatHistory as dummyChatHistory } from "../util/chatService"
 
 export default function useChatHistory(conversationId) {
     const [chatHistory, setChatHistory] = useState([])
