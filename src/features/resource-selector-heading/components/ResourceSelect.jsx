@@ -14,7 +14,8 @@ import { useState } from "react";
 
 export default function ResourceSelect({ resource, options = ['Low', "Normal", "High"] }) {
     {/* API needed for option number that is set on load from DB */}
-    const [selected, setSelected] = useState(options[1]);
+    const apiCallForCurrentResource = 1;
+    const [selected, setSelected] = useState(options[apiCallForCurrentResource]);
     
     return(
         <HStack>

@@ -17,7 +17,8 @@
 import ResourceSelect from "./components/ResourceSelect"
 import { HStack, VStack, Text, Stack } from "@chakra-ui/react";
 
-export default function ResourceSelectorHeading({ username }) {
+export default function ResourceSelectorHeading() {
+    const username = "Thomas";
     return(
         <HStack>
 
