@@ -11,8 +11,8 @@
 
 import { Box } from "@chakra-ui/react";
 
-import ResourceSelect from "@/features/resource-indicator/ResourceSelect";
-import ResourceSelectorHeading from "@/features/resource-indicator/ResourceSelectorHeading";
+import ResourceSelect from "@/features/resource-selector-heading/components/ResourceSelect";
+import ResourceSelectorHeading from "@/features/resource-selector-heading/ResourceSelectorHeading";
 
 export default function Home() {
     return (
