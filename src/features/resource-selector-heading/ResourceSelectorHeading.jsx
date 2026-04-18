@@ -14,7 +14,6 @@
  * - Add Styling and Theming
  */
 
-import ResourceSelect from "./components/ResourceSelect";
 import DropDown from "@ui-components/DropDown";
 import { HStack, VStack, Text, Stack } from "@chakra-ui/react";
 
