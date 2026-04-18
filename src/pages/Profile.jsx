@@ -8,12 +8,21 @@
  *
  * Last updated: 18/04/2026 by te215@kent.ac.uk
  */
-import { Box } from "@chakra-ui/react";
+import { Box, Stack, Flex } from "@chakra-ui/react";
+import UserInfoWidget from "@/features/user-info-widget/UserInfoWidget";
 
 export default function Profile(){
     return(
         <Box>
-            
-        </Box>
+            <Stack 
+            direction={"row"} 
+            justifyContent={"space-between"} 
+            >
+
+                    <UserInfoWidget />
+
+            </Stack>
+        </Box>    
+        
     )
 }
