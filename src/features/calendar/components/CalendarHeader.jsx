@@ -3,7 +3,7 @@
  * @module CalendarHeader
  * @description Renders the header for the LifeEngine calendar, displaying the days of the week.
  * 
- * @WIP Header currently does not contain indicator for the current day
+ * @WIP Header currently does not contain indicator for the selected day, just the current day
  */
 
 /* --- IMPORTS --- */
