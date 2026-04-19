@@ -31,7 +31,7 @@ export default function App() {
 
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/calendar" element={<h1>Calendar</h1>} />
+                    <Route path="/calendar" element={<CalendarPage />} />
                     <Route path="/profile" element={<Profile/>}/>
                 </Routes>
             </Box>
