@@ -6,7 +6,7 @@
  * @component
  * @returns {JSX.Element} ResourceSelectorHeading layout
  *
- * Last updated: 13/04/2026 by te215@kent.ac.uk
+ * Last updated: 18/04/2026 by te215@kent.ac.uk
  * 
  * TODO:
  * - Add time-based greetings
@@ -14,10 +14,11 @@
  * - Add Styling and Theming
  */
 
-import ResourceSelect from "@/features/resource-indicator/ResourceSelect"
+import DropDown from "@ui-components/DropDown";
 import { HStack, VStack, Text, Stack } from "@chakra-ui/react";
 
-export default function ResourceSelectorHeading({ username }) {
+export default function ResourceSelectorHeading() {
+    const username = "Thomas";
     return(
         <HStack>
 
@@ -27,8 +28,8 @@ export default function ResourceSelectorHeading({ username }) {
             </Stack>
 
             <HStack>
-                <ResourceSelect resource="Focus" />
-                <ResourceSelect resource="Energy" />
+                <DropDown type={"Focus"} option={0}></DropDown>
+                <DropDown type={"Energy"} option={0}></DropDown>
             </HStack>
         
         </HStack>

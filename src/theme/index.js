@@ -39,6 +39,7 @@ const customConfig = defineConfig( {
                     blueDark: {value: "#004A89"},
                     gray: {value: "#9A9A9A"},
                     grayLight: {value: "#F5F5F5"},
+                    white: {value: "#FFFFFF"},
                 },
                 text: {
                     solid: { value: "#393939"},
@@ -67,10 +68,10 @@ const customConfig = defineConfig( {
                     "lgSpacing": { value: "2rem" },
                 },
                 widget: {
-                    "mLeftRight": { value: "1.75rem" },
-                    "mTop": { value: "1.75rem" },
+                    "mLeftRight": { value: "0.875rem" },
+                    "mTopBottom": { value: "0.875rem" },
                     "pLeftRight": { value: "2rem" },
-                    "pTopBottom": { value: "0.75rem" },
+                    "pTopBottom": { value: "1rem" },
                 },
 
             },

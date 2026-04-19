@@ -6,18 +6,21 @@
  * @component
  * @returns {JSX.Element} The Home page component
  *
- * Last updated: 21/02/2026
+ * Last updated: 18/04/2026
  */
 
+/* ---------- Imports Chakra UI ----------*/
 import { Box } from "@chakra-ui/react";
 
-import ResourceSelect from "@/features/resource-indicator/ResourceSelect";
-import ResourceSelectorHeading from "@/features/resource-indicator/ResourceSelectorHeading";
+/* ---------- Imports Custom Layout Components ----------*/
+import ResourceSelectorHeading from "@features/resource-selector-heading/ResourceSelectorHeading";
+import NextEvent from "@features/next-event-widget/NextEventWidget";
 
 export default function Home() {
     return (
         <Box>
-        <ResourceSelectorHeading username={"Thomas"}/>
+            <ResourceSelectorHeading username={"Thomas"}/>
+            <NextEvent/>
         </Box>
     )
 }
