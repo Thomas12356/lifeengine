@@ -6,6 +6,7 @@ import { Box } from "@chakra-ui/react"
 import NavBar from "@/features/navbar/NavBar"
 //Pages
 import Home from "@pages/Home"
+import Agent from "@pages/Agent"
 import Profile from "@pages/Profile"
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/calendar" element={<h1>Calendar</h1>} />
                     <Route path="/profile" element={<Profile/>}/>
+                    <Route path="/agent" element={<Agent />} />
                 </Routes>
             </Box>
             
