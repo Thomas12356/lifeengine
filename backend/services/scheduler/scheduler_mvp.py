@@ -9,8 +9,7 @@ WASTE_COST_WEIGHT = 0.5
 @dataclass
 class Event:
     name: str
-    ideal_energy: float # (low = 0, medium = 0.5, high = 1)
-    ideal_focus: float # (low = 0, medium = 0.5, high = 1)
+    EventType: EventType
 
 @dataclass
 class TimeSlot:
@@ -18,17 +17,30 @@ class TimeSlot:
     predicted_energy: float # (low = 0, medium = 0.5, high = 1)
     predicted_focus: float # (low = 0, medium = 0.5, high = 1)
 
+@dataclass
+class EventType:
+    name: str
+    ideal_energy: float
+    ideal_focus: float
+    energy_weight: float
+    focus_weight: float
+
 def score_fit(event, timeslot):
-    energy_fit = 1 - abs(event.ideal_energy - timeslot.predicted_energy)
-    focus_fit = 1 - abs(event.ideal_focus - timeslot.predicted_focus)
-    return (energy_fit + focus_fit) / 2
+    energy_fit = 1 - (event.EventType.ideal_energy - timeslot.predicted_energy) ** 2
+    focus_fit = 1 - (event.EventType.ideal_focus - timeslot.predicted_focus) ** 2
+    return (energy_fit * event.EventType.energy_weight + focus_fit * event.EventType.focus_weight) / 2
 
 def time_slot_value(timeslot):
     return (timeslot.predicted_energy + timeslot.predicted_focus) / 2
 
 def waste_cost(event, timeslot):
-    event_demand_value = (event.ideal_energy + event.ideal_focus) / 2
-    return time_slot_value(timeslot) * (1 - event_demand_value) * WASTE_COST_WEIGHT
+    event_demand_value = (event.EventType.ideal_energy + event.EventType.ideal_focus) / 2
+    if event_demand_value < time_slot_value(timeslot):
+        gap = time_slot_value(timeslot) - event_demand_value
+        #quadratic penalty
+        return (gap ** 2) * WASTE_COST_WEIGHT
+    else:
+        return 0.0
 
 def compute_net_score(event, timeslot):
     fit_score = score_fit(event, timeslot)
@@ -38,7 +50,8 @@ def compute_net_score(event, timeslot):
 
 #Test
 def test():
-    event = Event("meeting", ideal_energy=0, ideal_focus=1)
+    event_type = EventType("Work", ideal_energy=0, ideal_focus=1, energy_weight=0.5, focus_weight=0.5)
+    event = Event("meeting", EventType=event_type)
     timeslot = TimeSlot(hour=10, predicted_energy=1, predicted_focus=0.3)
     
     fit_score = score_fit(event, timeslot)

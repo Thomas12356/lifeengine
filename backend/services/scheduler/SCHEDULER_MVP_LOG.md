@@ -17,3 +17,17 @@
 ### Changes
 - Waste cost only considered energy previously, now it considers both energy and focus.
 
+## V.1.2
+### Changes
+- Event Type class with energy to focus weights
+- Added quadratic fit and waste scoring
+
+## V.1.3 In Progress
+### Issues
+- TESTING -> max(0.0, ...) silently hides problematic pairings: logging when it clamps so we can tune WASTE_COST_WEIGHT later?
+- Hungarian Algorithm for arranging schedule
+- Quadratic scoring
+- Priority Events
+
+
+
