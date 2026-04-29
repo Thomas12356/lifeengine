@@ -24,13 +24,18 @@
 
 ## V.1.3 In Progress
 ### Issues found in V.1.2
-- TESTING -> max(0.0, ...) silently hides problematic pairings: logging when it clamps so we can tune WASTE_COST_WEIGHT later?
+- **TODO** Priority Events
+- **TODO** harmonic mean, if a task requires 1 focus and the slot has 0 the task is impossible even if the energy matches perfectly. Using the Harmonic Mean ensures that if either fit is near zero, the total score crashes.
+- **TODO** Both score-fit and waste consider excess resources, score fit should be changed to avoid this.
+- **TODO** currently the weighted score fit average doesnt consider the weight and needs to be chnaged to a waited average.
+- **TODO** change weights to ratio's rather than percentages.
+- **Done** Quadratic scoring
+- **Done** Quadratic waste 
+
+## Future Goals / Fixes
+- **Maybe?** TESTING -> max(0.0, ...) silently hides problematic pairings: logging when it clamps so we can tune WASTE_COST_WEIGHT later?
+- default event types + optional custom properties.
 - Hungarian Algorithm for arranging schedule
-- Quadratic scoring
-- Priority Events
-- harmonic mean, if a task requires 1 focus and the slot has 0 the task is impossible even if the energy matches perfectly. Using the Harmonic Mean ensures that if either fit is near zero, the total score crashes.
-
-
-
+- Time ranges
 
 
