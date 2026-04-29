@@ -23,11 +23,14 @@
 - Added quadratic fit and waste scoring
 
 ## V.1.3 In Progress
-### Issues
+### Issues found in V.1.2
 - TESTING -> max(0.0, ...) silently hides problematic pairings: logging when it clamps so we can tune WASTE_COST_WEIGHT later?
 - Hungarian Algorithm for arranging schedule
 - Quadratic scoring
 - Priority Events
+- harmonic mean, if a task requires 1 focus and the slot has 0 the task is impossible even if the energy matches perfectly. Using the Harmonic Mean ensures that if either fit is near zero, the total score crashes.
+
+
 
 
 
