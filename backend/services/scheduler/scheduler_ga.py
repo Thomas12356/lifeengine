@@ -10,9 +10,31 @@
        - Basic event and time slot models
        - User state is static and defined by predicted energy and focus levels for each time slot
 
-    V2 (Future): Dynamic user state and feedback loop
-        - Incorporate a dynamic user state which evolves based on event state impact decay and recovery periods
+    V2: Dynamic user state and feedback loop
+        - Simple user state dynamics model impacted by S process and residual fatigue from previous events
+        - Feedback loop where the schedule impacts user state, which in turn impacts the fit score of subsequent events in the schedule
 
+    DEV NOTES 
+    Prerequisites:
+    - A list of events to be scheduled, each with an associated EventType that defines its ideal energy and focus levels, as well as the weights for energy and focus in the fit score calculation
+    - A landscape of predicted energy and focus levels for each time slot (e.g. each hour of the day), which can be generated using the baseline predictor
+
+    GA Flow :
+        1. Initialise a population of candidate schedules (chromosomes)
+        2. For each chromosone :
+            a. Initialise a starting user state at time 0 (beginning of the day)
+            b. Loop through each time slot in the schedule :
+                - Calculate user state match score for event in time slot t
+                - Apply the decay functions
+                    * S(t+1) = S(t) - Decay(Event, UserState) + Recovery(UserState)
+                - If S(t) falls below a threshold, apply a burnout penalty to the score and subsequent time slots until recovery occurs
+            c. Aggregate the scores across all time slots to get a total fitness score for the schedule
+        3. Select the top performing schedules based on fitness scores
+        4. Apply crossover and mutation to create a new generation of schedules
+            - We must use respect contraints during cross over and mutation to prevent invalid schedules (e.g. two events scheduled at the same time, or events scheduled outside of their allowed time windows)
+        5. Use tournament selection to select best indivduals for reproduction
+        6. Preserve some of the top performing schedules (elitism)
+        5. Repeat for a set number of generations or until convergence
 """
 
 import math
@@ -230,30 +252,3 @@ scheduler.evaluate_population_v2()
 
 #test_schedule = CandidateSchedule(events=[], timeslots=[None]*24)
 #scheduler.simulate_schedule(test_schedule)
-
-"""
-    V1 Implementation Notes:
-    - We will start with a basic implementation that focuses on the core GA flow and the fit score calculation
-    - User state dynamics and the feedback loop will be added in a future iteration, V1 focus will be on core structure
-
-    Prerequisites:
-    - A list of events to be scheduled, each with an associated EventType that defines its ideal energy and focus levels, as well as the weights for energy and focus in the fit score calculation
-    - A landscape of predicted energy and focus levels for each time slot (e.g. each hour of the day), which can be generated using the baseline predictor
-
-    GA Flow :
-        1. Initialise a population of candidate schedules (chromosomes)
-        2. For each chromosone :
-            a. Initialise a starting user state at time 0 (beginning of the day)
-            b. Loop through each time slot in the schedule :
-                - Calculate user state match score for event in time slot t
-                - Apply the decay functions
-                    * S(t+1) = S(t) - Decay(Event, UserState) + Recovery(UserState)
-                - If S(t) falls below a threshold, apply a burnout penalty to the score and subsequent time slots until recovery occurs
-            c. Aggregate the scores across all time slots to get a total fitness score for the schedule
-        3. Select the top performing schedules based on fitness scores
-        4. Apply crossover and mutation to create a new generation of schedules
-            - We must use respect contraints during cross over and mutation to prevent invalid schedules (e.g. two events scheduled at the same time, or events scheduled outside of their allowed time windows)
-        5. Use tournament selection to select best indivduals for reproduction
-        6. Preserve some of the top performing schedules (elitism)
-        5. Repeat for a set number of generations or until convergence
-"""
