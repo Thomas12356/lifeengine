@@ -2,10 +2,10 @@
 Backend API package initialization.
 Sets up Flask app and registers Blueprints for the API routes.
 """
-
 # ? should models be global as we want to make the shcedular modular and not have it depend on the flask app?
 
 from flask import Flask
+from flask_cors import CORS
 
 def create_app():
     """
@@ -13,10 +13,14 @@ def create_app():
     """
     app = Flask(__name__)
 
-    # TODO Security: handle secret key properly for production.
+    # ! Security: handle secret key properly for production.
     app.config['SECRET_KEY'] = 'life-engine-secret-key'
 
-    # TODO Should We: use CORS, react usually port 3000, flask usually port 5000.
+    # CORS: Enable CORS for all routes in api/
+    # Note: vite dev proxy handles this for the dev server but this is needed
+    # for production if the front end is hosted on a different domain.
+    # ! in production change '*' to the domain of the front end.
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     # TODO Import Blueprints
 
