@@ -26,6 +26,8 @@ class CandidateSchedule:
     events: list[Event]
     timeslots: list[TimeSlot]
     fitness_score: float = 0.0
+    unscheduled_events: int = 0
+
 
 population_size = 50
 num_generations = 100
@@ -65,6 +67,7 @@ class SchedulerGA:
                 if event.start_time is not None:
                     if timeslots[event.start_time] is None: # Check if preferred time slot is available
                         timeslots[event.start_time] = event
+            unscheduled_count = 0
             for event in flexible_events:
                 # If preferred time slot is not available, assign to a random available slot
                     assigned = False
@@ -74,8 +77,12 @@ class SchedulerGA:
                             for hour in range(slot, min(slot + event.duration, 24)): # Check if the required duration can fit in the available time slots
                                 if timeslots[hour] is None:
                                     timeslots[hour] = event
-                            assigned = True
-            candidate = CandidateSchedule(events=self.events, timeslots=timeslots)
+                                    assigned = True
+                        break
+                    if not assigned:
+                        unscheduled_count += 1
+
+            candidate = CandidateSchedule(events=self.events, timeslots=timeslots, unscheduled_events=unscheduled_count)
             population.append(candidate)
 
         return population
