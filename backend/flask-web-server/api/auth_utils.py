@@ -18,7 +18,7 @@ def generate_hash(password):
     """
     salt = urandom(32).hex()
 
-    peppered_password = password + salt + PEPPER
+    peppered_password = password + PEPPER
     
     password_hash = hashlib.pbkdf2_hmac('sha256', peppered_password.encode('utf-8'), salt.encode('utf-8'), pbkdf2_complexity)
 
@@ -30,7 +30,7 @@ def verify_password(password, stored_salt, stored_hash):
     Verifies a password against its stored pbkdf2 hash.
     """
     
-    salted_peppered_password = password + stored_salt + PEPPER
-    new_password_hash = hashlib.pbkdf2_hmac('sha256', salted_peppered_password.encode('utf-8'), stored_salt.encode('utf-8'), pbkdf2_complexity)
+    peppered_password = password + PEPPER
+    new_password_hash = hashlib.pbkdf2_hmac('sha256', peppered_password.encode('utf-8'), stored_salt.encode('utf-8'), pbkdf2_complexity)
 
     return hmac.compare_digest(new_password_hash.hex(), stored_hash)
