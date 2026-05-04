@@ -1,31 +1,11 @@
 #V.1
-from dataclasses import dataclass
+from models import EventType, Event, TimeSlot
 import math
 
 #Config
 #Weights
 #How Aggressively to penalize low demand events in high value time slots.
 WASTE_COST_WEIGHT = 0.5
-
-
-@dataclass
-class EventType:
-    name: str
-    ideal_energy: float
-    ideal_focus: float
-    energy_weight: float
-    focus_weight: float
-
-@dataclass
-class Event:
-    name: str
-    EventType: EventType
-
-@dataclass
-class TimeSlot:
-    hour: int # 0-23
-    predicted_energy: float # (low = 0, medium = 0.5, high = 1)
-    predicted_focus: float # (low = 0, medium = 0.5, high = 1)
 
 def score_fit(event, timeslot):
     def calculate_resource_fit(ideal, predicted):

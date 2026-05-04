@@ -16,7 +16,8 @@
 """
 
 from resource_predictor import get_baseline_array
-from scheduler_mvp import EventType, Event, TimeSlot, score_fit, compute_net_score
+from scheduler_mvp import compute_net_score
+from models import EventType, Event, TimeSlot
 from dataclasses import dataclass
 import random
 
@@ -31,11 +32,19 @@ num_generations = 100
 
 population = list[CandidateSchedule]
 
+event_types = {
+    "Work": EventType("Work", ideal_energy=0.8, ideal_focus=0.8, energy_weight=1, focus_weight=4),
+    "Exercise": EventType("Exercise", ideal_energy=0.6, ideal_focus=0.5, energy_weight=5, focus_weight=1),
+    "Study": EventType("Study", ideal_energy=0.7, ideal_focus=0.9, energy_weight=1, focus_weight=4),
+}
+
 events_to_schedule = [
-    Event("Task 1", EventType("Work", ideal_energy=0.8, ideal_focus=0.8, energy_weight=1, focus_weight=4)),
-    Event("Task 2", EventType("Work", ideal_energy=0.8, ideal_focus=0.8, energy_weight=1, focus_weight=4)),
-    Event("Evening Workout", EventType("Exercise", ideal_energy=0.6, ideal_focus=0.5, energy_weight=5, focus_weight=1)),
-    Event("Study Session", EventType("Study", ideal_energy=0.7, ideal_focus=0.9, energy_weight=1, focus_weight=4)),
+    Event("Task 1", event_types["Work"], start_time=9, duration=2),
+    Event("Task 2", event_types["Work"], start_time=None, duration=2),
+    Event("Work meeting", event_types["Work"], start_time=11, duration=1),
+    Event("Evening Workout", event_types["Exercise"], start_time=17, duration=1),
+    Event("Study Session", event_types["Study"], start_time=None, duration=2),
+    Event("Read budget report", event_types["Work"], start_time=None, duration=1),
 ]
 
 class SchedulerGA:
@@ -50,33 +59,71 @@ class SchedulerGA:
             timeslots = [None] * 24 # Assuming 24 time slots (e.g. each hour of the day)
             # Randomly shuffle events and assign to time slots
             random.shuffle(self.events)
-            for event in self.events:
-                assigned = False
-                while not assigned:
-                    slot = random.randint(0, 23)
-                    if timeslots[slot] is None: # Check if time slot is available
-                        timeslots[slot] = event
-                        assigned = True
+            fixed_events = [event for event in self.events if event.start_time is not None]
+            flexible_events = [event for event in self.events if event.start_time is None]
+            for event in fixed_events:
+                if event.start_time is not None:
+                    if timeslots[event.start_time] is None: # Check if preferred time slot is available
+                        timeslots[event.start_time] = event
+            for event in flexible_events:
+                # If preferred time slot is not available, assign to a random available slot
+                    assigned = False
+                    while not assigned:
+                        slot = random.randint(0, 23)
+                        if timeslots[slot] is None: # Check if time slot is available
+                            for hour in range(slot, min(slot + event.duration, 24)): # Check if the required duration can fit in the available time slots
+                                if timeslots[hour] is None:
+                                    timeslots[hour] = event
+                            assigned = True
             candidate = CandidateSchedule(events=self.events, timeslots=timeslots)
             population.append(candidate)
 
         return population
     
-    def visualise_population(self):
+    def evaluate_population(self):
+        for candidate in self.population:
+            self.evaluate_fitness(candidate)
+
+        best_fitness = 0.0
+        best_individual = None
         for individual in self.population:
-            print("Candidate Schedule:")
-            for hour, event in enumerate(individual.timeslots):
-                if event is not None:
-                    print(f"Hour {hour}: {event.name}")
-                else:
-                    print(f"Hour {hour}: Free")
-            print("\n")
+            if individual.fitness_score > best_fitness:
+                best_individual = individual
+                best_fitness = individual.fitness_score
+        print(f"Best Individual : ")
+        self.visualise_individual(best_individual)
+
+    def evaluate_fitness(self, candidate):
+        total_score = 0.0
+        for hour, event in enumerate(candidate.timeslots):
+            if event is not None:
+                predicted_energy, predicted_focus = self.energy_focus_landscape[hour]
+                timeslot = TimeSlot(hour=hour, predicted_energy=predicted_energy, predicted_focus=predicted_focus)
+                score = compute_net_score(event, timeslot)
+                total_score += score
+        candidate.fitness_score = total_score
+
+    def visualise_individual(self, candidate):
+        print(f"Candidate Schedule (Fitness: {candidate.fitness_score}):")
+        for hour, event in enumerate(candidate.timeslots):
+            if event is not None:
+                print(f"""
+                      Hour {hour}: {event.name}, 
+                      Energy/Focus match score: {compute_net_score(event, TimeSlot(hour=hour, predicted_energy=self.energy_focus_landscape[hour][0],predicted_focus=self.energy_focus_landscape[hour][1]))},
+                      Predicted Energy: {self.energy_focus_landscape[hour][0]},
+                      Predicted Focus: {self.energy_focus_landscape[hour][1]},
+                      Ideal Energy: {event.EventType.ideal_energy},
+                      Ideal Focus: {event.EventType.ideal_focus}
+                """)
+            else:
+                print(f"Hour {hour}: Free")
+        print("\n")
 
 baseline_energy, baseline_focus = get_baseline_array(phi1=7, phi2=12) # Example phase shifts for circadian and circasemidian rhythms
 
 scheduler = SchedulerGA(events_to_schedule, energy_focus_landscape=list(zip(baseline_energy, baseline_focus)))
 
-scheduler.visualise_population()
+scheduler.evaluate_population()
 
 
 """
