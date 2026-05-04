@@ -4,6 +4,7 @@ Util functions for authentication
 
 from hashlib import sha256
 from os import urandom
+import hmac
 
 # ! for production move to env variable.
 PEPPER = ""
@@ -29,4 +30,4 @@ def verify_password(password, stored_salt, stored_hash):
     salted_peppered_password = password + stored_salt + PEPPER
     password_hash = sha256(salted_peppered_password.encode()).hexdigest()
 
-    return password_hash == stored_hash
+    return hmac.compare_digest(password_hash, stored_hash)
