@@ -20,6 +20,7 @@ class Event:
 @dataclass
 class TimeSlot:
     hour: int # 0-23
-    predicted_energy: float # (low = 0, medium = 0.5, high = 1)
-    predicted_focus: float # (low = 0, medium = 0.5, high = 1)
+    event: None
+    predicted_energy: float = 0.0 # (low = 0, medium = 0.5, high = 1)
+    predicted_focus: float = 0.0# (low = 0, medium = 0.5, high = 1)
     effective_energy: float = 0.0
