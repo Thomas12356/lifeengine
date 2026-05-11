@@ -26,5 +26,7 @@ dist-ssr
 # ---- Backend ----
 backend/.env
 backend/env-backend/
+backend/flask-web-server/app/__pycache__/
+
 
 
