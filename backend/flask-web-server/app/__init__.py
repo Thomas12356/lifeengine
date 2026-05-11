@@ -25,12 +25,11 @@ def fetch_database_url():
     DB_NAME = os.environ.get('DB_NAME')
     
     # URL-encode to handle special characters.
-    if DB_PASS and DB_USER and DB_NAME:
-        DB_PASS = quote_plus(DB_PASS)
-        DB_USER = quote_plus(DB_USER)
-        DB_NAME = quote_plus(DB_NAME)
+    safe_user = quote_plus(DB_USER)
+    safe_pass = quote_plus(DB_PASS)
+    safe_name = quote_plus(DB_NAME)
 
-    return f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}"
+    return f"postgresql://{safe_user}:{safe_pass}@{DB_HOST}/{safe_name}"
 
 def create_app():
     """
@@ -44,10 +43,17 @@ def create_app():
     try:
         app.config['SQLALCHEMY_DATABASE_URI'] = fetch_database_url()
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS', False)
-        app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+
+        secret_key = os.environ.get('SECRET_KEY')
+        if not secret_key:
+            raise ValueError("[Error] SECRET_KEY is not in .env")
+        
+        app.config['SECRET_KEY'] = secret_key
+
     except Exception as e:
-        print(f"[Error] Failed to load environment variables: {e}")
+        app.logger.error(f"Config error: {e}")
         raise e
+    
     
 
     # TODO Prep CORS for production, change '*' to the domain of the front end and import library.
