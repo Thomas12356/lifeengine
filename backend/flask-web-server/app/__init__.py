@@ -2,14 +2,15 @@
 Backend API package initialization.
 Sets up Flask app and registers Blueprints for the API routes.
 """
-# ? should models be global as we want to make the shcedular modular and not have it depend on the flask app?
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
+from flask_migrate import Migrate
 
-db = SQLAlchemy() # SQLAlchemy instance
+db = SQLAlchemy() # SQLAlchemy global instance
+migrate = Migrate() # Flask-Migrate global instance
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -50,19 +51,11 @@ def create_app():
 
     # Initialize SQLAlchemy with the app.
     db.init_app(app) 
-
+    # Initialize Flask-Migrate with the app and db.
+    migrate.init_app(app, db)
 
     # Register Blueprints for routes.
     from .auth_routes import auth
     app.register_blueprint(auth)
-
-
-    # Create database tables if they don't exist.
-    with app.app_context():
-        try:
-            db.create_all()
-        except Exception as e:
-            print(f"[Error] Failed to connect to database: {e}")
-            raise e
 
     return app
