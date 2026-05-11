@@ -17,14 +17,14 @@ load_dotenv()  # Load environment variables from .env file
 
 def fetch_database_url():
     """
-    Formats the database URL to be compatible with SQLAlchemy.
+    Formats the database URL for SQLAlchemy.
     """
     DB_USER = os.environ.get('DB_USER')
     DB_PASS = os.environ.get('DB_PASS')
     DB_HOST = os.environ.get('DB_HOST')
     DB_NAME = os.environ.get('DB_NAME')
     
-    # URL-encode to handle special characters.
+    # URL-encode to handle special characters preventing errors in the url.
     safe_user = quote_plus(DB_USER)
     safe_pass = quote_plus(DB_PASS)
     safe_name = quote_plus(DB_NAME)
@@ -46,11 +46,14 @@ def create_app():
 
         secret_key = os.environ.get('SECRET_KEY')
         if not secret_key:
+            # Log error and raise to prevent app starting if SECRET_KEY is missing.
+            app.logger.error("[Error] SECRET_KEY is not in .env")
             raise ValueError("[Error] SECRET_KEY is not in .env")
         
         app.config['SECRET_KEY'] = secret_key
 
     except Exception as e:
+        # Log error and raise to prevent app starting if there is a configuration issue.
         app.logger.error(f"Config error: {e}")
         raise e
     

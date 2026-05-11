@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()  # Load environment variables from .env file
 
-# ! for production move to env variable.
+# Load authentication config from .env
 try:
     PEPPER = os.environ.get('PEPPER')
     PBKDf2_COMPLEXITY = int(os.environ.get('PBKDF2_COMPLEXITY', 600000))
