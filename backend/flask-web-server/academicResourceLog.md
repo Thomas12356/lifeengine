@@ -4,4 +4,7 @@ This file is temporary for now, it contains accademic resources used for researc
 # Resources:
 ## Storing Secrets Securley
 i.e. DB passwords, secret keys ...
-Link: [pypi.org python-dotenv/](https://pypi.org/project/python-dotenv/).
+### Link: 
+[pypi.org python-dotenv/](https://pypi.org/project/python-dotenv/).
+### Use:
+None
