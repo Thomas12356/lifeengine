@@ -11,6 +11,7 @@
 
 from dataclasses import dataclass
 from models import Event, TimeSlot
+import random
 
 # NOTE : Abstract to global constants file
 SCHEDULE_RESOLUTION = 24 # 24 timeslots per day
@@ -76,21 +77,46 @@ class Schedule:
         self.simulation_score = 0.0
         self.total_fitness = 0.0
 
+    # Scan all timeslots to check for duplicated and fragemented events produced from crossover
+    # Once checked, clear invalid events and attempt to rebuild a valid schedule
     def repair(self):
         
         # 3 CASES WHERE REPAIR IS NEEDED
         #   - Duplicate events
         #       - Collect all scheduled events and check for duplicates
         #       - Remove instance with lower effective energy
+        #   - Fragmented events
+        #       - Scan list of scheduled events
+        #       - Check each event to see if it occupies duration number of slots
         #   - Missing events
         #       - Build a list of events present in the schedule
         #       - Compare against self.events (master list, must be clean)
         #       - Attempt to greedy insert each missing event
-        #   - Fragmented events
-        #       - Scan list of scheduled events
-        #       - Check each event to see if it occupies duration number of slots
 
-        # STEP 1. Check for fragmented events
+        self.unscheduled_events = 0 # Reset unscheduled event count
+        # STEP 1. Remove duplicate events
+        seen = set() # Initialise set to track seen event IDs
+        i = 0
+        while i < len(self.timeslots): # Iterate over all timeslots
+            slot = self.timeslots[i] # Select current time slot
+            if slot is None:
+                i += 1
+                continue # Increment pointer and move on if slot is empty
+            
+            event = self.timeslots[i].event # Select event in current timeslot
+            if event.id in seen: # Event has been seen before, so it is a duplicate and must be removed
+                while i < len(self.timeslots):
+                    if self.timeslots[i] != None and (self.timeslots[i].event.event_id == event.id):
+                        self.timeslots[i] = None # Clear timeslots
+                        i += 1
+                    else:
+                        break # Empty timeslot or new event found, break out of clearing loop
+            else: # Event has not been seen yet
+                seen.add(event.id) # Update set
+                i += event.duration # Jump to end of event block
+
+        # STEP 2. Check for fragmented events and clear them
+        # When a fragmented event is found, we clear all occupied timeslots by that event and add it to a list of events to be re inserted later
         unscheduled_events = []
         i = 0 # Intialise pointer
         while i < len(self.timeslots):
@@ -116,7 +142,7 @@ class Schedule:
             if not is_fragmented:
                 for d in range(duration): # Iterate over event duration
                     if i + d >= len(self.timeslots): # Check if event has been cutoff by end-of-day
-                        is_fragmented == True
+                        is_fragmented = True
                         break
                     target = self.timeslots[i + d] # Set target slot to where the next block of the event should be scheduled
                     if target == None or target.event.event_id != event.event_id: # Check if timeslot if empty or contains a different event
@@ -130,33 +156,45 @@ class Schedule:
                     if self.timeslots[i] != None and (self.timeslots[i].event.event_id == current_id): # Check if timeslot contains a fragment
                         self.timeslots[i] = None # Clear the timeslot
                         i += 1 # Increment pointer
+                    else:
+                        break # Stop clearing as new event or empty slot has been reached
                 if event not in unscheduled_events:
                     unscheduled_events.append(event) # Push event to unscheduled events to be re inserted later
             else: # Event integrity has been preserved
                 i += duration # Jump to end of event
 
+        # STEP 3. Re insert missing events
+        # When fragemented events are found we clear all instances and so it must be re-inserted at an appropriate time
+        # Comparing the master list (self.events) of events that should have been scheduled we can also pickup any events that were lost during crossover
+        # To do this we follow the same logic as the initalise_population method in the GA:
+        #   - Attempt to insert fixed events at the correct time first
+        #   - Attempt to insert flexible events in random slots until successfull or attempt limit reached
 
-            
+        scheduled_events = set(timeslot.event.event_id for timeslot in self.timeslots if timeslot)
+        fragmented_events = set(event.event_id for event in unscheduled_events)
 
+        for event in self.events:
+            if event.event_id not in scheduled_events and event.event_id not in fragmented_events:
+                unscheduled_events.append(event)
 
+        fixed_events = [event for event in unscheduled_events if event.start_time is not None]
+        flexible_events = [event for event in unscheduled_events if event.start_time is None]
 
-
-
-
+        # First attempt to re-insert fixed events, same logic as SchedulerGA.initalise_population()
+        for event in fixed_events:
+            success = self.insert_event(event, event.start_time)
+            if not success:
+                self.unscheduled_events += 1
         
-        
-        
-                        
-
-        
-            
-
-
-        
-
-
-        
-
-        
-            
-                
+        # Next we attempt to insert flexible events at the first available found spot, same logic as SchedulerGA.initalise_population()
+        for event in flexible_events:
+            assigned = False
+            attempts = 0
+            while not assigned and attempts < 100:
+                attempts += 1
+                slot = random.randint(0, 23)
+                success = self.insert_event(event, slot)
+                if success:
+                    assigned = True
+            if not assigned:
+                self.unscheduled_events += 1
