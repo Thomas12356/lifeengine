@@ -3,20 +3,20 @@ This file is temporary for now, it contains accademic resources used for researc
 
 # Resources:
 
-## Storing Secrets Securley
-te215: Read, not used
+## Storing Secrets Securley - Info Needed ...
+te215: Read, ...
 ### Related to:
 Flask Web Server, Database
 ### Link: 
 [pypi.org python-dotenv/](https://pypi.org/project/python-dotenv/).
 
-## Flask SQLAlchemy
+## Flask SQLAlchemy - Info Needed ...
 te215: Read, used ...
 ### Related to:
 Flask Web Server, Database
 ### Link:
 [flask-sqlalchemy Docs](https://flask-sqlalchemy.readthedocs.io/en/stable/quickstart/)
 
-## Environ vs Getenv
+## Environ vs Getenv - Info Needed ...
 [Environ Vs GetEnv - Medium.com](https://medium.com/@levchevajoana/pythons-os-environ-vs-os-getenv-b149e6fdea3c)
 
