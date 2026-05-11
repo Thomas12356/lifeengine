@@ -27,8 +27,10 @@ dist-ssr
 backend/.env
 backend/env-backend/
 backend/flask-web-server/app/__pycache__/
+**/__pycache__/
 
 # ---- Docs ----
 backend/academicResourceLog.md
+
 
 
