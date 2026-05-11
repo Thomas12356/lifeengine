@@ -20,5 +20,5 @@ def login():
     # if not email or not password:
     #     return jsonify({'error': 'Missing email or password'}), 400
     
-    # # TODO connect to database to fetch user credentials.
+    # # TODO fetch user credentials.
     return "Login endpoint"
