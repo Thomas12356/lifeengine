@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
 from flask_migrate import Migrate
+from urllib.parse import quote_plus
 
 db = SQLAlchemy() # SQLAlchemy global instance
 migrate = Migrate() # Flask-Migrate global instance
@@ -22,6 +23,13 @@ def fetch_database_url():
     DB_PASS = os.environ.get('DB_PASS')
     DB_HOST = os.environ.get('DB_HOST')
     DB_NAME = os.environ.get('DB_NAME')
+    
+    # URL-encode to handle special characters.
+    if DB_PASS and DB_USER and DB_NAME:
+        DB_PASS = quote_plus(DB_PASS)
+        DB_USER = quote_plus(DB_USER)
+        DB_NAME = quote_plus(DB_NAME)
+
     return f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}"
 
 def create_app():
