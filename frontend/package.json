@@ -14,12 +14,13 @@
     "@chakra-ui/react": "^3.32.0",
     "@chakra-ui/select": "^2.1.2",
     "@emotion/react": "^11.14.0",
+    "axios": "^1.16.0",
     "date-fns": "^4.1.0",
     "next-themes": "^0.4.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.6.0",
-    "react-router-dom": "^7.13.0"
+    "react-router-dom": "^7.15.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
