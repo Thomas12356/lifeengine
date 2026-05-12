@@ -29,3 +29,17 @@ class User(db.Model):
     # defining how the object looks when printed
     def __repr__(self):
         return f"<User: {self.email}: {self.id}>"
+    
+    @classmethod
+    def find_active_by_email(email):
+        """
+        Finds an active user by their email.
+        """
+        return User.query.filter_by(email = email, is_active = True).first()
+    
+    @classmethod
+    def find_by_id(user_id):
+        """
+        Finds a user by their ID.
+        """
+        return User.query.filter_by(id = user_id).first()
