@@ -79,7 +79,7 @@ def create_app():
     from . import models
 
     # Register Blueprints for routes.
-    from .auth_routes import auth
+    from app.routes.auth_routes import auth
     app.register_blueprint(auth)
 
     return app
