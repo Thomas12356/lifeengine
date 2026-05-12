@@ -198,3 +198,29 @@ class Schedule:
                     assigned = True
             if not assigned:
                 self.unscheduled_events += 1
+
+    # NOTE : This function could possibly be re-used in self.repair(), we should review this
+    # Given an event ID linearly search self.timeslots and clear any instance of that event
+    def clear_event(self, event_id):
+        i = 0
+        while i < len(self.timeslots): # Iterate over all timeslots
+            slot = self.timeslots[i]
+            if slot.event_id is not None and slot.event_id == event_id: # Check if event IDs match
+                self.timeslots[i] = None # If so, clear the event
+            i += 1
+
+    # NOTE : This function could possibly be re-used in self.repair(), we should review this
+    # Given an event ID, linearly search self.timeslots to find the hour the event first appears in
+    # NOTE : This should not be used to fetch the correct start time of a fixed event
+    def find_start_time(self, event_id):
+        i = 0
+        while i < len(self.timeslots): # Iterate over all timeslots
+            slot = self.timeslots[i]
+            if slot.event_id is not None and slot.event_id == event_id: # Check if IDs match
+                return slot.hour # If so, return the current timeslots hour
+            
+        return None # Event not in schedule, so return None
+            
+
+
+        
