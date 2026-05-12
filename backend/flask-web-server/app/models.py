@@ -15,7 +15,7 @@ class User(db.Model):
     # Index on email for faster lookups, unique to prevent duplicate users
     email = db.Column(db.String(120), unique = True, nullable = False, index = True)
 
-    # pkdf2_hmac hash of the password, stored as a hex string, 64 characters
+    # pkdf2_hmac hash of the password, stored as a hex string, 64 characters (set to 255 allowing future changes)
     password_hash = db.Column(db.String(255), nullable = False)
     # 32 byte salt stored as hex string, 64 characters
     salt = db.Column(db.String(64), nullable = False)
@@ -26,5 +26,6 @@ class User(db.Model):
     # mark users as inactive without deleting them from the database
     is_active = db.Column(db.Boolean, default = True)
 
+    # defining how the object looks when printed
     def __repr__(self):
         return f"<User: {self.email}: {self.id}>"
