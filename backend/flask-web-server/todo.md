@@ -1,3 +1,3 @@
 # Flask Web Server Todo
- - TODO Link auth route with logic
+ - TODO token rotation / refreshing
  - TODO finish accademic resources
