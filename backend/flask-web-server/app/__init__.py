@@ -65,31 +65,31 @@ def create_app():
             # Log error and raise to prevent app starting if JWT_SECRET_KEY is missing.
             app.logger.error("[Error] JWT_SECRET_KEY is not in .env")
             raise ValueError("[Error] JWT_SECRET_KEY is not in .env")
-        # Set the JWT secret key for Flask-JWT-Extended.
-        app.config['JWT_SECRET_KEY'] = jwt_secret_key
-        # Access tokens expire in 1 hour
-        app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
-        # Initialize JWTManager with the app.
-        jwt = JWTManager(app)
+        
+        app.config['JWT_SECRET_KEY'] = jwt_secret_key # Set the JWT secret key for Flask-JWT-Extended.
+        app.config['JWT_TOKEN_LOCATION'] = ["cookies"]
+        app.config['JWT_ACCESS_COOKIE_PATH'] = "/"
+        app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1) # Access tokens expire in 1 hour
+        app.config["JWT_COOKIE_CSRF_PROTECT"] = True
+        app.config["JWT_SESSION_COOKIE"] = True
+        app.config["JWT_COOKIE_SECURE"] = False # TODO set to false in production and move to .env
+        app.config["SESSION_COOKIE_SAMESITE"] = "Lax" # TODO move to .env
+
+        jwt = JWTManager(app) # Initialize JWTManager with the app.
         
     except Exception as e:
         # Log error and raise to prevent app starting if there is a configuration issue.
         app.logger.error(f"[Error] loading and initializing config failed: {e}")
         raise e
-    
-    
 
-
-
+    # Import and Register Blueprints for routes.
+    from app.routes.auth_routes import auth_blueprint
+    app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
 
     # Initialize SQLAlchemy with the app.
     db.init_app(app) 
     # Initialize Flask-Migrate with the app and db.
     migrate.init_app(app, db)
     from . import models
-
-    # Import and Register Blueprints for routes.
-    from app.routes.auth_routes import auth_blueprint
-    app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
 
     return app
