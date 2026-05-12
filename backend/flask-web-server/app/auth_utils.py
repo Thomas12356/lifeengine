@@ -1,21 +1,20 @@
 """
 Util functions for authentication
 """
-
 import hashlib
 import os
 import hmac
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env file
+# Load environment variables from .env file
+load_dotenv()  
 
 # Load authentication config from .env
-try:
-    PEPPER = os.environ.get('PEPPER')
-    PBKDf2_COMPLEXITY = int(os.environ.get('PBKDF2_COMPLEXITY', 600000))
-except Exception as e:
-    print(f"[Error] Failed to load authentication config: {e}")
-    raise e
+PEPPER = os.environ.get('PEPPER')
+if not PEPPER:
+    raise RuntimeError("[Error] PEPPER is not set in .env")
+
+PBKDf2_COMPLEXITY = int(os.environ.get('PBKDF2_COMPLEXITY', 600000))
 
 
 def generate_hash(password):
