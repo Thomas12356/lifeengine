@@ -15,21 +15,26 @@ migrate = Migrate() # Flask-Migrate global instance
 
 load_dotenv()  # Load environment variables from .env file
 
-def fetch_database_url():
+
+def fetch_database_uri():
     """
     Formats the database URL for SQLAlchemy.
     """
     DB_USER = os.environ.get('DB_USER')
     DB_PASS = os.environ.get('DB_PASS')
     DB_HOST = os.environ.get('DB_HOST')
+    DB_PORT = os.environ.get('DB_PORT', '5432')
     DB_NAME = os.environ.get('DB_NAME')
     
     # URL-encode to handle special characters preventing errors in the url.
     safe_user = quote_plus(DB_USER)
     safe_pass = quote_plus(DB_PASS)
     safe_name = quote_plus(DB_NAME)
+    uri = f"postgresql://{safe_user}:{safe_pass}@{DB_HOST}:{DB_PORT}/{safe_name}"
 
-    return f"postgresql://{safe_user}:{safe_pass}@{DB_HOST}/{safe_name}"
+    print(uri)
+    return uri
+
 
 def create_app():
     """
@@ -41,7 +46,7 @@ def create_app():
 
     # Load and configure Flask app and db configuration from ".env".
     try:
-        app.config['SQLALCHEMY_DATABASE_URI'] = fetch_database_url()
+        app.config['SQLALCHEMY_DATABASE_URI'] = fetch_database_uri()
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS', False)
 
         secret_key = os.environ.get('SECRET_KEY')
@@ -70,6 +75,8 @@ def create_app():
     db.init_app(app) 
     # Initialize Flask-Migrate with the app and db.
     migrate.init_app(app, db)
+
+    from . import models
 
     # Register Blueprints for routes.
     from .auth_routes import auth
