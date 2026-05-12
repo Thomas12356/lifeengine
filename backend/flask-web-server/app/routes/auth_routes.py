@@ -7,9 +7,9 @@ from flask_jwt_extended import create_access_token
 from app import db
 from app.services.auth_services import register_user, authenticate_user
 
-auth = Blueprint('auth', __name__)
+auth_blueprint = Blueprint('auth', __name__)
 
-@auth.route('/login', methods=['POST'])
+@auth_blueprint.route('/login', methods=['POST'])
 def login():
     """
     Validates user credentials
@@ -33,3 +33,32 @@ def login():
             "last_name": user.last_name
         }
     }), 200
+
+@auth_blueprint.route('/register', methods=['POST'])
+def register():
+    """
+    Registers a new user with the provided email, password, first name and last name.
+    """
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Missing request data."}), 400
+    
+    user, error = register_user(
+        email=data.get('email'),
+        password=data.get('password'),
+        first_name=data.get('first_name'),
+        last_name=data.get('last_name')
+    )
+
+    if error:
+        return jsonify({"error": error}), 400
+    
+    return jsonify({
+        "message": "Registration successful.",
+        "user": {
+            "id": str(user.id),
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name
+        }
+    }), 201

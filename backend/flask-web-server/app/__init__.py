@@ -32,8 +32,7 @@ def fetch_database_uri():
     safe_pass = quote_plus(DB_PASS)
     safe_name = quote_plus(DB_NAME)
     uri = f"postgresql://{safe_user}:{safe_pass}@{DB_HOST}:{DB_PORT}/{safe_name}"
-
-    print(uri)
+    
     return uri
 
 
@@ -86,12 +85,10 @@ def create_app():
     db.init_app(app) 
     # Initialize Flask-Migrate with the app and db.
     migrate.init_app(app, db)
-    
-
     from . import models
 
-    # Register Blueprints for routes.
-    from app.routes.auth_routes import auth
-    app.register_blueprint(auth)
+    # Import and Register Blueprints for routes.
+    from app.routes.auth_routes import auth_blueprint
+    app.register_blueprint(auth_blueprint, url_prefix='/api/auth')
 
     return app
