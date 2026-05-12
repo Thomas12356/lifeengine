@@ -27,3 +27,15 @@ def register_user(email, password, first_name, last_name):
     db.session.commit()
 
     return new_user, None
+
+
+def authenticate_user(email, password):
+    """
+    Authenticates a user by their email and password.
+    """
+    user = User.find_active_by_email(email)
+
+    if user and verify_password(password, user.salt, user.password_hash):
+        return user
+    
+    return None
