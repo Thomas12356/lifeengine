@@ -38,7 +38,7 @@ def run_hashing_algorithm(password, salt):
     return password_hash.hex()
 
 
-def generate_hash(password):
+def generate_new_hash(password):
     """
     Generates a salted and peppered hash for a password.
     """
