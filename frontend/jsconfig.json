@@ -10,6 +10,7 @@
       "@/*": ["./src/*"],
       "@pages/*": ["./src/pages/*"],
       "@features/*": ["./src/features/*"],
+      "@context/*": ["./src/context/*"],
       "@ui-components/*": ["./src/components/ui-components/*"],
       "@theme/*": ["./src/theme/*"],
     }

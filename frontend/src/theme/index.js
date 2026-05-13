@@ -23,8 +23,14 @@ const customConfig = defineConfig( {
                     fontWeight: "normal",
                     color: "brand.gray"
                 }
-            }
-            
+            },
+            "defaultText": {
+                values: {
+                    fontSize: "md",
+                    fontWeight: "normal",
+                    color: "brand.gray"
+                }
+            } 
         },
         recipes: {
             button: {
