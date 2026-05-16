@@ -53,7 +53,7 @@ def create_app():
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS', False)
 
 
-        secret_key = os.environ.get('SECRET_KEY')
+        secret_key = os.environ.get('FLASK_SECRET_KEY')
         if not secret_key:
             # Log error and raise to prevent app starting if SECRET_KEY is missing.
             app.logger.error("[Error] SECRET_KEY is not in .env")
@@ -72,8 +72,8 @@ def create_app():
         app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1) # Access tokens expire in 1 hour
         app.config["JWT_COOKIE_CSRF_PROTECT"] = True
         app.config["JWT_SESSION_COOKIE"] = True
-        app.config["JWT_COOKIE_SECURE"] = False # TODO set to false in production and move to .env
-        app.config["SESSION_COOKIE_SAMESITE"] = "Lax" # TODO move to .env
+        app.config["JWT_COOKIE_SECURE"] = False # TODO set to true in production
+        app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
         jwt = JWTManager(app) # Initialize JWTManager with the app.
         
