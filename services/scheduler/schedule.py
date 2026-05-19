@@ -19,7 +19,7 @@ SCHEDULE_RESOLUTION = 24 # 24 timeslots per day
 class Schedule:
     def __init__(self, id, events, energy_landscape):
         self.id = id # Unique identifier for the schedule
-        self.events = events # Container for events to be scheduled
+        self.events = list(events) # Container for events to be scheduled
         self.timeslots = [None] * SCHEDULE_RESOLUTION # Initialize empty timeslots for the schedule
         self.match_fitness = 0.0 # Fitness score based on the match between ideal and predicted energy levels
         self.simulation_score = 0.0 # Fitness score based on the results of the fatigue simulation
