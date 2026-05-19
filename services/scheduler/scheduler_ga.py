@@ -117,8 +117,8 @@ class SchedulerGA:
             random.shuffle(candidate.events) # Shuffle list of events to be scheduled to increase diversity
 
             # NOTE: Fixed events could be determined by a flag rather than the presence of a start time
-            fixed_events = [event for event in self.events if event.start_time is not None] # Extract events that cannot move 
-            flexible_events = [event for event in self.events if event.start_time is None]
+            fixed_events = [event for event in candidate.events if event.start_time is not None] # Extract events that cannot move 
+            flexible_events = [event for event in candidate.events if event.start_time is None]
 
             # NOTE : We may want to expand this so some events can be carried over when day-to-day scheduling is implemented
             unscheduled_count = 0 # Track number of events that could not be scheduled so they can be penalised 
