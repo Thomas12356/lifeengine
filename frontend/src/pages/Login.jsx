@@ -23,7 +23,6 @@ export default function LoginPage(){
 
     return (
         <div>
-            {error && <p>{error}</p>}
             <LoginForm onSubmit={handleLoginAttempt} error={error} />
         </div>
     )

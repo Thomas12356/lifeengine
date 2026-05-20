@@ -20,7 +20,7 @@ const customConfig = defineConfig({
 
             defaultGrey: {
                 value: {
-                    fontSize: "md",
+                    fontSize: "sm",
                     fontWeight: "normal",
                     color: "grey.500",
                 },
@@ -33,6 +33,13 @@ const customConfig = defineConfig({
                     color: "grey.500",
                 },
             },
+            errorText: {
+                value: {
+                    fontSize: "sm",
+                    fontWeight: "normal",
+                    color: "errorRed"
+                }
+            }
         },
 
         tokens: {
@@ -77,6 +84,8 @@ const customConfig = defineConfig({
                 },
 
                 white: { value: "#ffffff" },
+
+                errorRed: { value: "#ff7272" },
 
                 text: {
                     "solid": { value: "#393939" },
