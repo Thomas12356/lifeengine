@@ -117,8 +117,8 @@ class SchedulerGA:
             random.shuffle(candidate.events) # Shuffle list of events to be scheduled to increase diversity
 
             # NOTE: Fixed events could be determined by a flag rather than the presence of a start time
-            fixed_events = [event for event in self.events if event.start_time is not None] # Extract events that cannot move 
-            flexible_events = [event for event in self.events if event.start_time is None]
+            fixed_events = [event for event in candidate.events if event.start_time is not None] # Extract events that cannot move 
+            flexible_events = [event for event in candidate.events if event.start_time is None]
 
             # NOTE : We may want to expand this so some events can be carried over when day-to-day scheduling is implemented
             unscheduled_count = 0 # Track number of events that could not be scheduled so they can be penalised 
@@ -149,7 +149,7 @@ class SchedulerGA:
     def tournament_selection(self):
 
         selection = random.sample(self.population, TOURNAMENT_SIZE) # Randomly select k individuals
-        return max(selection, key=lambda ind:ind.simulation_score) # Return the best from the selection
+        return max(selection, key=lambda ind:ind.total_fitness) # Return the best from the selection
 
     def crossover(self, parent1, parent2):
 
@@ -275,26 +275,35 @@ class SchedulerGA:
         
         energy_landscape, _ = zip(*self.energy_focus_landscape) # Unpack energy landscape
         evaluator = Evaluator(self.population, list(energy_landscape)) # Initalise evaluator
+        best_individual = None
         
         while self.generation < NUM_GENERATIONS: # Repeat until max number of generations has been reached
             self.population = evaluator.evaluate_population() # Evalute whole population
 
             # NOTE : We should sort by total fitness once it has been decided how we weight energy match & simulation scores
-            self.population.sort(key=lambda x: x.simulation_score, reverse=True) # Sort based on simulation score
+            self.population.sort(key=lambda x: x.total_fitness, reverse=True) # Sort based on simulation score
 
             # DEBUG - This is used to track number of unique candidates and check genetic diversity across generations
             seen = set() 
             for ind in self.population:
                seen.add(ind.simulation_score)
            
-            print(f"Generation {self.generation} max fitness : {self.population[0].simulation_score}, n unique scores = {len(seen)}")
+            print(f"Generation {self.generation} max fitness : {self.population[0].total_fitness}, n unique scores = {len(seen)}")
+
+            # Compare best individual of current generation against overall best
+            if best_individual:
+                if self.population[0].total_fitness > best_individual.total_fitness:
+                    best_individual = self.population[0]
+            else:
+                best_individual = self.population[0]
 
             self.evolve() # Evolve population
             self.generation += 1 # Increment number of generations
             evaluator.population = self.population # Update evaluator with new population
-           
-        self.population.sort(key=lambda x: x.simulation_score, reverse=True) # Sort population
-        self.population[0].visualise() # DEBUG - Used to visualise the schedule of the best individual across all generations
+        
+        self.population = evaluator.evaluate_population()
+        self.population.sort(key=lambda x: x.total_fitness, reverse=True) # Sort population
+        best_individual.visualise() # DEBUG - Used to visualise the schedule of the best individual across all generations
 
 baseline_energy, baseline_focus = get_baseline_array(phi1=7, phi2=12) # Fetch baseline energy landscape from resource predictor
 

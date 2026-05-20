@@ -19,7 +19,7 @@ SCHEDULE_RESOLUTION = 24 # 24 timeslots per day
 class Schedule:
     def __init__(self, id, events, energy_landscape):
         self.id = id # Unique identifier for the schedule
-        self.events = events # Container for events to be scheduled
+        self.events = list(events) # Container for events to be scheduled
         self.timeslots = [None] * SCHEDULE_RESOLUTION # Initialize empty timeslots for the schedule
         self.match_fitness = 0.0 # Fitness score based on the match between ideal and predicted energy levels
         self.simulation_score = 0.0 # Fitness score based on the results of the fatigue simulation
@@ -29,7 +29,7 @@ class Schedule:
 
     # Given an event and start time, return True if the event can be scheduled at that time, False otherwise
     def check_availability(self, event, start_time):
-        if start_time + event.duration >= 24:
+        if start_time + event.duration > 24:
             return False # Event cannot be scheduled as it exceeds the day boundary
         else:
             for hour in range(event.duration): # Iterate over the duration of the event

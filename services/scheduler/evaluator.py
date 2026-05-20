@@ -28,6 +28,7 @@ K = 1 # Steepness of the yield curve - to be tuned based on experimentation (k =
 FATIGUE_MODIFIER = -2.0 # Modifier for the fatigue penalty applied to task yield when effective energy is below 0
 RECOVERY_RATE = 0.7 # Rate at which residual fatigue decreases during rest 
 WASTE_COST_WEIGHT = 0.5
+UNSCHEDULED_EVENTS_PENALTY = 1000
 
 SCHEDULE_RESOLUTION = 24 # TODO : Import constant from global constant file
 POPULATION_SIZE = 50 # TODO : Import from GA parameters
@@ -121,9 +122,8 @@ class Evaluator:
 
         self.simulate_schedule(candidate) # Simulate the candidate schedule
 
-        # Aggregate each score to produce an overall fitness score
-        # NOTE : This could be calculated using weights for each fitness layer, team discussion required
-        #candidate.total_fitness = candidate.match_score + candidate.simulation_score
+        candidate.total_fitness = candidate.simulation_score + candidate.match_fitness
+        candidate.total_fitness -= candidate.unscheduled_events * UNSCHEDULED_EVENTS_PENALTY
 
     # Evaluate every individual in the population and record the top performers
     def evaluate_population(self):
