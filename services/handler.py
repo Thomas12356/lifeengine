@@ -1,7 +1,6 @@
 # This is just a temp file to test each package works individually
 
 """
-
 from services.scheduler.scheduler_ga import SchedulerGA
 
 # Custom data types import
@@ -31,5 +30,4 @@ baseline_energy, baseline_focus = get_baseline_array(phi1=7, phi2=12) # Fetch ba
 
 scheduler = SchedulerGA(events_to_schedule, energy_focus_landscape=list(zip(baseline_energy, baseline_focus))) # Initalise new GA instance
 scheduler.run() # Run the scheduler
-
 """

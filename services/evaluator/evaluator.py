@@ -37,7 +37,6 @@ class Evaluator:
     # NOTE : THIS NEEDS TO BE REFACTORED TO NOT REQUIRE A POPULATION
     # POPULATION EVALUATION SHOULD BE A GA FUNCTION WHICH USES THE EVALUATE_INDIVIDUAL METHOD
     def __init__(self, population, energy_landscape):
-        self.population = population
         self.energy_landscape = energy_landscape
 
     # Given an event and a timeslot, calculate the fitness score based on ideal & required energy match
@@ -127,7 +126,7 @@ class Evaluator:
         candidate.total_fitness -= candidate.unscheduled_events * UNSCHEDULED_EVENTS_PENALTY
 
     # Evaluate every individual in the population and record the top performers
-    def evaluate_population(self):
+    def evaluate_population(self, population):
   
         # TODO : Calculate best overall individual? Depends on discussion
         best_energy_match_score = -float('inf')
@@ -136,7 +135,7 @@ class Evaluator:
         best_match_individual = None
         best_simulation_individual = None
 
-        for individual in self.population:
+        for individual in population:
             self.evaluate_individual(individual)
             if individual.match_fitness > best_energy_match_score:
                 best_energy_match_score = individual.match_fitness
@@ -151,5 +150,5 @@ class Evaluator:
             print(f"Best simulation individual : ")
             best_simulation_individual.visualise()
 
-        return self.population
+        return population
 

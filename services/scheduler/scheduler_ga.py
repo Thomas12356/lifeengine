@@ -255,7 +255,7 @@ class SchedulerGA:
         best_individual = None
         
         while self.generation < NUM_GENERATIONS: # Repeat until max number of generations has been reached
-            self.population = evaluator.evaluate_population() # Evalute whole population
+            self.population = evaluator.evaluate_population(self.population) # Evalute whole population
 
             # NOTE : We should sort by total fitness once it has been decided how we weight energy match & simulation scores
             self.population.sort(key=lambda x: x.total_fitness, reverse=True) # Sort based on simulation score
@@ -278,7 +278,7 @@ class SchedulerGA:
             self.generation += 1 # Increment number of generations
             evaluator.population = self.population # Update evaluator with new population
         
-        self.population = evaluator.evaluate_population()
+        self.population = evaluator.evaluate_population(self.population)
         self.population.sort(key=lambda x: x.total_fitness, reverse=True) # Sort population
         best_individual.visualise() # DEBUG - Used to visualise the schedule of the best individual across all generations
 
