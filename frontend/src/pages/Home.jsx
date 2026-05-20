@@ -23,7 +23,6 @@ export default function Home() {
         <Box>
             <ResourceSelectorHeading username={user?.first_name}/>
             <NextEvent/>
-            <LogoutButton/>
         </Box>
     )
 }

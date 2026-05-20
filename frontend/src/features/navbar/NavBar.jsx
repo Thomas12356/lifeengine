@@ -10,6 +10,7 @@ import VerticalDivider from "@ui-components/VerticalDivider";
 {/* TODO - replace with actual icons */}
 {/* Temporary Dev Imports */}
 import { FaBeer } from "react-icons/fa";
+import LogoutButton from "@features/auth/components/LogoutButton";
 
 
 {/* -------------------- Styling -------------------- */}
@@ -58,7 +59,6 @@ const navButtons = [
 
 const IconNavButtons = [
     { to: "/notifications", Icon: FaBeer },
-    { to: "/settings", Icon: FaBeer },
 ]
 
 {/* -------------------- Local Components -------------------- */}
@@ -74,6 +74,7 @@ const NavButton = ({ to, Icon, text}) => {
                     <ChakraIcon as={Icon} {...navBarIconStyles} />
                     {/* TODO: font size is hardcoded for now, will need to be changed when we have real text */}
                     <Text {...navButtonLinkTextStyles}>{text}</Text>
+                    
                 </Box>
             )}
         </NavLink>
@@ -117,8 +118,8 @@ export default function NavBar() {
                     {IconNavButtons.map((button) => (
                         <IconNavButton key={button.to} {...button} />
                     ))}
+                    <LogoutButton/>
                 </HStack>
-
             </Flex>
         </Box>
     )
