@@ -10,7 +10,7 @@
 """
 
 from dataclasses import dataclass
-from models import Event, TimeSlot
+from .models import Event, TimeSlot
 import random
 
 # NOTE : Abstract to global constants file

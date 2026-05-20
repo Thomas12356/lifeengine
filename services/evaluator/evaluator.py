@@ -17,7 +17,6 @@
 
 """
 import math
-from models import TimeSlot, Event, EventType
 
 WAKE_UP_TIME = 7
 BED_TIME = 23
@@ -35,6 +34,8 @@ POPULATION_SIZE = 50 # TODO : Import from GA parameters
 
 class Evaluator:
 
+    # NOTE : THIS NEEDS TO BE REFACTORED TO NOT REQUIRE A POPULATION
+    # POPULATION EVALUATION SHOULD BE A GA FUNCTION WHICH USES THE EVALUATE_INDIVIDUAL METHOD
     def __init__(self, population, energy_landscape):
         self.population = population
         self.energy_landscape = energy_landscape

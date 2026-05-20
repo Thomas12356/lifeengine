@@ -1,0 +1,2 @@
+from .resource_predictor import get_baseline
+from .resource_predictor import get_baseline_array
