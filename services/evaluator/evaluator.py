@@ -34,8 +34,6 @@ POPULATION_SIZE = 50 # TODO : Import from GA parameters
 
 class Evaluator:
 
-    # NOTE : THIS NEEDS TO BE REFACTORED TO NOT REQUIRE A POPULATION
-    # POPULATION EVALUATION SHOULD BE A GA FUNCTION WHICH USES THE EVALUATE_INDIVIDUAL METHOD
     def __init__(self, population, energy_landscape):
         self.energy_landscape = energy_landscape
 
@@ -61,7 +59,7 @@ class Evaluator:
         match_score = math.exp(energy_fit)
         return max(0.0 ,match_score)
 
-    # Given a candidate ID, fetch the individuals schedule and simulate the fatigue & recovery impact
+    # Given a candidate Schedule object, fetch the individuals schedule and simulate the fatigue & recovery impact
     def simulate_schedule(self, candidate):
         def calculate_s(s_inital):
             t = 30
@@ -111,7 +109,7 @@ class Evaluator:
         
         candidate.simulation_score = total_fitness # Store overall simulation score
 
-    # Given a candidate ID, fetch the individual and calculate an energy match & simulation fitness
+    # Given a candidate Schedule object, fetch the individual and calculate an energy match & simulation fitness
     def evaluate_individual(self, candidate):
 
         candidate.reset_scores() # Reset scores to avoid adding to existing score
