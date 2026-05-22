@@ -128,7 +128,7 @@ export default function AddEventMenu({ onClose }){
                             title="Burnout Rate"
                             type="ResourceLevel"
                             value={formData.idealEnergy}
-                            onChange={(value) => updateField("idealEnergy", value)}
+                            onChange={(value) => updateField("burnoutRate", value)}
                             placeholder="Default"
                             allowClear={true}
                         />
