@@ -21,8 +21,7 @@ import AddEventMenu from "./AddEventMenu"
 export default function AddEventButton() {
 
     const [open, setOpen] = useState(false) // Track popover open state
-    const firstFieldRef = useRef(null) // Ref to the first input field for initial focus when popover opens
-    console.log("Popover is open:", open)
+
     return (
         <Popover.Root 
         open={open} 
