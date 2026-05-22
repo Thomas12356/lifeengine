@@ -127,7 +127,7 @@ export default function AddEventMenu({ onClose }){
                         <DropDown 
                             title="Burnout Rate"
                             type="ResourceLevel"
-                            value={formData.idealEnergy}
+                            value={formData.burnoutRate}
                             onChange={(value) => updateField("burnoutRate", value)}
                             placeholder="Default"
                             allowClear={true}
