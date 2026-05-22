@@ -1,34 +1,84 @@
 import DropDown from "@ui-components/DropDown"
 import { Button, Input, Stack, Field, HStack, Collapsible, NumberInput } from "@chakra-ui/react"
 import { LuChevronRight } from "react-icons/lu"
+import { useState } from "react"
 
 export default function AddEventMenu({ onClose }){
+
+    const[formData, setFormData] = useState({
+        eventName : "",
+        date : "",
+        startTime : "",
+        endTime : "",
+        category : "",
+        idealEnergy : "",
+        priority : "",
+        burnoutRate : ""
+    })
+
+    function updateField(field, value) {
+        setFormData((prev) => ({
+            ...prev,
+            [field] : value
+        }))
+    }
+
+    function handleSave() {
+        console.log("Event saved : ")
+        console.log(formData)
+        onClose()
+    }
+
     return (
         <Stack gap="4">
             <Field.Root>
                 <Field.Label>Event Name</Field.Label>
-                <Input placeholder="e.g. Design Sync" />
+                <Input 
+                    placeholder="e.g. Design Sync"
+                    value={formData.eventName}
+                    onChange={(e) => updateField("eventName", e.target.value)}
+                />
             </Field.Root>
 
             <Field.Root>
                 <Field.Label>Date</Field.Label>
-                <Input type="date" />
+                <Input 
+                    type="date"
+                    value={formData.date}
+                    onChange={(e) => updateField("date", e.target.value)}
+                />
             </Field.Root>
 
             <HStack>
                 <Field.Root>
                     <Field.Label>Start Time</Field.Label>
-                    <Input type="time" />
+                    <Input 
+                        type="time"
+                        value={formData.startTime}
+                        onChange={(e) => updateField("startTime", e.target.value)}
+                    />
                 </Field.Root>
                 <Field.Root>
                     <Field.Label>End Time</Field.Label>
-                    <Input type="time" />
+                    <Input 
+                        type="time"
+                        value={formData.endTime}
+                        onChange={(e) => updateField("endTime", e.target.value)}
+                    />
                 </Field.Root>
             </HStack>
 
             <Field.Root>
                 <Field.Label>Event Type</Field.Label>
-                <DropDown type={"Category"} option={0} />
+                <DropDown 
+                    title="Category"
+                    type={"EventCategory"}
+                    value={formData.category}
+                    option={0}
+                    onChange={(value) => updateField("category", value)}
+                    placeholder="No Category"
+                    allowClear={true}
+                />
             </Field.Root>
             <Collapsible.Root>
                 <Collapsible.Trigger>
@@ -41,26 +91,45 @@ export default function AddEventMenu({ onClose }){
                 </Collapsible.Trigger>
                 <Collapsible.Content>
                     <Field.Root>
-                        <Field.Label>Priority</Field.Label>
-                        <NumberInput.Root min={1} max={10}>
-                            <NumberInput.Control/>
-                            <NumberInput.Input/>
-                        </NumberInput.Root>
+                        <HStack>
+                            <Field.Label>Priority</Field.Label>
+                            <NumberInput.Root 
+                                min={1} 
+                                max={10}
+                                value = {formData.priority}
+                                onValueChange={(e) => updateField("priority", e.value)}
+                            >
+                                <NumberInput.Control/>
+                                <NumberInput.Input/>
+                            </NumberInput.Root>
+                        </HStack>
                     </Field.Root>
                     <Field.Root>
-                        <Field.Label>Ideal Energy</Field.Label>
-                        <DropDown type={"Category"} option={0} />
+                        <DropDown
+                            title="Ideal Energy"
+                            type="ResourceLevel"
+                            value={formData.idealEnergy}
+                            onChange={(value) => updateField("idealEnergy", value)}
+                            placeholder="Default"
+                            allowClear={true}
+                        />
                     </Field.Root>
                     <Field.Root>
-                        <Field.Label>Burnout Rate</Field.Label>
-                        <DropDown type={"Category"} option={0} />
+                        <DropDown 
+                            title="Burnout Rate"
+                            type="ResourceLevel"
+                            value={formData.idealEnergy}
+                            onChange={(value) => updateField("idealEnergy", value)}
+                            placeholder="Default"
+                            allowClear={true}
+                        />
                     </Field.Root>
                 </Collapsible.Content>
             </Collapsible.Root>
             <Button 
                 colorScheme="blue" 
                 size="sm" 
-                onClick={onClose}
+                onClick={handleSave}
             >
                 Save to Calendar
             </Button>
