@@ -8,9 +8,10 @@
  */
 
 /* --- IMPORTS --- */
-import { Popover, Button, Input, Stack, Field, Portal, HStack } from "@chakra-ui/react"
+import { Popover, Button, Portal } from "@chakra-ui/react"
 import { useRef, useState } from "react"
-import DropDown from "@ui-components/DropDown"
+
+import AddEventMenu from "./AddEventMenu"
 
 /* --- MAIN COMPONENT --- */
 /**
@@ -29,53 +30,14 @@ export default function AddEventButton() {
         positioning={{ placement: "bottom" }}
         >
             <Popover.Trigger> {/* Use asChild to render the trigger as a Chakra UI Button */}
-                <Button variant="outline" size="sm">Add Event</Button>
+                Add Event
             </Popover.Trigger>
-
             <Portal> {/* Render the popover content in a portal to avoid z-index and overflow issues */}
                 <Popover.Positioner>
-                    <Popover.Content p="4" portalled={true.toString()}> {/* Portalled content for better positioning */}
+                    <Popover.Content p="4"> {/* Portalled content for better positioning */}
                         <Popover.Arrow />
-                        <Stack gap="4">
-                            <Popover.Title fontWeight="medium">Add New Event</Popover.Title>
-                    
-                            <Field.Root>
-                                <Field.Label>Event Name</Field.Label>
-                                <Input 
-                                    ref={firstFieldRef} 
-                                    placeholder="e.g. Design Sync" 
-                                />
-                            </Field.Root>
-
-                            <Field.Root>
-                                <Field.Label>Date</Field.Label>
-                                <Input type="date" />
-                            </Field.Root>
-
-                            <HStack>
-                                <Field.Root>
-                                    <Field.Label>Start Time</Field.Label>
-                                    <Input type="time" />
-                                </Field.Root>
-                                <Field.Root>
-                                    <Field.Label>End Time</Field.Label>
-                                    <Input type="time" />
-                                </Field.Root>
-                            </HStack>
-
-                            <Field.Root>
-                                <Field.Label>Event Type</Field.Label>
-                                <DropDown type={"Category"} option={0} />
-                            </Field.Root>
-
-                            <Button 
-                                colorScheme="blue" 
-                                size="sm" 
-                                onClick={() => setOpen(false)}
-                            >
-                                Save to Calendar
-                            </Button>
-                        </Stack>
+                        <Popover.Title fontWeight="medium">Add New Event</Popover.Title>   
+                        <AddEventMenu onClose={() => setOpen(false)}/> 
                     </Popover.Content>
                 </Popover.Positioner>
             </Portal>
