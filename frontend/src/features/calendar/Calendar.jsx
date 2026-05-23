@@ -6,7 +6,7 @@ import { useState } from "react"
 import { useWeekEvents } from "@/features/calendar/hooks/useWeekEvents"
 
 // Dummy event data for testing
-const allEvents = [
+const allEvents2 = [
     {
         title: "Meeting",
         start: "2026-03-02T14:00:00", // Monday 2:00 PM
@@ -36,18 +36,39 @@ const allEvents = [
         title: "Grocery Shopping",
         start: "2026-03-18T10:00:00", // Saturday 10:00 AM
         end: "2026-03-18T11:00:00"
-    },
+    }
 ]
 
 export default function Calendar() {
 
     const [selectedDate, setSelectedDate] = useState(new Date())
-    const weekEvents = useWeekEvents(allEvents, selectedDate);
+
+    const [allEvents, setAllEvents] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem("events") || "[]")
+        } catch (err) {
+            console.error("Failed to parse events from localStorage")
+            return []
+        } 
+    })
+
+    function handleEventAdded(newEvent) {
+        console.log("Calendar received new event:", newEvent)
+        setAllEvents((prevEvents) => [...prevEvents, newEvent])
+    }
+
+    const weekEvents = useWeekEvents(allEvents, selectedDate)
+
+    console.log("ALL EVENTS:", allEvents)
 
     return (
         <VStack w="50%">
             <Text>Selected Date: {selectedDate.toString()}</Text>
-            <CalendarMenu selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+            <CalendarMenu 
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate} 
+                onEventAdded={handleEventAdded}
+            />
             <CalendarHeader selectedDate={selectedDate} />
             <CalendarBody events={weekEvents}/>
         </VStack>

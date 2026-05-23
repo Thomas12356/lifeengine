@@ -13,12 +13,12 @@ import AddEventButton from "./AddEventButton"
  * 
  * @WIP View selection menu is currently a placeholder and does not affect the calendar view.
  */
-export default function CalendarMenu( { selectedDate, setSelectedDate }) {
+export default function CalendarMenu( { selectedDate, setSelectedDate, onEventAdded }) {
     return (
         <HStack>
             <DateSelectMenu selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
             <ViewSelectMenu />
-            <AddEventButton />
+            <AddEventButton onEventAdded={onEventAdded}/>
         </HStack>
     )
 }

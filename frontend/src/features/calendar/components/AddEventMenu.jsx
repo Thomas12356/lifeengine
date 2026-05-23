@@ -6,7 +6,7 @@ import useAddEvent from "../hooks/useAddEvent"
 
 import buildEventPayload from "../utils/buildEventPayload"
 
-export default function AddEventMenu({ onClose }){
+export default function AddEventMenu({ onClose, onEventAdded }){
 
     const[formData, setFormData] = useState({
         eventName : "",
@@ -30,19 +30,17 @@ export default function AddEventMenu({ onClose }){
     const { sumbitEvent, loading, error} = useAddEvent()
 
     async function handleSave() {
-        // DEBUG 
-        console.log("Event saved : ")
-        console.log(formData)
 
-        console.log(buildEventPayload(formData))
+        const payload = buildEventPayload(formData)
         
-        const result = await sumbitEvent(formData)
+        const result = await sumbitEvent(payload)
         
-        if (result.success) {
-            console.log("Event saved : ")
-            console.log(formData)
-            onClose()
-        }
+        onEventAdded({
+            title : payload.name,
+            start : payload.start_time,
+            end : payload.end_time
+        })
+        onClose()
     }
 
     return (
