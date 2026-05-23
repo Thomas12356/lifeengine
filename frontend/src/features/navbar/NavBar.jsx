@@ -39,8 +39,7 @@ const navBarBoxStyles = {
     paddingLeft: "widget.pLeftRight",
     paddingRight: "widget.pLeftRight",
     minHeight: "70px",
-    //alignContent: "center",
-    py: 2,
+    alignContent: "center",
 }
 
 
@@ -103,12 +102,11 @@ export default function NavBar() {
 
     return(
         <Box {...navBarBoxStyles}>
-            <Flex justifyContent="space-between" alignItems="center" minHeight="54px">
+            <Flex justifyContent="space-between" alignItems="center" height="70px">
                 
                 {/* Left Side: Logo and Desktop Nav Buttons */}
                 <HStack gap="general.mdSpacing" height="100%">
                     <LifeEngineLogo />
-
                     {/* Hide links on smaller screens than md*/}
                     <Box display={{ base: "none", md: "flex" }} alignItems="center" gap={4}>
                     <VerticalDivider />
