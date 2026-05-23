@@ -1,7 +1,7 @@
 import { Link } from '@chakra-ui/react';
 import { logoutUser } from '@features/auth/utils/authService';
 
-export default function LogoutButton(){
+export default function LogoutLink(){
     function handleLogout(){
         logoutUser();
     }
