@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Box, Button, Field, Input, Stack, Heading, Text } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
 
 export function LoginForm({ onSubmit, error, message }) {
     const [data, setData] = useState({ email: '', password: ''});
@@ -14,6 +15,7 @@ export function LoginForm({ onSubmit, error, message }) {
             <Box bg="white" maxW="400px" mx="auto" mt="general.lgSpacing" p="general.lgSpacing" borderWidth="1px" borderRadius="xl" boxShadow="md">
                 <Stack gap="5">
                     <Heading size="lg" textAlign="center" color="text.solid">Log In</Heading>
+                    {error && <Text textAlign="center" textStyle="errorText">{error}</Text>}
                     {message && <Text textAlign="center" textStyle="successText">{message}</Text>}
 
                     <Field.Root required>
@@ -29,7 +31,9 @@ export function LoginForm({ onSubmit, error, message }) {
                     </Field.Root>
 
                     <Button type="submit" bg="blueLight.500">Log In</Button>
-                    {error && <Text textStyle="errorText">{error}</Text>}
+                    <NavLink textDecoration="underline" to="/register" variant="link">
+                        <Text textAlign="center" textStyle="linkText">Don't have an account? Register</Text>
+                    </NavLink>
                 </Stack>
             </Box>
         </form>
