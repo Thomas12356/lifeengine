@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Button, Field, Input, Stack, Heading, Text } from "@chakra-ui/react";
 
-export function LoginForm({ onSubmit, error }) {
+export function LoginForm({ onSubmit, error, message }) {
     const [data, setData] = useState({ email: '', password: ''});
 
     function handleSubmit(e){
@@ -14,6 +14,7 @@ export function LoginForm({ onSubmit, error }) {
             <Box bg="white" maxW="400px" mx="auto" mt="general.lgSpacing" p="general.lgSpacing" borderWidth="1px" borderRadius="xl" boxShadow="md">
                 <Stack gap="5">
                     <Heading size="lg" textAlign="center" color="text.solid">Log In</Heading>
+                    {message && <Text textAlign="center" textStyle="successText">{message}</Text>}
 
                     <Field.Root required>
                         <Field.Label color="text.solid">Email</Field.Label>

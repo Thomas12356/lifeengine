@@ -39,6 +39,13 @@ const customConfig = defineConfig({
                     fontWeight: "normal",
                     color: "errorRed"
                 }
+            },
+            successText: {
+                value: {
+                    fontSize: "sm",
+                    fontWeight: "normal",
+                    color: "blueLight.500"
+                }
             }
         },
 

@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from '@features/auth/utils/authService';
 import { LoginForm } from "@/features/auth/components/AuthForms";
 import { useAuth } from "@context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 export default function LoginPage(){
     const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
+
     const { setUser } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state?.message) {
+            setMessage(location.state.message);
+            window.history.replaceState({}, document.title);
+        }
+    }, []);
 
     async function handleLoginAttempt(credentials){
         try{
@@ -23,7 +34,7 @@ export default function LoginPage(){
 
     return (
         <div>
-            <LoginForm onSubmit={handleLoginAttempt} error={error} />
+            <LoginForm onSubmit={handleLoginAttempt} error={error} message={message} />
         </div>
     )
 }
