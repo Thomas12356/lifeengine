@@ -54,7 +54,7 @@ export function RegisterForm({ onSubmit, error }) {
             <Box bg="white" maxW="400px" mx="auto" mt="general.lgSpacing" p="general.lgSpacing" borderWidth="1px" borderRadius="xl" boxShadow="md">
                 <Stack gap="5">
                     <Heading size="lg" textAlign="center" color="text.solid">Register</Heading>
-
+                    {error && <Text textAlign="center" textStyle="errorText">{error}</Text>}
                     <Field.Root required>
                         <Field.Label color="text.solid">First Name</Field.Label>
 
@@ -80,7 +80,9 @@ export function RegisterForm({ onSubmit, error }) {
                     </Field.Root>
 
                     <Button type="submit" bg="blueLight.500">Create Account</Button>
-                    {error && <Text textStyle="errorText">{error}</Text>}
+                    <NavLink textDecoration="underline" to="/login" variant="link">
+                        <Text textAlign="center" textStyle="linkText">Already have an account? Log In</Text>
+                    </NavLink>
                 </Stack>
             </Box>
         </form>
