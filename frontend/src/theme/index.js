@@ -40,11 +40,12 @@ const customConfig = defineConfig({
                     color: "errorRed"
                 }
             },
-            successText: {
+            linkText: {
                 value: {
                     fontSize: "sm",
                     fontWeight: "normal",
-                    color: "blueLight.500"
+                    color: "blueLight.500",
+                    textDecoration: "underline"
                 }
             }
         },
