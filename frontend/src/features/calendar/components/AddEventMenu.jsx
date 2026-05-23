@@ -28,7 +28,10 @@ export default function AddEventMenu({ onClose }){
     const { sumbitEvent, loading, error} = useAddEvent()
 
     async function handleSave() {
-
+        // DEBUG 
+        console.log("Event saved : ")
+        console.log(formData)
+        
         const result = await sumbitEvent(formData)
         
         if (result.success) {
@@ -134,7 +137,10 @@ export default function AddEventMenu({ onClose }){
                         />
                     </Field.Root>
                     <Field.Root>
-                        <Checkbox.Root>
+                        <Checkbox.Root
+                            value = {formData.isMoveable}
+                            onCheckedChange={(e) => updateField("isMoveable", e.checked)}
+                        >
                             <Checkbox.HiddenInput/>
                             <Checkbox.Label>
                                 Allow auto-rescheduling
