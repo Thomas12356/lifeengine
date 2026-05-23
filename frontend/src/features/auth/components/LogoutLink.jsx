@@ -6,6 +6,6 @@ export default function LogoutLink(){
         logoutUser();
     }
     return (
-        <Link ml="5px" variant="underline" color="defaultGrey" onClick={handleLogout}>Log Out</Link>
+        <Link ml="5px" variant="plain" color="#71717A" onClick={handleLogout}>Log Out</Link>
     )
 }

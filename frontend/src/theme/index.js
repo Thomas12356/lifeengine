@@ -47,6 +47,13 @@ const customConfig = defineConfig({
                     color: "blueLight.500",
                     textDecoration: "underline"
                 }
+            },
+            navLinkText:{
+                value: {
+                    fontSize: "sm",
+                    fontWeight: "normal",
+                    color: "grey.500",
+                }
             }
         },
 
