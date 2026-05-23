@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from '@features/auth/utils/authService';
-import LoginForm from "@/features/auth/components/LoginForm";
+import { LoginForm } from "@/features/auth/components/AuthForms";
 import { useAuth } from "@context/AuthContext";
 
 export default function LoginPage(){
@@ -27,3 +27,4 @@ export default function LoginPage(){
         </div>
     )
 }
+
