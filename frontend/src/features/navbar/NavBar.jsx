@@ -147,16 +147,30 @@ export default function NavBar() {
             </Flex>
 
             {/* Mobile Dropdown Nav */}
-            <Box display={{ base: isMobileOpen ? "block" : "none", md: "none" }} py={4}>
-                <VStack align="strech" gap={2}>
-                    {navButtons.map((button) => (
-                        <NavButton key={button.to} {...button} onClick={handleCloseMenu} />
-                    ))}
-                    <Center>
-                    <LogoutLink/>
-                    </Center>
-                </VStack>
+            <Box 
+                display={{ base: "block", md: "none" }}
+                overflow="hidden"
+                transition="all 0.3s ease-in-out"
+                maxHeight={isMobileOpen ? "400px" : "0px"} // expands and collapses
+                opacity={isMobileOpen ? 1 : 0} // fades in and out
+            >
+                <Box py={4}>
+                    <VStack align="stretch" gap={2}>
+                        {navButtons.map((button) => (
+                            <NavButton 
+                                key={button.to} 
+                                {...button} 
+                                onClick={handleCloseMenu} 
+                            />
+                        ))}
+                        <Center>
+                            <LogoutLink/>
+                        </Center>
+                    </VStack>
+                </Box>
             </Box>
+
+            
         </Box>
     )
 }
