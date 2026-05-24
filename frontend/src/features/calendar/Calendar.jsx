@@ -59,7 +59,7 @@ export default function Calendar() {
 
     const weekEvents = useWeekEvents(allEvents, selectedDate)
 
-    console.log("ALL EVENTS:", allEvents)
+    //console.log("ALL EVENTS:", allEvents)
 
     return (
         <VStack w="50%">
