@@ -27,12 +27,6 @@ def create_event(
 
         user_uuid = uuid.UUID(user_id_str)
 
-        # Read in parameters
-        # Check if custom paramters have been applied
-        # If so, call create_event_paramters
-        # Upon success, check if event has been assigned an event type
-        # If not, fetch default event type ID and create event
-
         event_parameters = clean_parameters(event_parameters)
 
         has_custom_params = False
