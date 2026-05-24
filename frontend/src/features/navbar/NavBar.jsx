@@ -39,7 +39,7 @@ const navBarBoxStyles = {
     paddingLeft: "widget.pLeftRight",
     paddingRight: "widget.pLeftRight",
     minHeight: "70px",
-    alignContent: "center",
+    //alignContent: "center",
 }
 
 
@@ -59,9 +59,9 @@ const IconNavButtons = [
 ]
 
 {/* -------------------- Local Components -------------------- */}
-const NavButton = ({ to, Icon, text}) => {
+const NavButton = ({ to, Icon, text, onClick}) => {
     return(
-        <NavLink to={to} style={{ textDecoration: 'none', display: 'block', width: "100%"}}>
+        <NavLink to={to} onClick={onClick} style={{ textDecoration: 'none', display: 'block', width: "100%"}}>
             {({ isActive }) => (
                 <Box
                     {...navButtonLinkStyles}
@@ -99,6 +99,10 @@ const IconNavButton = ({ to, Icon }) => {
 {/* -------------------- Main Component -------------------- */}
 export default function NavBar() {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+    const handleCloseMenu = () => {
+        setIsMobileOpen(false);
+    };
 
     return(
         <Box {...navBarBoxStyles}>
@@ -146,7 +150,7 @@ export default function NavBar() {
             <Box display={{ base: isMobileOpen ? "block" : "none", md: "none" }} py={4}>
                 <VStack align="strech" gap={2}>
                     {navButtons.map((button) => (
-                        <NavButton key={button.to} {...button} />
+                        <NavButton key={button.to} {...button} onClick={handleCloseMenu} />
                     ))}
                     <Center>
                     <LogoutLink/>
