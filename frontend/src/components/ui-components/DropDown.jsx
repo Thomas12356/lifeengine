@@ -9,40 +9,58 @@
  * Last updated: 18/04/2026 by te215@kent.ac.uk
  */
 
-import { HStack, Text, Menu, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { HStack, Text, Menu, Button, Portal } from "@chakra-ui/react";
 
-export default function DropDown({ type, option }) {
+var staticTypes = {
+    "EventCategory" : ["Gym", "Work", "Study"],
+    "ResourceLevel" : ["High", "Medium", "Low"]
+}
+
+export default function DropDown({ title, type, value, onChange, placeholder, allowClear }) {
     {/* { type } will make an api call and run the handler named { type } */}
-    var temptypeOptions = ["Normal", "Exercise", "8:00 AM"];
-    var temptypeStartOption = option;
+    var typeOptions = staticTypes[type]
 
-    const [selected, setSelected] = useState(temptypeOptions[temptypeStartOption]);
+    function handleSelect(opt) {
+        onChange?.(opt)
+    }
+
+    function handleClear() {
+        onChange?.("")
+    }
     
     return(
         <HStack>
-            <Text>{type}</Text>
+            <Text>{title}</Text>
             <Menu.Root>
                 <Menu.Trigger asChild>
                     {/* Custom button variant needed */}
                     <Button variant="outline" color={"brand.blueDark"} size={"sm"}>
-                        {selected}
+                        {value || placeholder}
                         {/*drop down icon */}
                     </Button>
                 </Menu.Trigger>
-                <Menu.Positioner>
-                    <Menu.Content maxH="200px" minW={"10rem"}>
-                        {temptypeOptions.map((opt) => (
-                            <Menu.Item 
-                                key={opt} 
-                                value={opt}
-                                onClick={() => setSelected(opt)}
-                            >
-                                {opt}
-                            </Menu.Item>
-                        ))}
-                    </Menu.Content>
-                </Menu.Positioner>
+                <Portal>
+                    <Menu.Positioner>
+                        <Menu.Content maxH="200px" minW={"10rem"}>
+
+                            {allowClear && value && (
+                                <Menu.Item value="clear" onClick={handleClear}>
+                                    Clear
+                                </Menu.Item>
+                            )}
+
+                            {typeOptions.map((opt) => (
+                                <Menu.Item 
+                                    key={opt} 
+                                    value={opt}
+                                    onClick={() => handleSelect(opt)}
+                                >
+                                    {opt}
+                                </Menu.Item>
+                            ))}
+                        </Menu.Content>
+                    </Menu.Positioner>           
+                </Portal>
             </Menu.Root>
         </HStack>
     );

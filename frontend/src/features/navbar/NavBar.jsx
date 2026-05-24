@@ -1,16 +1,18 @@
 {/* -------------------- Imports -------------------- */}
+import { useState } from "react";
 {/* Chakra UI */}
-import { Icon as ChakraIcon, Text, Box, Flex, HStack, Center } from "@chakra-ui/react";
+import { Icon as ChakraIcon, Text, Box, Flex, HStack, VStack, Center } from "@chakra-ui/react";
 {/* Router */}
 import { NavLink } from "react-router-dom";
 {/* UI Components */}
 import LifeEngineLogo from "@ui-components/LifeEngineLogo";
-import VerticalDivider from "@ui-components/VerticalDivider";
+import { VerticalDivider } from "@/components/ui-components/Dividers";
 {/* Assets */}
 {/* TODO - replace with actual icons */}
 {/* Temporary Dev Imports */}
 import { FaBeer } from "react-icons/fa";
-import LogoutButton from "@features/auth/components/LogoutButton";
+import { TiThMenuOutline } from "react-icons/ti";
+import LogoutLink from "@/features/auth/components/LogoutLink";
 
 
 {/* -------------------- Styling -------------------- */}
@@ -18,22 +20,17 @@ import LogoutButton from "@features/auth/components/LogoutButton";
 const navButtonLinkStyles = {
     display: "flex",
     alignItems:"center",
-    marginRight: "general.mdSpacing",
 }
 const iconNavButtonLinkStyles = {
-    marginLeft: "general.xsSpacing",
 }
-const navButtonLinkTextStyles = {
-    fontSize: "sm",
-    marginLeft: "general.xsSpacing",
-}
+
 const navBarIconStyles = {
     boxSize: "20px",
 }
 {/* NavBar Styles */}
 const navBarBoxStyles = {
     bg: "white",
-     boxShadow: "md",
+    boxShadow: "md",
     borderRadius: "widgetRadii",
     marginLeft: "widget.mLeftRight",
     marginRight: "widget.mLeftRight",
@@ -41,7 +38,7 @@ const navBarBoxStyles = {
     mb: "widget.mTopBottom",
     paddingLeft: "widget.pLeftRight",
     paddingRight: "widget.pLeftRight",
-    height: "70px",
+    minHeight: "70px",
     alignContent: "center",
 }
 
@@ -62,18 +59,20 @@ const IconNavButtons = [
 ]
 
 {/* -------------------- Local Components -------------------- */}
-const NavButton = ({ to, Icon, text}) => {
+const NavButton = ({ to, Icon, text, onClick}) => {
     return(
-        <NavLink to={to} style={{ textDecoration: 'none', display: 'block' }}>
+        <NavLink to={to} onClick={onClick} style={{ textDecoration: 'none', display: 'block', width: "100%"}}>
             {({ isActive }) => (
                 <Box
                     {...navButtonLinkStyles}
                     color={isActive ? "blueLight.500" : "gray.500"}
+                    p={{ base: 2, xl: 0 }} //padding for smaller screens, easier to click
+                    _hover={{ bg: {base: "gray.100", xl: "transparent"}, borderRadius: "md" }} //hover effect
                 >
                     {/* TODO: icon size is hardcoded for now, will need to be changed when we have real icons */}
-                    <ChakraIcon as={Icon} {...navBarIconStyles} />
+                    <ChakraIcon as={Icon} {...navBarIconStyles} color="inherit" />
                     {/* TODO: font size is hardcoded for now, will need to be changed when we have real text */}
-                    <Text {...navButtonLinkTextStyles}>{text}</Text>
+                    <Text ml={2} textStyle="navLinkText" color="inherit">{text}</Text>
                     
                 </Box>
             )}
@@ -88,6 +87,7 @@ const IconNavButton = ({ to, Icon }) => {
                 <Box
                     {...iconNavButtonLinkStyles}
                     color={isActive ? "blueLight.500" : "gray.500"}
+                    p={{ base: 2, xl: 0 }} //padding for smaller screens, easier to click
                 >
                     <ChakraIcon as={Icon} {...navBarIconStyles} />
                 </Box>
@@ -98,29 +98,79 @@ const IconNavButton = ({ to, Icon }) => {
 
 {/* -------------------- Main Component -------------------- */}
 export default function NavBar() {
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+    const handleCloseMenu = () => {
+        setIsMobileOpen(false);
+    };
+
     return(
         <Box {...navBarBoxStyles}>
-            <Flex justifyContent="space-between" alignItems="center" height="100%">
-
-                <HStack height="100%">
+            <Flex justifyContent="space-between" alignItems="center" height="70px">
+                
+                {/* Left Side: Logo and Desktop Nav Buttons */}
+                <HStack gap="general.mdSpacing" height="100%">
                     <LifeEngineLogo />
+                    {/* Hide links on smaller screens than md*/}
+                    <Box display={{ base: "none", xl: "flex" }} alignItems="center" gap={4}>
                     <VerticalDivider />
                     <nav>
-                        <HStack>
+                        <HStack gap="general.mdSpacing">
                             {navButtons.map((button) => (
                                 <NavButton key={button.to} {...button} />
                             ))}
                         </HStack>
                     </nav>
+                    </Box>
                 </HStack>
 
-                <HStack height="100%">
-                    {IconNavButtons.map((button) => (
-                        <IconNavButton key={button.to} {...button} />
-                    ))}
-                    <LogoutButton/>
+                {/* Right Side: Desktop Icon Buttons and Mobile Toggle Menu */}
+                <HStack gap={4} height="100%">
+                    {/* Desktop Only */}
+                    <HStack display={{ base: "none", xl: "flex" }} gap="general.xsSpacing">
+                        {IconNavButtons.map((button) => (
+                            <IconNavButton key={button.to} {...button} />
+                        ))}
+                        <LogoutLink/>
+                    </HStack>
+
+                    {/* Mobile Toggle Menu */}
+                    <Box
+                        display={{ base: "block", xl: "none" }}
+                        onClick={() => setIsMobileOpen(!isMobileOpen)}
+                        cursor="pointer"
+                        p={2}
+                    >
+                        <ChakraIcon as={TiThMenuOutline} boxSize="28px" color="gray.500"/>
+                    </Box>
                 </HStack>
             </Flex>
+
+            {/* Mobile Dropdown Nav */}
+            <Box 
+                display={{ base: "block", xl: "none" }}
+                overflow="hidden"
+                transition="all 0.3s ease-in-out"
+                maxHeight={isMobileOpen ? "400px" : "0px"} // expands and collapses
+                opacity={isMobileOpen ? 1 : 0} // fades in and ou
+            >
+                <Box py={4}>
+                    <VStack align="stretch" gap={2}>
+                        {navButtons.map((button) => (
+                            <NavButton 
+                                key={button.to} 
+                                {...button} 
+                                onClick={handleCloseMenu} 
+                            />
+                        ))}
+                        <Center>
+                            <LogoutLink/>
+                        </Center>
+                    </VStack>
+                </Box>
+            </Box>
+
+            
         </Box>
     )
 }

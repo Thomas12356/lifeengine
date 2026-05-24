@@ -28,8 +28,8 @@ export default function ResourceSelectorHeading() {
             </Stack>
 
             <HStack>
-                <DropDown type={"Focus"} option={0}></DropDown>
-                <DropDown type={"Energy"} option={0}></DropDown>
+                <DropDown title={"Energy"} type={"ResourceLevel"} value={0} allowClear={false}></DropDown>
+                <DropDown title={"Energy"} type={"ResourceLevel"} value={0} allowClear={false}></DropDown>
             </HStack>
         
         </HStack>

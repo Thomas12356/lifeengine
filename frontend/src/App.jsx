@@ -13,10 +13,12 @@ import Agent from "@pages/Agent"
 import Profile from "@pages/Profile"
 import CalendarPage from "@pages/CalendarPage"
 import LoginPage from "@pages/Login"
+import Register from "@pages/Register"
 
 export default function App() {
     const location = useLocation();
     const isLoginPage = location.pathname === "/login";
+    const isRegisterPage = location.pathname === "/register";
 
     return (
             <div>
@@ -30,13 +32,14 @@ export default function App() {
                 zIndex="-1"/>
 
             <Box pt={"widget.mTopBottom"} pb={"widget.mTopBottom"} pl={"widget.mLeftRight"} pr={"widget.mLeftRight"}>
-                {isLoginPage ? <NavBarLogin/> : <NavBar/>}
+                {isLoginPage || isRegisterPage ? <NavBarLogin/> : <NavBar/>}
 
                 <Routes>
 
                     {/* Public Only Routes - must not be logged in */}
                     <Route element={<PublicOnlyRoute/>}>
                         <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<Register />} />
                     </Route>
 
                     {/* Protected routes - must be logged in */}

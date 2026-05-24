@@ -1,11 +1,11 @@
 import { Link } from '@chakra-ui/react';
 import { logoutUser } from '@features/auth/utils/authService';
 
-export default function LogoutButton(){
+export default function LogoutLink(){
     function handleLogout(){
         logoutUser();
     }
     return (
-        <Link ml="5px" variant="underline" color="defaultGrey" onClick={handleLogout}>Log Out</Link>
+        <Link ml="5px" variant="plain" color="#71717A" onClick={handleLogout}>Log Out</Link>
     )
 }

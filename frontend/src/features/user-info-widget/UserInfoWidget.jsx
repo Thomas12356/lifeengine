@@ -8,10 +8,10 @@ export default function UserInfoWidget({...props}){
             <Text textStyle={"headingSolid"}>Thomas Eardley</Text>
             <Text>te215@kent.ac.uk</Text>
             <Stack mt={"general.xsSpacing"}>
-            <DropDown type={"Energy:"} option={0}/>
-            <DropDown type={"Focus:"} option={0}/>
-            <DropDown type={"Ideal Wake Up Time:"} option={2}/>
-            <DropDown type={"Ideal Wake Up Time:"} option={2}/>
+            <DropDown title={"Energy"} type={"ResourceLevel"} option={0}/>
+            <DropDown title={"Focus"} type={"ResourceLevel"} option={0}/>
+            <DropDown title={"Ideal Wake Up Time:"} type={"ResourceLevel"} option={2}/>
+            <DropDown title={"Ideal Wake Up Time:"} type={"ResourceLevel"} option={2}/>
             </Stack>
         </WidgetBox>
     );

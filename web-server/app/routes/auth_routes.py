@@ -73,7 +73,7 @@ def register():
         return jsonify({"error": error}), 400
     
     return jsonify({
-        "message": "Registration successful.",
+        "message": "Registration successful, please login.",
         "user": {
             "id": str(user.id),
             "email": user.email,
