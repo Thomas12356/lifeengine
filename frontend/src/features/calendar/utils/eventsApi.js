@@ -8,11 +8,13 @@ export async function addEvent(eventData) {
 
 export async function fetchEvents(userID) {
 
-    const response = await api.post("/events/getuserevents", {
+    const response = await api.post("/event/getuserevents", {
         user_id : userID
     })
 
-    const calendarEvents = response.events.map((event) => ({
+    console.log(response)
+
+    const calendarEvents = response.data.events.map((event) => ({
         id : event.id,
         title : event.name,
         start : event.start_time,

@@ -2,8 +2,9 @@ import { VStack, Text } from "@chakra-ui/react"
 import CalendarMenu from "@/features/calendar/components/CalendarMenu"
 import CalendarHeader from "@/features/calendar/components/CalendarHeader"
 import CalendarBody from "@/features/calendar/components/CalendarBody"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useWeekEvents } from "@/features/calendar/hooks/useWeekEvents"
+import { fetchEvents } from "./utils/eventsApi"
 
 // Dummy event data for testing
 const allEvents2 = [
@@ -42,15 +43,20 @@ const allEvents2 = [
 export default function Calendar() {
 
     const [selectedDate, setSelectedDate] = useState(new Date())
+    const [allEvents, setAllEvents] = useState(([]))
 
-    const [allEvents, setAllEvents] = useState(() => {
-        try {
-            return JSON.parse(localStorage.getItem("events") || "[]")
-        } catch (err) {
-            console.error("Failed to parse events from localStorage")
-            return []
-        } 
-    })
+    useEffect(() => {
+        async function loadEvents() {
+            try {
+                const events = await fetchEvents(JSON.parse(localStorage.getItem('user'))?.id)
+                setAllEvents(events)
+            } catch (err) {
+                console.log("Failed to fetch users events :", err)
+            }
+        }
+
+        loadEvents()
+    }, [])
 
     function handleEventAdded(newEvent) {
         console.log("Calendar received new event:", newEvent)
