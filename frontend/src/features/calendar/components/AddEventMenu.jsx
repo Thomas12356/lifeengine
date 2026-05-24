@@ -32,6 +32,9 @@ export default function AddEventMenu({ onClose, onEventAdded }){
     async function handleSave() {
 
         const payload = buildEventPayload(formData)
+
+        // DEBUG
+        console.log(payload)
         
         const result = await sumbitEvent(payload)
         

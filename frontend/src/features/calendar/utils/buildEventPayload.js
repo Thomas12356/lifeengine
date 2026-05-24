@@ -1,7 +1,7 @@
 
 // Replace with localStorage fetch once data loading is implemented
 const eventCategoryMap = {
-    "Default" : "0",
+    "Default" : "6fb0f936-dd89-4f19-ac25-a532b0249ec7",
     "Gym" : "1"
 }
 
@@ -21,8 +21,13 @@ export default function buildEventPayload(eventData) {
         name : eventData.eventName,
         start_time : startTimeISO,
         end_time : endTimeISO,
-        //event_type_id : eventCategoryID,
-        is_moveable : eventData.isMoveable
+        event_type_id : eventCategoryID,
+        parameters : {
+            ideal_energy : eventData.idealEnergy,
+            priority : eventData.priority,
+            burnout_rate : eventData.burnoutRate,
+            isMoveable : eventData.isMoveable
+        }
     }
 
 }

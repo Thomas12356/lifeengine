@@ -50,9 +50,9 @@ class EventParameter(db.Model):
 
     # ----- Fields -----
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    ideal_energy = db.Column(db.Float, nullable=False)
-    burnout_rate = db.Column(db.Float, nullable=False)
-    priority = db.Column(db.Integer, nullable=False)
+    ideal_energy = db.Column(db.Float, nullable=True)
+    burnout_rate = db.Column(db.Float, nullable=True)
+    priority = db.Column(db.Integer, nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
     def __repr__(self):

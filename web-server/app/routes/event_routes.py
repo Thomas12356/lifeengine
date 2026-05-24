@@ -3,7 +3,7 @@ from app.services import event_services
 
 event_blueprint = Blueprint('event',__name__)
 
-REQUIRED_EVENT_FIELDS = ['user_id', 'name', 'start_time', 'end_time']
+REQUIRED_EVENT_FIELDS = ['user_id', 'name', 'start_time', 'end_time', 'parameters']
 REQUIRED_EVENT_PARAMETER_FIELDS = ["ideal_energy", "burnout_rate", "priority"]
 REQUIRED_EVENT_TYPE_FIELDS = ["user_id", "event_parameter_id", "name"]
 
@@ -25,7 +25,7 @@ def add_event():
         start_time_str=data['start_time'],
         end_time_str=data['end_time'],
         event_type_id_str=data.get('event_type_id'),
-        event_parameter_id_str=data.get('event_parameter_id'),
+        event_parameters=data["parameters"],
         is_moveable=data.get('is_moveable', False),
         is_active=data.get('is_active', True)
     )
