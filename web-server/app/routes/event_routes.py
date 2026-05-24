@@ -26,7 +26,7 @@ def add_event():
         end_time_str=data['end_time'],
         event_type_id_str=data.get('event_type_id'),
         event_parameters=data["parameters"],
-        is_moveable=data.get('is_moveable', False),
+        is_moveable=data["parameters"]["is_moveable"],
         is_active=data.get('is_active', True)
     )
 

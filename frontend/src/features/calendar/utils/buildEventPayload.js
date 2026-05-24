@@ -26,7 +26,7 @@ export default function buildEventPayload(eventData) {
             ideal_energy : eventData.idealEnergy,
             priority : eventData.priority,
             burnout_rate : eventData.burnoutRate,
-            isMoveable : eventData.isMoveable
+            is_moveable : eventData.isMoveable
         }
     }
 
