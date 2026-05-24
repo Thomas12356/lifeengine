@@ -5,6 +5,7 @@ event_blueprint = Blueprint('event',__name__)
 
 REQUIRED_EVENT_FIELDS = ['user_id', 'name', 'start_time', 'end_time']
 REQUIRED_EVENT_PARAMETER_FIELDS = ["ideal_energy", "burnout_rate", "priority"]
+REQUIRED_EVENT_TYPE_FIELDS = ["user_id", "event_parameter_id", "name"]
 
 @event_blueprint.route('/addevent', methods=['POST'])
 def add_event():
@@ -59,3 +60,28 @@ def create_parameters():
         "message": "Event parameters created successfully", 
         "event_parameters_id": result["event_parameters_id"]
     }), 201
+
+
+@event_blueprint.route("/createeventtype", methods=["POST"])
+def create_event_type():
+
+    data = request.get_json()
+
+    for field in REQUIRED_EVENT_TYPE_FIELDS:
+        if field not in data or not data[field]:
+            return jsonify({"error": f"Missing required field: {field}"}), 400
+    
+    result = event_services.create_event_type(
+        user_id_str=data["user_id"],
+        event_params_id_str=data["event_parameter_id"],
+        name=data["name"],
+    )
+
+    if not result["success"]:
+        return jsonify({"error": result["error"]}), result["status_code"]
+
+    return jsonify({
+        "message": "Event type created successfully", 
+        "event_type_id": result["event_type_id"]
+    }), 201
+

@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from app import db
-from app.models import Event, EventParameter
+from app.models import Event, EventParameter, EventType
 
 
 def create_event(user_id_str: str, name, start_time_str: str, end_time_str: str, event_type_id_str: str = None, event_parameter_id_str: str = None, is_moveable: bool = False, is_active: bool = True):
@@ -76,6 +76,31 @@ def create_event_parameters(ideal_energy : float, burnout_rate : float, priority
         db.session.rollback()
         return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
 
+def create_event_type(user_id_str : str, event_params_id_str : str, name : str):
+    """
+    Creates a new event type and saves to db.
+    """
+    try:
+        user_uuid = uuid.UUID(user_id_str)
+        event_params_uui = uuid.UUID(event_params_id_str)
 
+        created_at = datetime.now()
 
-        
+        new_event_type = EventType(
+            user_id = user_uuid,
+            event_parameter_id = event_params_uui,
+            name = name,
+            created_at = created_at
+        )
+
+        db.session.add(new_event_type)
+        db.session.commit()
+
+        return {"success": True, "event_type_id": str(new_event_type.id)}
+    
+    except ValueError as e:
+        return {"success": False, "error": f"Invalid data format: {str(e)}", "status_code": 400}
+    
+    except Exception as e:
+        db.session.rollback()
+        return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
