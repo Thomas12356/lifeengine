@@ -1,7 +1,7 @@
 
 // Replace with localStorage fetch once data loading is implemented
 const eventCategoryMap = {
-    "Default" : "6fb0f936-dd89-4f19-ac25-a532b0249ec7",
+    "" : "81ae3ffa-85a3-4d3f-914b-eb54646bc6c7", // Default category
     "Gym" : "1"
 }
 
