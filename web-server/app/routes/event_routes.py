@@ -47,11 +47,7 @@ def create_parameters():
         if field not in data or not data[field]:
             return jsonify({"error": f"Missing required field: {field}"}), 400
 
-    result = event_services.create_event_parameters(
-        ideal_energy=float(data["ideal_energy"]),
-        burnout_rate=float(data["burnout_rate"]),
-        priority=int(data["priority"])
-    )
+    result = event_services.create_event_parameters(data)
 
     if not result["success"]:
         return jsonify({"error": result["error"]}), result["status_code"]
