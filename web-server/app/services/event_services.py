@@ -141,3 +141,19 @@ def create_event_type(user_id_str : str, event_params_id_str : str, name : str):
     except Exception as e:
         db.session.rollback()
         return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
+    
+def get_user_events(user_id_str : str):
+
+    try:
+
+        user_uuid = uuid.UUID(user_id_str)
+
+        events = Event.get_by_user_id(user_uuid)
+
+        return {"success" : True, "events" : [event.to_dict() for event in events]}
+    
+    except ValueError as e:
+        return {"success": False, "error": f"Invalid data format: {str(e)}", "status_code": 400}
+    
+    except Exception as e:
+        return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
