@@ -71,9 +71,18 @@ const EventLayer = ({ events }) => {
                         h={`${height}%`}
                         bg="blue.500"
                         color="white"
-                        p={2}
+                        px={2}
+                        py={1}
+                        borderRadius={"md"}
+                        boxShadow={"md"}
+                        overflow="hidden"
                     >
-                        {event.title}
+                        <Text fontWeight="semibold" noOfLines={1}>
+                            {event.title}
+                        </Text>
+                        <Text noOfLines={1}>
+                            {event.start.slice(11, 16)} - {event.end.slice(11, 16)} {/* Slice ISO strings to only contain HH:MM */}
+                        </Text>
                     </Box>
                 )
             })}
