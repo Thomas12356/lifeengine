@@ -86,3 +86,15 @@ export const isSameDay = (date1, date2) => {
            d1.getDate() === d2.getDate()
 }
 
+/**
+ *  Given a UTC date string format it into local HH:MM
+ * @param {string} date
+ * @returns {string} Date in HH:MM format
+ */
+export const formatEventTime = (date) => {
+    return new Date(date).toLocaleTimeString("en-GB", {
+        hour : "2-digit",
+        minute : "2-digit",
+        hour12 : false
+    })
+}

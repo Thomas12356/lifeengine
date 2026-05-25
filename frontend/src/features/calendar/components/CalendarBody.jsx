@@ -13,6 +13,7 @@
 import { HStack, VStack, Text, Box } from "@chakra-ui/react"
 import { calculateEventPosition } from "../utils/dateHelpers.js"
 import { useRef, useEffect } from "react"
+import { formatEventTime } from "../utils/dateHelpers.js"
 
 /* --- LOCAL COMPONENTS --- */
 
@@ -81,7 +82,7 @@ const EventLayer = ({ events }) => {
                             {event.title}
                         </Text>
                         <Text noOfLines={1}>
-                            {event.start.slice(11, 16)} - {event.end.slice(11, 16)} {/* Slice ISO strings to only contain HH:MM */}
+                            {formatEventTime(event.start)} - {formatEventTime(event.end)} {/* Slice ISO strings to only contain HH:MM */}
                         </Text>
                     </Box>
                 )
