@@ -1,4 +1,4 @@
-import { VStack, Text } from "@chakra-ui/react"
+import { VStack, Text, Box } from "@chakra-ui/react"
 import CalendarMenu from "@/features/calendar/components/CalendarMenu"
 import CalendarHeader from "@/features/calendar/components/CalendarHeader"
 import CalendarBody from "@/features/calendar/components/CalendarBody"
@@ -73,15 +73,19 @@ export default function Calendar() {
     //console.log("ALL EVENTS:", allEvents)
 
     return (
-        <VStack w="50%">
-            <Text>Selected Date: {selectedDate.toString()}</Text>
-            <CalendarMenu 
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate} 
-                onEventAdded={handleEventAdded}
-            />
-            <CalendarHeader selectedDate={selectedDate} />
-            <CalendarBody events={weekEvents}/>
-        </VStack>
+        <Box h="100%" border="1px solid" borderColor="gray.200" borderRadius="xl" bg="white" overflow="hidden">
+            <VStack h="100%" spacing={0} align="stretch">
+                <Text>Selected Date: {selectedDate.toString()}</Text>
+                <CalendarMenu 
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate} 
+                    onEventAdded={handleEventAdded}
+                />
+                <CalendarHeader selectedDate={selectedDate} />
+                <Box flex="1" minH={0} overflow="hidden">
+                    <CalendarBody events={weekEvents}/>
+                </Box>
+            </VStack>
+        </Box>
     )
 }
