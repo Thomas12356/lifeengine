@@ -120,7 +120,7 @@ export default function CalendarBody({ events}) {
             <HStack align="start" spacing={0} w="100%" h="100%">
                 <VStack w="60px" h="1440px" position="relative"> {/* Container for the time axis */}
                     {hours.map(hour => ( // Loop through hours and render time labels inside the container
-                        <Text key={hour} top={`${hour * 60}px`} position="absolute">
+                        <Text key={hour} top={`${hour * 60}px`} position="absolute" transform={hour === 0 ? "none" : "translateY(-50%)"}>
                             {hour}:00
                         </Text>
                     ))}
