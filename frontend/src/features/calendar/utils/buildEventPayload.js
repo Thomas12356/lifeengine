@@ -2,7 +2,6 @@
 // Replace with localStorage fetch once data loading is implemented
 const eventCategoryMap = {
     "" : "81ae3ffa-85a3-4d3f-914b-eb54646bc6c7", // Default category
-    "Gym" : "1"
 }
 
 export default function buildEventPayload(eventData) {
