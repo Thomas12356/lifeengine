@@ -18,7 +18,7 @@ import AddEventMenu from "./AddEventMenu"
  * AddEventButton renders the popover for adding new events to the calendar.
  * @returns {JSX.Element} A Popover component representing the event addition interface.
  */
-export default function AddEventButton() {
+export default function AddEventButton({ onEventAdded }) {
 
     const [open, setOpen] = useState(false) // Track popover open state
 
@@ -36,7 +36,7 @@ export default function AddEventButton() {
                     <Popover.Content p="4"> {/* Portalled content for better positioning */}
                         <Popover.Arrow />
                         <Popover.Title fontWeight="medium">Add New Event</Popover.Title>   
-                        <AddEventMenu onClose={() => setOpen(false)}/> 
+                        <AddEventMenu onClose={() => setOpen(false)} onEventAdded={onEventAdded}/> 
                     </Popover.Content>
                 </Popover.Positioner>
             </Portal>

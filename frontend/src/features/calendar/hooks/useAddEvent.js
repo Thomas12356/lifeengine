@@ -14,14 +14,20 @@ export default function useAddEvent() {
 
         try {
             const result = await addEvent(eventData)
+            
+            const event = {
+                title : eventData.name,
+                start : eventData.start_time,
+                end : eventData.end_time
+            }
 
             const existingEvents = JSON.parse(
-                localStorage.getItem("events") || []
+                localStorage.getItem("events") || "[]"
             )
 
             localStorage.setItem(
                 "events",
-                JSON.stringify([...existingEvents, formData])
+                JSON.stringify([...existingEvents, event])
             )
 
             return {success : true, event: formData}

@@ -50,9 +50,9 @@ class EventParameter(db.Model):
 
     # ----- Fields -----
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    ideal_energy = db.Column(db.Float, nullable=False)
-    burnout_rate = db.Column(db.Float, nullable=False)
-    priority = db.Column(db.Integer, nullable=False)
+    ideal_energy = db.Column(db.Float, nullable=True)
+    burnout_rate = db.Column(db.Float, nullable=True)
+    priority = db.Column(db.Integer, nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
     def __repr__(self):
@@ -108,3 +108,20 @@ class Event(db.Model):
 
     def __repr__(self):
         return f"<Event: {self.name} | Start: {self.start_time}>"
+    
+    @classmethod
+    def get_by_user_id(cls, user_id):
+        return (cls.query.filter_by(user_id=user_id, is_active=True).all())
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "user_id": str(self.user_id),
+            "event_type_id": str(self.event_type_id) if self.event_type_id else None,
+            "event_parameter_id": str(self.event_parameter_id) if self.event_parameter_id else None,
+            "name": self.name,
+            "start_time": self.start_time.isoformat() if self.start_time else None,
+            "end_time": self.end_time.isoformat() if self.end_time else None,
+            "is_moveable": self.is_moveable,
+            "is_active": self.is_active
+        }

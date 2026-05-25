@@ -2,11 +2,12 @@ import { VStack, Text } from "@chakra-ui/react"
 import CalendarMenu from "@/features/calendar/components/CalendarMenu"
 import CalendarHeader from "@/features/calendar/components/CalendarHeader"
 import CalendarBody from "@/features/calendar/components/CalendarBody"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useWeekEvents } from "@/features/calendar/hooks/useWeekEvents"
+import { fetchEvents } from "./utils/eventsApi"
 
 // Dummy event data for testing
-const allEvents = [
+const allEvents2 = [
     {
         title: "Meeting",
         start: "2026-03-02T14:00:00", // Monday 2:00 PM
@@ -36,18 +37,49 @@ const allEvents = [
         title: "Grocery Shopping",
         start: "2026-03-18T10:00:00", // Saturday 10:00 AM
         end: "2026-03-18T11:00:00"
-    },
+    }
 ]
 
 export default function Calendar() {
 
     const [selectedDate, setSelectedDate] = useState(new Date())
-    const weekEvents = useWeekEvents(allEvents, selectedDate);
+    const [allEvents, setAllEvents] = useState(([]))
+
+    useEffect(() => {
+        async function loadEvents() {
+            try {
+                const events = await fetchEvents(JSON.parse(localStorage.getItem('user'))?.id)
+                setAllEvents(events)
+            } catch (err) {
+                console.log("Failed to fetch users events :", err)
+            }
+        }
+
+        loadEvents()
+    }, [])
+
+    async function handleEventAdded() {
+        try {
+            const userId = JSON.parse(localStorage.getItem("user"))?.id
+            const events = await fetchEvents(userId)
+            setAllEvents(events)
+        } catch (err) {
+            console.log("Failed to refresh user's events:", err)
+        }
+    }
+
+    const weekEvents = useWeekEvents(allEvents, selectedDate)
+
+    //console.log("ALL EVENTS:", allEvents)
 
     return (
         <VStack w="50%">
             <Text>Selected Date: {selectedDate.toString()}</Text>
-            <CalendarMenu selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+            <CalendarMenu 
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate} 
+                onEventAdded={handleEventAdded}
+            />
             <CalendarHeader selectedDate={selectedDate} />
             <CalendarBody events={weekEvents}/>
         </VStack>

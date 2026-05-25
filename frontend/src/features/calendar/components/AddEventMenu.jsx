@@ -4,7 +4,9 @@ import { LuChevronRight } from "react-icons/lu"
 import { useState } from "react"
 import useAddEvent from "../hooks/useAddEvent"
 
-export default function AddEventMenu({ onClose }){
+import buildEventPayload from "../utils/buildEventPayload"
+
+export default function AddEventMenu({ onClose, onEventAdded }){
 
     const[formData, setFormData] = useState({
         eventName : "",
@@ -29,13 +31,15 @@ export default function AddEventMenu({ onClose }){
 
     async function handleSave() {
 
-        const result = await sumbitEvent(formData)
+        const payload = buildEventPayload(formData)
+
+        // DEBUG
+        console.log(payload)
         
-        if (result.success) {
-            console.log("Event saved : ")
-            console.log(formData)
-            onClose()
-        }
+        const result = await sumbitEvent(payload)
+        
+        onEventAdded()
+        onClose()
     }
 
     return (
@@ -134,7 +138,10 @@ export default function AddEventMenu({ onClose }){
                         />
                     </Field.Root>
                     <Field.Root>
-                        <Checkbox.Root>
+                        <Checkbox.Root
+                            value = {formData.isMoveable}
+                            onCheckedChange={(e) => updateField("isMoveable", e.checked)}
+                        >
                             <Checkbox.HiddenInput/>
                             <Checkbox.Label>
                                 Allow auto-rescheduling
