@@ -126,6 +126,9 @@ def create_event_parameters(params):
                 return {"success": False, "error": "ideal_energy must be between 0 and 1", "status_code": 400}
         else:
             ideal_energy = None
+
+        if params["colour"] is not None:
+            colour = params["colour"]
         
         created_at = datetime.now()
 
@@ -133,7 +136,8 @@ def create_event_parameters(params):
             ideal_energy=ideal_energy,
             burnout_rate=burnout_rate,
             priority=priority,
-            created_at=created_at
+            created_at=created_at,
+            colour=colour
         )
 
         db.session.add(new_parameters)

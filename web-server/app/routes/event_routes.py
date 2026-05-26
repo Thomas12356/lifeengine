@@ -4,7 +4,7 @@ from app.services import event_services
 event_blueprint = Blueprint('event',__name__)
 
 REQUIRED_EVENT_FIELDS = ['user_id', 'name', 'start_time', 'end_time', 'parameters']
-REQUIRED_EVENT_PARAMETER_FIELDS = ["ideal_energy", "burnout_rate", "priority"]
+REQUIRED_EVENT_PARAMETER_FIELDS = ["ideal_energy", "burnout_rate", "priority", "colour"]
 REQUIRED_EVENT_TYPE_FIELDS = ["user_id", "event_parameter_id", "name"]
 REQUIRED_GET_EVENTS_FIELDS = ["user_id"]
 
