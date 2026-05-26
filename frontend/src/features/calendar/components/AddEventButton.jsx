@@ -34,6 +34,9 @@ export default function AddEventButton({ onEventAdded }) {
                     bg="blue.500"
                     color="white"
                     borderRadius="lg"
+                    _hover={{
+                        filter: "brightness(0.92)",
+                    }}
                 >
                     Add Event
                     <LuPlus />
