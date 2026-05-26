@@ -10,10 +10,11 @@ def create_event(
         user_id_str: str,
         name, start_time_str: str,
         end_time_str: str,
+        colour: str,
         event_type_id_str: str = None,
         event_parameters: dict = None,
         is_moveable: bool = False,
-        is_active: bool = True
+        is_active: bool = True,
     ):
     """
     Creates an event and validates data format, saves to db.
@@ -52,7 +53,9 @@ def create_event(
                            start_time=start_dt,
                            end_time=end_dt,
                            is_moveable=is_moveable,
-                           is_active=is_active)
+                           is_active=is_active,
+                           colour=colour
+                        )
         
         db.session.add(new_event)
         db.session.commit()
@@ -127,9 +130,6 @@ def create_event_parameters(params):
         else:
             ideal_energy = None
 
-        if params["colour"] is not None:
-            colour = params["colour"]
-        
         created_at = datetime.now()
 
         new_parameters =  EventParameter(
@@ -137,7 +137,6 @@ def create_event_parameters(params):
             burnout_rate=burnout_rate,
             priority=priority,
             created_at=created_at,
-            colour=colour
         )
 
         db.session.add(new_parameters)

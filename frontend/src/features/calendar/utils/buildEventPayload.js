@@ -22,11 +22,11 @@ export default function buildEventPayload(eventData) {
         end_time : localEnd.toISOString(), // Convert local date to UTC
         event_type_id : eventCategoryID,
         is_moveable : eventData.isMoveable,
+        colour : eventData.colour,
         parameters : {
             ideal_energy : eventData.idealEnergy,
             priority : eventData.priority,
-            burnout_rate : eventData.burnoutRate,
-            colour : eventData.colour
+            burnout_rate : eventData.burnoutRate
         }
     }
 
