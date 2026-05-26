@@ -64,7 +64,7 @@ const EventLayer = ({ events, onEventDelete }) => {
                 const { top, height, left, width } = calculateEventPosition(event)
                 return (
                     <Menu.Root key={index}>
-                        <Menu.ContextTrigger asChild>
+                        <Menu.Trigger asChild>
                             <Box
                                 position="absolute" // Position each event absolutely within the calendar body
                                 top={`${top}%`} // Position from the top based on event start time
@@ -78,6 +78,11 @@ const EventLayer = ({ events, onEventDelete }) => {
                                 borderRadius={"md"}
                                 boxShadow={"md"}
                                 overflow="hidden"
+                                cursor="pointer"
+                                transition="filter 0.15s ease"
+                                _hover={{
+                                    filter: "brightness(0.92)",
+                                }}
                             >
                                 <Text fontWeight="semibold" noOfLines={1}>
                                     {event.title}
@@ -86,11 +91,19 @@ const EventLayer = ({ events, onEventDelete }) => {
                                     {formatEventTime(event.start)} - {formatEventTime(event.end)} {/* Slice ISO strings to only contain HH:MM */}
                                 </Text>
                             </Box>
-                        </Menu.ContextTrigger>
+                        </Menu.Trigger>
 
                         <Menu.Positioner>
                             <Menu.Content>
-                                <Menu.Item onClick={() => onEventDelete(event.id)}>
+                                <Menu.Item
+                                    color={"red"}
+                                    cursor="pointer"
+                                    _hover={{
+                                        bg: "red.50",
+                                        bg: "gray.200",
+                                    }}
+                                    onClick={() => onEventDelete(event.id)}
+                                >
                                     Delete event
                                 </Menu.Item>
                             </Menu.Content>
