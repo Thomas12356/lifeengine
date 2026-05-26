@@ -95,6 +95,10 @@ export default function AddEventMenu({ onClose, onEventAdded }){
                     allowClear={true}
                 />
             </Field.Root>
+            <Field.Root>
+                <Field.Label>Label Colour</Field.Label>
+                <ColourPicker value={formData.colour} onChange={(value) => updateField("colour", value)}/>
+            </Field.Root>
             <Collapsible.Root>
                 <Collapsible.Trigger>
                     <Collapsible.Indicator>
@@ -140,9 +144,6 @@ export default function AddEventMenu({ onClose, onEventAdded }){
                                 placeholder="Default"
                                 allowClear={true}
                             />
-                        </Field.Root>
-                        <Field.Root>
-                            <ColourPicker value={formData.colour} onChange={(value) => updateField("colour", value)}/>
                         </Field.Root>
                         <Field.Root>
                             <Checkbox.Root
