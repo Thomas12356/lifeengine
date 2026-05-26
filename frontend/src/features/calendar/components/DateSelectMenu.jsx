@@ -12,7 +12,7 @@
 /* --- IMPORTS ---*/
 import { DatePicker } from '@ark-ui/react/date-picker'
 import { Portal } from '@ark-ui/react/portal'
-import { Text, HStack, Box } from '@chakra-ui/react'
+import { Text, HStack, Box, Button } from '@chakra-ui/react'
 import { LuChevronDown, LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 import { useArkCalendar } from "../hooks/useArkCalendar.js"
 
@@ -55,6 +55,7 @@ export default function DateSelectMenu({ selectedDate, setSelectedDate }) {
               padding: "12px",
               boxShadow: "0 12px 30px rgba(0, 0, 0, 0.12)",
               zIndex: 50,
+              userSelect: "none"
             }}
           >
             <DatePicker.View view="day">
@@ -124,6 +125,21 @@ export default function DateSelectMenu({ selectedDate, setSelectedDate }) {
                         ))}
                       </DatePicker.TableBody>
                     </DatePicker.Table>
+                    <Button
+                      bg={"white"}
+                      color={"black"}
+                      w="100%"
+                      _hover={{
+                        bg: "gray.200",
+                        color: "gray.800",
+                      }}
+                      _active={{
+                        bg: "gray.300",
+                      }}
+                      onClick={() => datePicker.selectToday()}
+                    >
+                      Today
+                    </Button>
                   </>
                 )}
               </DatePicker.Context>

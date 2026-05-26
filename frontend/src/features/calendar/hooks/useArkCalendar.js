@@ -25,7 +25,7 @@ export function useArkCalendar(selectedDate, setSelectedDate) {
     const handleDateChange = (date) => {
         const newDate = date.value[0]; // Fetch only the first element of the Ark UI date array, since we're using single selection mode
         if (newDate) {
-            setSelectedDate(newDate.toDate('GMT')); // NOTE : Could allow dynamic timezone selection based on users location, or preferences
+            setSelectedDate(newDate.toDate());
         }
     };
 
