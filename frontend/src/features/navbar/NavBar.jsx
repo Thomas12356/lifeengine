@@ -53,11 +53,11 @@ const navBarBoxStyles = {
 const navButtons = [
     { to: "/home", Icon: GoHomeFill, text: "Home" },
     { to: "/calendar", Icon: FaCalendar, text: "Calendar" },
-    { to: "/habits", Icon: FaBeer, text: "Habits" },
-    { to: "/insights", Icon: FaBeer, text: "Insights" },
+    //{ to: "/habits", Icon: FaBeer, text: "Habits" },
+    //{ to: "/insights", Icon: FaBeer, text: "Insights" },
     { to: "/agent", Icon: RiChatAiFill, text: "Agent" },
-    { to: "/profile", Icon: FaUser, text: "Profile" },
-    { to: "/social", Icon: FaBeer, text: "Social" },
+    { to: "/profile", Icon: FaUser, text: "Profile" }
+    //{ to: "/social", Icon: FaBeer, text: "Social" },
 ];
 
 const IconNavButtons = [
