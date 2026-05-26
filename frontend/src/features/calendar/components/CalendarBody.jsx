@@ -10,7 +10,7 @@
  */
 
 /* --- IMPORTS --- */
-import { HStack, VStack, Text, Box } from "@chakra-ui/react"
+import { HStack, VStack, Text, Box, Menu } from "@chakra-ui/react"
 import { calculateEventPosition } from "../utils/dateHelpers.js"
 import { useRef, useEffect } from "react"
 import { formatEventTime } from "../utils/dateHelpers.js"
@@ -63,28 +63,40 @@ const EventLayer = ({ events }) => {
             {events.map((event, index) => { // Loop through events and calculate their positions
                 const { top, height, left, width } = calculateEventPosition(event)
                 return (
-                    <Box
-                        key={index}
-                        position="absolute" // Position each event absolutely within the calendar body
-                        top={`${top}%`} // Position from the top based on event start time
-                        left={`${left}%`} // Position from the left based on event weekday
-                        w={`${width}%`}
-                        h={`${height}%`}
-                        bg="blue.500"
-                        color="white"
-                        px={2}
-                        py={1}
-                        borderRadius={"md"}
-                        boxShadow={"md"}
-                        overflow="hidden"
-                    >
-                        <Text fontWeight="semibold" noOfLines={1}>
-                            {event.title}
-                        </Text>
-                        <Text noOfLines={1}>
-                            {formatEventTime(event.start)} - {formatEventTime(event.end)} {/* Slice ISO strings to only contain HH:MM */}
-                        </Text>
-                    </Box>
+                    <Menu.Root>
+                        <Menu.ContextTrigger asChild>
+                            <Box
+                                key={index}
+                                position="absolute" // Position each event absolutely within the calendar body
+                                top={`${top}%`} // Position from the top based on event start time
+                                left={`${left}%`} // Position from the left based on event weekday
+                                w={`${width}%`}
+                                h={`${height}%`}
+                                bg="blue.500"
+                                color="white"
+                                px={2}
+                                py={1}
+                                borderRadius={"md"}
+                                boxShadow={"md"}
+                                overflow="hidden"
+                            >
+                                <Text fontWeight="semibold" noOfLines={1}>
+                                    {event.title}
+                                </Text>
+                                <Text noOfLines={1}>
+                                    {formatEventTime(event.start)} - {formatEventTime(event.end)} {/* Slice ISO strings to only contain HH:MM */}
+                                </Text>
+                            </Box>
+                        </Menu.ContextTrigger>
+
+                        <Menu.Positioner>
+                            <Menu.Content>
+                                <Menu.Item>
+                                    Delete event
+                                </Menu.Item>
+                            </Menu.Content>
+                        </Menu.Positioner>
+                    </Menu.Root>
                 )
             })}
         </Box>
