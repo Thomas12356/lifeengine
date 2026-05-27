@@ -11,7 +11,7 @@
 
 from dataclasses import dataclass
 from .models import Event, TimeSlot
-from services.config import SCHEDULE_RESOLUTION, SLOTS_PER_DAY
+from services.config import SCHEDULE_RESOLUTION, SLOTS_PER_DAY, WAKE_UP_SLOT, BED_SLOT
 import random
 
 class Schedule:
@@ -24,16 +24,27 @@ class Schedule:
         self.total_fitness = 0.0 # Combined fitness score (could be a weighted sum of match_fitness and simulation_score)
         self.unscheduled_events = 0 # Track the number of unscheduled events, value is used to penalise schedules that fail to contain all events
         self.energy_landscape = energy_landscape
+        self.positive_yield_total = 0.0
+        self.negative_energy_penalty_total = 0.0
+        self.sleep_penalty_total = 0.0
+        self.fatigue_drain_total = 0.0
 
     # Given an event and start slot index, return True if the event can be scheduled at that index, False otherwise
     def check_availability(self, event, start_slot):
         if start_slot + event.duration_slots > SLOTS_PER_DAY:
             return False # Event cannot be scheduled as it exceeds the day boundary
-        else:
-            for slot in range(event.duration_slots): # Iterate over the duration of the event
-                if self.timeslots[start_slot + slot] is not None:
-                    return False # Event cannot be scheduled as it overlaps with another event
-            return True
+        
+        if event.is_moveable:
+            if start_slot < WAKE_UP_SLOT:
+                return False
+            
+            if start_slot + event.duration_slots > BED_SLOT:
+                return False
+
+        for slot in range(event.duration_slots): # Iterate over the duration of the event
+            if self.timeslots[start_slot + slot] is not None:
+                return False # Event cannot be scheduled as it overlaps with another event
+        return True
 
     # Given an event and start slot, attempt to insert the event into the schedule at the specified index
     # Return True if the event was successfully inserted, False otherwise
@@ -51,9 +62,14 @@ class Schedule:
     def visualise(self):
         print(f"""
               Candidate Schedule {self.id}
-              (Match fitness: {self.match_fitness})
-              (Simulation score: {self.simulation_score})
-              (Total Fitness: {self.total_fitness}):
+              (Match fitness: {self.match_fitness}
+              (Simulation score: {self.simulation_score}
+              (Total Fitness: {self.total_fitness}
+              (Positive Yield) : {self.positive_yield_total}
+              (Negative energy penalty) : {self.negative_energy_penalty_total}
+              (Sleep penalty) : {self.sleep_penalty_total}
+              (Fatigue Drain total) : {self.fatigue_drain_total}
+              (Unscheduled Events) : {self.unscheduled_events}
         """)
         input("Press ENTER to view schedule : ")
         i = 0
@@ -75,6 +91,10 @@ class Schedule:
         self.match_fitness = 0.0
         self.simulation_score = 0.0
         self.total_fitness = 0.0
+        self.positive_yield_total = 0.0
+        self.negative_energy_penalty_total = 0.0
+        self.sleep_penalty_total = 0.0
+        self.fatigue_drain_total = 0.0
 
     # Scan all timeslots to check for duplicated and fragemented events produced from crossover
     # Once checked, clear invalid events and attempt to rebuild a valid schedule

@@ -17,7 +17,7 @@
 
 """
 import math
-from services.config import SCHEDULE_RESOLUTION, SLOT_SIZE
+from services.config import SCHEDULE_RESOLUTION, SLOT_SIZE, WAKE_UP_SLOT, BED_SLOT
 
 WAKE_UP_TIME = 7
 BED_TIME = 23
@@ -71,8 +71,11 @@ class Evaluator:
         s = S
 
         SLOT_HOURS = SLOT_SIZE / 60
-        WAKE_UP_SLOT = (WAKE_UP_TIME * 60) // SLOT_SIZE
-        BED_SLOT = (BED_TIME * 60) // SLOT_SIZE
+        
+        positive_yield_total = 0.0
+        negative_energy_penalty_total = 0.0
+        sleep_penalty_total = 0.0
+        fatigue_drain_total = 0.0
 
         # ---- SIMULATION LOOP ----
         for i in range(SCHEDULE_RESOLUTION):
@@ -88,10 +91,13 @@ class Evaluator:
                 if clock_slot < BED_SLOT and clock_slot >= WAKE_UP_SLOT: # Only apply yield if the event is scheduled during waking hours
                     if effective_energy < 0: # Check if effective energy is below 0
                         task_yield = (IMPORTANCE * FATIGUE_MODIFIER) + (effective_energy * 0.5) * SLOT_HOURS # Apply a heavy penatly to task yield
+                        negative_energy_penalty_total += task_yield
                     else:
-                        task_yield = (IMPORTANCE * math.pow(effective_energy, K)) * SLOT_HOURS # 
+                        task_yield = (IMPORTANCE * math.pow(effective_energy, K)) * SLOT_HOURS #
+                        positive_yield_total += task_yield
                 else:
                     task_yield = -500 * SLOT_HOURS # Heavy penalty for scheduling events during sleep hours
+                    sleep_penalty_total += task_yield
 
                 consecutive_active_slots += 1 # Increment consecutive hours of work
                 consecutive_active_hours = consecutive_active_slots * SLOT_HOURS
@@ -103,6 +109,8 @@ class Evaluator:
                 ) # Calculate fatigue drain using event impact and burnout rate (alpha)
                 residual_fatigue += drain # Update residual fatigue
                 total_fitness += task_yield # Update total schedule fitness
+
+                fatigue_drain_total += drain
                 candidate.timeslots[clock_slot].effective_energy = effective_energy # Update effective energy
 
             else: # If no event is scheduled
@@ -119,6 +127,11 @@ class Evaluator:
             s = calculate_s(s) # Update S value 
         
         candidate.simulation_score = total_fitness # Store overall simulation score
+
+        candidate.positive_yield_total = positive_yield_total
+        candidate.negative_energy_penalty_total = negative_energy_penalty_total
+        candidate.sleep_penalty_total = sleep_penalty_total
+        candidate.fatigue_drain_total = fatigue_drain_total
 
     # Given a candidate Schedule object, fetch the individual and calculate an energy match & simulation fitness
     def evaluate_individual(self, candidate):
