@@ -47,10 +47,10 @@ def get_baseline(t, phi1, phi2):
     return normalised_energy, focus_baseline
 
 # Generate an array of baseline values for each hour of the day
-def get_baseline_array(phi1, phi2):
+def get_baseline_array(phi1, phi2, resolution):
     energy_baseline = []
     focus_baseline = []
-    for t in range(24):
+    for t in range(resolution):
         energy, focus = get_baseline(t, phi1, phi2)
         energy_baseline.append(energy)
         focus_baseline.append(focus)
