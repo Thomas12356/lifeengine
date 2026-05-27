@@ -17,6 +17,7 @@ class Event:
     EventType: EventType
     start_time: None
     duration: None
+    is_moveable : bool
 
 @dataclass
 class TimeSlot:

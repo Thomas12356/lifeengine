@@ -94,8 +94,8 @@ class SchedulerGA:
             random.shuffle(candidate.events) # Shuffle list of events to be scheduled to increase diversity
 
             # NOTE: Fixed events could be determined by a flag rather than the presence of a start time
-            fixed_events = [event for event in candidate.events if event.start_time is not None] # Extract events that cannot move 
-            flexible_events = [event for event in candidate.events if event.start_time is None]
+            fixed_events = [event for event in candidate.events if not event.is_moveable] # Extract events that cannot move 
+            flexible_events = [event for event in candidate.events if event.is_moveable]
 
             # NOTE : We may want to expand this so some events can be carried over when day-to-day scheduling is implemented
             unscheduled_count = 0 # Track number of events that could not be scheduled so they can be penalised 
@@ -171,7 +171,7 @@ class SchedulerGA:
         
         # Build list of scheduled flexible events
         # NOTE : This line is re-used in swap_mutation, it could be made a method of Schedule (e.g Schedule.get_flexible_events)
-        flexible_events = list(set(timeslot.event for timeslot in candidate.timeslots if timeslot is not None and timeslot.event.start_time is None))       
+        flexible_events = list(set(timeslot.event for timeslot in candidate.timeslots if timeslot is not None and timeslot.event.is_moveable))       
 
         if len(flexible_events) == 0: # No flexible events present so mutation not possible
             return
@@ -189,7 +189,7 @@ class SchedulerGA:
     def swap_mutation(self, candidate):
         
         # Build list of scheduled flexible events
-        flexible_events = list(set(timeslot.event for timeslot in candidate.timeslots if timeslot is not None and timeslot.event.start_time is None))
+        flexible_events = list(set(timeslot.event for timeslot in candidate.timeslots if timeslot is not None and timeslot.event.is_moveable))
 
         if len(flexible_events) < 2: # If there is not enough elements to perform a swap, abort the mutation
             return

@@ -131,7 +131,7 @@ class Schedule:
             is_fragmented = False # Initialise flag to exit loop
 
             # Check temporal integrity (event start at the correct time)
-            if event.start_time is not None: # Check if event has a fixed start time
+            if not event.is_moveable: # Check if event has a fixed start time
                 if event.start_time != i: # If there is a discrepancy between start times, event has been fragemented
                     is_fragmented = True
 
@@ -177,8 +177,8 @@ class Schedule:
             if event.event_id not in scheduled_events and event.event_id not in fragmented_events:
                 unscheduled_events.append(event)
 
-        fixed_events = [event for event in unscheduled_events if event.start_time is not None]
-        flexible_events = [event for event in unscheduled_events if event.start_time is None]
+        fixed_events = [event for event in unscheduled_events if not event.is_moveable]
+        flexible_events = [event for event in unscheduled_events if event.is_moveable]
 
         # First attempt to re-insert fixed events, same logic as SchedulerGA.initalise_population()
         for event in fixed_events:
