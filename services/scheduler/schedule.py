@@ -14,7 +14,9 @@ from .models import Event, TimeSlot
 import random
 
 # NOTE : Abstract to global constants file
-SCHEDULE_RESOLUTION = 24 # 24 timeslots per day
+SLOT_SIZE = 60 # 1-hour time slots 
+SLOTS_PER_DAY = (24 * 60) // SLOT_SIZE
+SCHEDULE_RESOLUTION = SLOTS_PER_DAY
 
 class Schedule:
     def __init__(self, id, events, energy_landscape):
@@ -27,23 +29,24 @@ class Schedule:
         self.unscheduled_events = 0 # Track the number of unscheduled events, value is used to penalise schedules that fail to contain all events
         self.energy_landscape = energy_landscape
 
-    # Given an event and start time, return True if the event can be scheduled at that time, False otherwise
-    def check_availability(self, event, start_time):
-        if start_time + event.duration > 24:
+    # Given an event and start slot index, return True if the event can be scheduled at that index, False otherwise
+    def check_availability(self, event, start_slot):
+        if start_slot + event.slot_duration > SLOTS_PER_DAY:
             return False # Event cannot be scheduled as it exceeds the day boundary
         else:
-            for hour in range(event.duration): # Iterate over the duration of the event
-                if self.timeslots[start_time + hour] is not None:
+            for slot in range(event.slot_duration): # Iterate over the duration of the event
+                if self.timeslots[start_slot + slot] is not None:
                     return False # Event cannot be scheduled as it overlaps with another event
             return True
 
-    # Given an event and start time, attempt to insert the event into the schedule at the specified time
+    # Given an event and start slot, attempt to insert the event into the schedule at the specified index
     # Return True if the event was successfully inserted, False otherwise
-    def insert_event(self, event, start_time):
-        if self.check_availability(event, start_time):
-            for hour in range(event.duration):
-                predicted_energy, _ = self.energy_landscape[start_time + hour]
-                self.timeslots[start_time + hour] = TimeSlot(hour=start_time + hour,event=event, predicted_energy=predicted_energy)
+    def insert_event(self, event, start_slot):
+        if self.check_availability(event, start_slot):
+            for slot in range(event.slot_duration):
+                slot_index = start_slot + slot
+                predicted_energy, _ = self.energy_landscape[slot_index]
+                self.timeslots[slot_index] = TimeSlot(slot_index=slot_index ,event=event, predicted_energy=predicted_energy)
             return True
         else:
             return False
@@ -61,13 +64,13 @@ class Schedule:
         for timeslot in self.timeslots:
             if timeslot is not None:
                 print(f"""
-                      Hour {timeslot.hour}: {timeslot.event.name},
+                      Slot {timeslot.slot_index}: {timeslot.event.name},
                       Predicted Energy: {timeslot.predicted_energy},
                       Ideal Energy: {timeslot.event.EventType.ideal_energy},
                       Effective Energy: {timeslot.effective_energy},
                 """)
             else:
-                print(f"Hour {i}: Free")
+                print(f"Slot {i}: Free")
             i += 1
         print("\n")
 
@@ -113,7 +116,7 @@ class Schedule:
                         break # Empty timeslot or new event found, break out of clearing loop
             else: # Event has not been seen yet
                 seen.add(event.event_id) # Update set
-                i += event.duration # Jump to end of event block
+                i += event.slot_duration # Jump to end of event block
 
         # STEP 2. Check for fragmented events and clear them
         # When a fragmented event is found, we clear all occupied timeslots by that event and add it to a list of events to be re inserted later
@@ -127,12 +130,12 @@ class Schedule:
                 continue # If not increment pointer and move jump back to top of loop
 
             event = slot.event # Event scheduled in current timeslot
-            duration = event.duration
+            duration = event.slot_duration
             is_fragmented = False # Initialise flag to exit loop
 
             # Check temporal integrity (event start at the correct time)
-            if not event.is_moveable: # Check if event has a fixed start time
-                if event.start_time != i: # If there is a discrepancy between start times, event has been fragemented
+            if not event.is_moveable: # Check if event is reschedulable
+                if event.start_slot != i: # If there is a discrepancy between start times, event has been fragemented
                     is_fragmented = True
 
             # NOTE : We can instantly tell if a fixed event has been fragemented by comparing correct and actual start times
@@ -182,7 +185,7 @@ class Schedule:
 
         # First attempt to re-insert fixed events, same logic as SchedulerGA.initalise_population()
         for event in fixed_events:
-            success = self.insert_event(event, event.start_time)
+            success = self.insert_event(event, event.start_slot)
             if not success:
                 self.unscheduled_events += 1
         
@@ -192,7 +195,7 @@ class Schedule:
             attempts = 0
             while not assigned and attempts < 100:
                 attempts += 1
-                slot = random.randint(0, 23)
+                slot = random.randint(0, SCHEDULE_RESOLUTION - event.slot_duration)
                 success = self.insert_event(event, slot)
                 if success:
                     assigned = True
@@ -212,12 +215,12 @@ class Schedule:
     # NOTE : This function could possibly be re-used in self.repair(), we should review this
     # Given an event ID, linearly search self.timeslots to find the hour the event first appears in
     # NOTE : This should not be used to fetch the correct start time of a fixed event
-    def find_start_time(self, event_id):
+    def find_start_slot(self, event_id):
         i = 0
         while i < len(self.timeslots): # Iterate over all timeslots
             slot = self.timeslots[i]
             if slot is not None and slot.event.event_id == event_id: # Check if IDs match
-                return slot.hour # If so, return the current timeslots hour
+                return slot.slot_index # If so, return the current timeslots index
             i += 1
         return None # Event not in schedule, so return None
             
