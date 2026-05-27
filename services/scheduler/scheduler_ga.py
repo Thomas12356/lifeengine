@@ -55,6 +55,7 @@
 # Class imports
 from services.evaluator import Evaluator
 from .schedule import Schedule
+from services.config import SCHEDULE_RESOLUTION, SLOT_SIZE
 
 # Library imports
 import random
@@ -71,10 +72,6 @@ WAKE_UP_TIME = 7 # 7am
 SLEEP_DURATION = 8 # User-reported ideal sleep duration
 #BED_TIME = (WAKE_UP_TIME + 24 - SLEEP_DURATION) % 24 # NOTE : This is not being used, could be removed
 #SCHEDULE_RESOLUTION = 24 # Number of timeslots to divide the day into (24 = 1 timeslot per hour)
-
-SLOT_SIZE = 60 # time slots size in minutes
-SLOTS_PER_DAY = 24 * 60 // SLOT_SIZE
-SCHEDULE_RESOLUTION = SLOTS_PER_DAY
 
 SHIFT_RANGE_HOURS = 2
 SHIFT_RANGE = (SHIFT_RANGE_HOURS * 60) // SLOT_SIZE
@@ -116,7 +113,7 @@ class SchedulerGA:
                 attempts = 0
                 while not assigned and attempts < 100: # Randomly select slots until limit is reached
                     attempts += 1
-                    slot = random.randint(0, SCHEDULE_RESOLUTION - event.slot_duration) # Randomly select a slot NOTE : We could limit this to not schedule <WAKEUP & >BEDTIME
+                    slot = random.randint(0, SCHEDULE_RESOLUTION - event.duration_slots) # Randomly select a slot NOTE : We could limit this to not schedule <WAKEUP & >BEDTIME
 
                     success = candidate.insert_event(event, slot) # Attempt to insert into time slot
                     if success:
@@ -185,7 +182,7 @@ class SchedulerGA:
 
         old_start = candidate.find_start_slot(event.event_id) # Find the slot in which the event is scheduled to start
         shift = random.randint(-shift_range, shift_range) # Randomly select a value within the shift range to shift the start time by
-        new_start = max(0, min(SCHEDULE_RESOLUTION - event.slot_duration, old_start + shift)) # Calculate and normalise the shifted start time so it does not exceed the 24 hour time period
+        new_start = max(0, min(SCHEDULE_RESOLUTION - event.duration_slots, old_start + shift)) # Calculate and normalise the shifted start time so it does not exceed the 24 hour time period
 
         candidate.clear_event(event.event_id) # Remove all instances of the event
         candidate.insert_event(event, new_start) # Attempt to re-insert at the shifted start time

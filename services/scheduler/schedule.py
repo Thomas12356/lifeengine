@@ -11,12 +11,8 @@
 
 from dataclasses import dataclass
 from .models import Event, TimeSlot
+from services.config import SCHEDULE_RESOLUTION, SLOTS_PER_DAY
 import random
-
-# NOTE : Abstract to global constants file
-SLOT_SIZE = 60 # 1-hour time slots 
-SLOTS_PER_DAY = (24 * 60) // SLOT_SIZE
-SCHEDULE_RESOLUTION = SLOTS_PER_DAY
 
 class Schedule:
     def __init__(self, id, events, energy_landscape):
@@ -31,10 +27,10 @@ class Schedule:
 
     # Given an event and start slot index, return True if the event can be scheduled at that index, False otherwise
     def check_availability(self, event, start_slot):
-        if start_slot + event.slot_duration > SLOTS_PER_DAY:
+        if start_slot + event.duration_slots > SLOTS_PER_DAY:
             return False # Event cannot be scheduled as it exceeds the day boundary
         else:
-            for slot in range(event.slot_duration): # Iterate over the duration of the event
+            for slot in range(event.duration_slots): # Iterate over the duration of the event
                 if self.timeslots[start_slot + slot] is not None:
                     return False # Event cannot be scheduled as it overlaps with another event
             return True
@@ -43,7 +39,7 @@ class Schedule:
     # Return True if the event was successfully inserted, False otherwise
     def insert_event(self, event, start_slot):
         if self.check_availability(event, start_slot):
-            for slot in range(event.slot_duration):
+            for slot in range(event.duration_slots):
                 slot_index = start_slot + slot
                 predicted_energy, _ = self.energy_landscape[slot_index]
                 self.timeslots[slot_index] = TimeSlot(slot_index=slot_index ,event=event, predicted_energy=predicted_energy)
@@ -116,7 +112,7 @@ class Schedule:
                         break # Empty timeslot or new event found, break out of clearing loop
             else: # Event has not been seen yet
                 seen.add(event.event_id) # Update set
-                i += event.slot_duration # Jump to end of event block
+                i += event.duration_slots # Jump to end of event block
 
         # STEP 2. Check for fragmented events and clear them
         # When a fragmented event is found, we clear all occupied timeslots by that event and add it to a list of events to be re inserted later
@@ -130,7 +126,7 @@ class Schedule:
                 continue # If not increment pointer and move jump back to top of loop
 
             event = slot.event # Event scheduled in current timeslot
-            duration = event.slot_duration
+            duration = event.duration_slots
             is_fragmented = False # Initialise flag to exit loop
 
             # Check temporal integrity (event start at the correct time)
@@ -195,7 +191,7 @@ class Schedule:
             attempts = 0
             while not assigned and attempts < 100:
                 attempts += 1
-                slot = random.randint(0, SCHEDULE_RESOLUTION - event.slot_duration)
+                slot = random.randint(0, SCHEDULE_RESOLUTION - event.duration_slots)
                 success = self.insert_event(event, slot)
                 if success:
                     assigned = True

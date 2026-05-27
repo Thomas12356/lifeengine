@@ -1,0 +1,3 @@
+SLOT_SIZE = 30 # time slots size in minutes
+SLOTS_PER_DAY = 24 * 60 // SLOT_SIZE
+SCHEDULE_RESOLUTION = SLOTS_PER_DAY
