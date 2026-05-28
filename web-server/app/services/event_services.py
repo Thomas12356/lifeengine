@@ -99,11 +99,6 @@ def delete_event(user_id_str : str, event_id_str : str):
         db.session.rollback()
         return {"success": False, "error": "Internal database error.", "status_code": 500}
 
-
-
-
-        return {"success": False, "error": f"Internal database error : {str(e)}", "status_code": 500}
-
 def create_event_parameters(params):
     """
     Creates a record of event parameters, validates data and saves to db.
@@ -151,13 +146,19 @@ def create_event_parameters(params):
         db.session.rollback()
         return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
 
-def create_event_type(user_id_str : str, event_params_id_str : str, name : str):
+def create_event_type(user_id_str : str, parameters : dict, name : str):
     """
     Creates a new event type and saves to db.
     """
     try:
         user_uuid = uuid.UUID(user_id_str)
-        event_params_uui = uuid.UUID(event_params_id_str)
+
+        result = create_event_parameters(params=parameters)
+
+        if not result["success"]:
+            return {"success": False, "error": f"Failed to create event type parameters.", "status_code": 400}
+
+        event_params_uui = result["event_parameters_id"]
 
         created_at = datetime.now()
 
