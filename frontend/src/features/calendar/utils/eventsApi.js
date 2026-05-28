@@ -37,3 +37,9 @@ export async function deleteEvent(userID, eventID) {
     return response
 
 }
+
+export async function createEventType(eventTypeData) {
+    const response = await api.post("/event/createeventtype", eventTypeData)
+
+    return response.data
+}

@@ -4,6 +4,7 @@ import ColourPicker from "@ui-components/ColourPicker"
 import { LuChevronRight } from "react-icons/lu"
 import { useState } from "react"
 //import useAddEvent from "../hooks/useAddEvent"
+import { createEventType } from "../utils/eventsApi"
 
 //import buildEventPayload from "../utils/buildEventPayload"
 
@@ -15,7 +16,7 @@ export default function CreateEventMenu({ onClose, onEventTypeCreated }){
         priority : "",
         burnoutRate : "",
         isMoveable : false,
-        color : ""
+        colour : ""
     })
 
     function updateField(field, value) {
@@ -26,9 +27,28 @@ export default function CreateEventMenu({ onClose, onEventTypeCreated }){
     }
 
     async function handleSubmit() {
-        console.log(formData)
-        
-        onClose()
+        try {
+            
+            const user = JSON.parse(localStorage.getItem("user"))
+
+            const eventTypeData = {
+                user_id : user.id,
+                name : formData.eventTypeName,
+                colour : formData.colour,   
+                parameters : {
+                    ideal_energy : formData.idealEnergy,
+                    burnout_rate : formData.burnoutRate,
+                    priority : formData.priority,     
+                }
+            }
+
+            console.log(eventTypeData)
+
+            const createdEventType = await createEventType(eventTypeData)
+            onClose()
+        } catch (err) {
+            console.error("Failed to create event type.", {err})
+        }
     }
 
     return (
