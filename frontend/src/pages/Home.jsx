@@ -15,11 +15,12 @@ import { Box, HStack, Spacer, Stack, VStack } from "@chakra-ui/react";
 /* ---------- Imports Custom Layout Components ----------*/
 import ResourceSelectorHeading from "@features/resource-selector-heading/ResourceSelectorHeading";
 import NextEvent from "@features/next-event-widget/NextEventWidget";
+import AgentWidget from "@features/agent-widget/AgentWidget";
 
 export default function Home() {
     const user = JSON.parse(localStorage.getItem('user'));
     return (
-        <Box width="100%" px={{ base: 3, md: 5 }} py={4}>
+        <Box width="100%" px={{ base: 3, lg: 5 }} py={4}>
             <Stack
                 direction={{ base: "column", lg: "row" }}
                 width="100%"
@@ -29,20 +30,21 @@ export default function Home() {
             >
                 {/* Left Column */}
                 <VStack
-                    width={{ base: "100%", lg: "55%" }}
+                    width={{ base: "100%", lg: "50%" }}
                     align="stretch"
                     gap={5}
                 >
-                    <NextEvent />
+                    <AgentWidget />
                 </VStack>
 
                 {/* Right Column */}
                 <VStack
-                    width={{ base: "100%", lg: "40%" }}
+                    width={{ base: "100%", lg: "50%" }}
                     align="stretch"
                     gap={5}
                 >
                     {/* Add future widgets/components here */}
+                    <NextEvent />
                 </VStack>
             </Stack>
         </Box>
