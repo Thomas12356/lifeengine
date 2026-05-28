@@ -1,3 +1,5 @@
+// TODO redundant code
+
 import { WidgetBox } from "@ui-components/WidgetBox";
 /**
  * Resource Selector Heading Layout

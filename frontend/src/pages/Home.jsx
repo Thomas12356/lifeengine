@@ -33,7 +33,6 @@ export default function Home() {
                     align="stretch"
                     gap={5}
                 >
-                    <ResourceSelectorHeading />
                     <NextEvent />
                 </VStack>
 
