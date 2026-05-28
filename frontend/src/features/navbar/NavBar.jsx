@@ -12,10 +12,10 @@ import { VerticalDivider } from "@/components/ui-components/Dividers";
 {/* Temporary Dev Imports */}
 import { FaBeer } from "react-icons/fa";
 import { IoIosMenu } from "react-icons/io";
-import { GoHomeFill } from "react-icons/go";
-import { FaCalendar } from "react-icons/fa6";
+import { RiHome2Fill } from "react-icons/ri";
+import { RiCalendarFill } from "react-icons/ri";
 import { RiChatAiFill } from "react-icons/ri";
-import { FaUser } from "react-icons/fa";
+import { RiUser3Fill } from "react-icons/ri";
 import { IoNotifications } from "react-icons/io5";
 
 import LogoutButton from "@/features/auth/components/LogoutButton"
@@ -26,12 +26,13 @@ import LogoutButton from "@/features/auth/components/LogoutButton"
 const navButtonLinkStyles = {
     display: "flex",
     alignItems:"center",
+    minHeight: "32px"
 }
 const iconNavButtonLinkStyles = {
 }
 
 const navBarIconStyles = {
-    boxSize: "20px",
+    boxSize:"24px"
 }
 
 {/* NavBar Styles */}
@@ -52,12 +53,12 @@ const navBarBoxStyles = {
 
 {/* -------------------- Config -------------------- */}
 const navButtons = [
-    { to: "/home", Icon: GoHomeFill, text: "Home" },
-    { to: "/calendar", Icon: FaCalendar, text: "Calendar" },
+    { to: "/home", Icon: RiHome2Fill, text: "Home" },
+    { to: "/calendar", Icon: RiCalendarFill, text: "Calendar" },
     //{ to: "/habits", Icon: FaBeer, text: "Habits" },
     //{ to: "/insights", Icon: FaBeer, text: "Insights" },
     { to: "/agent", Icon: RiChatAiFill, text: "Agent" },
-    { to: "/profile", Icon: FaUser, text: "Profile" }
+    { to: "/profile", Icon: RiUser3Fill, text: "Profile" }
     //{ to: "/social", Icon: FaBeer, text: "Social" },
 ];
 
@@ -75,8 +76,7 @@ const NavButton = ({ to, Icon, text, onClick}) => {
                     color={isActive ? "blueLight.500" : "gray.500"}
                     p={{ base: 2, xl: 0 }} //padding for smaller screens, easier to click
                     _hover={{ bg: {base: "gray.100", xl: "transparent"}, borderRadius: "md" }} //hover effect
-                >
-                    {/* TODO: icon size is hardcoded for now, will need to be changed when we have real icons */}
+                >   
                     <ChakraIcon as={Icon} {...navBarIconStyles} color="inherit" />
                     {/* TODO: font size is hardcoded for now, will need to be changed when we have real text */}
                     <Text ml={2} textStyle="navLinkText" color="inherit">{text}</Text>
