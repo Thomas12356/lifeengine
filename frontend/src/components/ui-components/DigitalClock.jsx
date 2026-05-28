@@ -9,7 +9,6 @@ const timeStyles = {
 const dateStyles = {
     textStyle: "defaultText",
     fontWeight: "normal",
-    lineHeight: "1",
 };
 
 export default function DigitalClock() {

@@ -20,7 +20,7 @@ import AgentWidget from "@features/agent-widget/AgentWidget";
 export default function Home() {
     const user = JSON.parse(localStorage.getItem('user'));
     return (
-        <Box width="100%" px={{ base: 3, lg: 5 }} py={4}>
+        <Box width="100%" px={{ base: 3, lg: 5 }} py={2}>
             <Stack
                 direction={{ base: "column", lg: "row" }}
                 width="100%"
@@ -34,7 +34,8 @@ export default function Home() {
                     align="stretch"
                     gap={5}
                 >
-                    <NextEvent />
+                    <AgentWidget />
+                    
                 </VStack>
 
                 {/* Right Column */}
@@ -44,7 +45,8 @@ export default function Home() {
                     gap={5}
                 >
                     {/* Add future widgets/components here */}
-                    <AgentWidget />
+                    <NextEvent />
+                    
                     
                 </VStack>
             </Stack>

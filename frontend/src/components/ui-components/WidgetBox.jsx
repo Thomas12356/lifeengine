@@ -16,6 +16,22 @@ export function WidgetBox({ children, ...props }){
         </Box>
     );
 }
+
+export function BlueWidgetBox({ children, ...props }){
+    return(
+        <Box
+        bg={"blueLight.50"}
+        paddingLeft={"widget.pLeftRight"}
+        paddingRight={"widget.pLeftRight"}
+        paddingTop={"widget.pTopBottom"}
+        paddingBottom={"widget.pTopBottom"}
+        borderRadius={"widgetRadii"}
+        height={"fit-content"}
+        {...props}>
+            {children}
+        </Box>
+    );
+}
 export function WidgetBoxClear({ children, ...props }){
     return(
         <Box
