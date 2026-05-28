@@ -150,21 +150,31 @@ def create_event_type(user_id_str : str, parameters : dict, name : str):
     """
     Creates a new event type and saves to db.
     """
+    default_parameters_id = "b0763a86-0d62-48a1-8cf8-cd881159405e"
     try:
         user_uuid = uuid.UUID(user_id_str)
 
-        result = create_event_parameters(params=parameters)
+        parameters = clean_parameters(parameters)
 
-        if not result["success"]:
-            return {"success": False, "error": f"Failed to create event type parameters.", "status_code": 400}
+        has_custom_params = False
+        for param in parameters:
+            if parameters[param] is not None:
+                has_custom_params = True
 
-        event_params_uui = result["event_parameters_id"]
+        if has_custom_params:
+            result = create_event_parameters(parameters)
+            if not result["success"]:
+                return result
+            
+            parameters_uuid = result["event_parameters_id"]
+        else:
+            parameters_uuid = default_parameters_id
 
         created_at = datetime.now()
 
         new_event_type = EventType(
             user_id = user_uuid,
-            event_parameter_id = event_params_uui,
+            event_parameter_id = parameters_uuid,
             name = name,
             created_at = created_at
         )
