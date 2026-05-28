@@ -11,7 +11,7 @@ import { VerticalDivider } from "@/components/ui-components/Dividers";
 {/* TODO - replace with actual icons */}
 {/* Temporary Dev Imports */}
 import { FaBeer } from "react-icons/fa";
-import { TiThMenuOutline } from "react-icons/ti";
+import { IoIosMenu } from "react-icons/io";
 import { GoHomeFill } from "react-icons/go";
 import { FaCalendar } from "react-icons/fa6";
 import { RiChatAiFill } from "react-icons/ri";
@@ -148,7 +148,7 @@ export default function NavBar() {
                         cursor="pointer"
                         p={2}
                     >
-                        <ChakraIcon as={TiThMenuOutline} boxSize="28px" color="gray.500"/>
+                        <ChakraIcon as={IoIosMenu} boxSize="28px" color="gray.500"/>
                     </Box>
                 </HStack>
             </Flex>
