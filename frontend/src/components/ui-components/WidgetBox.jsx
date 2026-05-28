@@ -10,9 +10,6 @@ export function WidgetBox({ children, ...props }){
         paddingTop={"widget.pTopBottom"}
         paddingBottom={"widget.pTopBottom"}
         borderRadius={"widgetRadii"}
-        ml={"widget.mLeftRight"}
-        mr={"widget.mLeftRight"}
-        mt={"widget.mTopBottom"}
         height={"fit-content"}
         {...props}>
             {children}
@@ -26,9 +23,6 @@ export function WidgetBoxClear({ children, ...props }){
         paddingRight={"widget.pLeftRight"}
         paddingTop={"widget.pTopBottom"}
         paddingBottom={"widget.pTopBottom"}
-        ml={"widget.mLeftRight"}
-        mr={"widget.mLeftRight"}
-        mt={"widget.mTopBottom"}
         height={"fit-content"}
         {...props}>
             {children}

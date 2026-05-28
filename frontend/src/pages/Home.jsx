@@ -34,7 +34,7 @@ export default function Home() {
                     align="stretch"
                     gap={5}
                 >
-                    <AgentWidget />
+                    <NextEvent />
                 </VStack>
 
                 {/* Right Column */}
@@ -44,7 +44,8 @@ export default function Home() {
                     gap={5}
                 >
                     {/* Add future widgets/components here */}
-                    <NextEvent />
+                    <AgentWidget />
+                    
                 </VStack>
             </Stack>
         </Box>
