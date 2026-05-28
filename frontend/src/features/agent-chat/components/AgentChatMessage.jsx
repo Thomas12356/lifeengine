@@ -24,7 +24,7 @@ export default function AgentChatMessage({ message }) {
             <Icon>
                 <RiChatAiLine />
             </Icon>
-            <Text fontSize="md">{message.content}</Text>
+            <Text textStyle="defaultText" fontWeight="400">{message.content}</Text>
         </Box>
     )
 }
