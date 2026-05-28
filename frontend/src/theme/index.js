@@ -58,7 +58,7 @@ const customConfig = defineConfig({
                 value: {
                     fontSize: "sm",
                     fontWeight: "normal",
-                    color: "blueLight.500",
+                    color: "blueDark.500",
                     textDecoration: "underline"
                 }
             },
@@ -74,7 +74,7 @@ const customConfig = defineConfig({
         tokens: {
             colors: {
                 blueLight: {
-                    50: { value: "#E6F4FF" },
+                    50: { value: "#E3F2FF" },
                     100: { value: "#B3DDFF" },
                     200: { value: "#80C6FF" },
                     300: { value: "#4DAFFF" },
