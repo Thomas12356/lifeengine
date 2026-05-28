@@ -2,6 +2,8 @@ import { Popover, Button, Portal } from "@chakra-ui/react"
 import { useState } from "react"
 import { LuPlus } from "react-icons/lu"
 
+import CreateEventMenu from "./CreateEventMenu"
+
 export default function CreateEventButton() {
 
     const [open, setOpen] = useState(false) // Track popover open state
@@ -31,7 +33,7 @@ export default function CreateEventButton() {
                     <Popover.Content p="4"> {/* Portalled content for better positioning */}
                         <Popover.Arrow />
                         <Popover.Title fontWeight="medium">Create New Event Type</Popover.Title>   
-                        Create Event Type Menu
+                        <CreateEventMenu onClose={() => setOpen(false)}/>
                     </Popover.Content>
                 </Popover.Positioner>
             </Portal>
