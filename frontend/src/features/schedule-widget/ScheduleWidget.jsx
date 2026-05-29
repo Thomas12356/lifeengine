@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Text, VStack, HStack } from '@chakra-ui/react';
 import { WidgetBox } from '@ui-components/WidgetBox';
-import { fetchEvents } from "@utils/eventServices"
+//import { fetchEvents } from "@utils/eventServices"
 
 export default function ScheduleWidget() {
   const scheduleItems = [
