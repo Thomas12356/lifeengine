@@ -121,9 +121,9 @@ class Event(db.Model):
     def get_details_by_user_id(cls, user_id):
         selected_columns = [
             cls.id,
-            cls.title,
-            cls.start,
-            cls.end,
+            cls.name,
+            cls.start_time,
+            cls.end_time,
             cls.colour
         ]
         return (cls.query.filter_by(user_id=user_id, is_active=True).with_entities(*selected_columns).all())

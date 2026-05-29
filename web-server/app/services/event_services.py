@@ -199,7 +199,19 @@ def get_user_events_details(user_id_str : str):
 
         events = Event.get_details_by_user_id(user_uuid)
 
-        return {"success" : True, "events" : [event.to_dict() for event in events]}
+        events_list = [{
+                "id" : event.id,
+                "name" : event.name,
+                "start_time" : event.start_time.isoformat() if event.start_time else None,
+                "end_time" : event.end_time.isoformat() if event.end_time else None,
+                "colour" : event.colour
+            }
+            for event in events
+        ]
+
+        print(events_list)
+
+        return {"success" : True, "events" : events_list}
     
     except ValueError as e:
         return {"success": False, "error": f"Invalid data format: {str(e)}", "status_code": 400}
