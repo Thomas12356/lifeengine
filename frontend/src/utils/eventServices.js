@@ -6,7 +6,7 @@ export async function addEvent(eventData) {
     return response.data
 }
 
-export async function fetchEvents(userID) {
+export async function fetchAllEvents(userID) {
 
     const response = await api.get(`/event/getuserevents/${userID}`)
 
@@ -61,4 +61,26 @@ export async function createEventType(eventTypeData) {
     const response = await api.post("/event/createeventtype", eventTypeData)
 
     return response.data
+}
+
+export async function fetchEventsByRange(userID, rangeStart, rangeEnd) {
+    const response = await api.get("/event/getevents/byrange", 
+        {
+            params : {
+                user_id : userID,
+                range_start : rangeStart,
+                range_end : rangeEnd
+            }
+        }
+    )
+
+    const calendarEvents = response.data.events.map((event) => ({
+        id : event.id,
+        title : event.name,
+        start : event.start_time,
+        end : event.end_time,
+        colour : event.colour
+    }))
+    console.log(calendarEvents)
+    return calendarEvents
 }

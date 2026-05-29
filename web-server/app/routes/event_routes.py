@@ -124,6 +124,37 @@ def get_user_events_details(user_id):
         "events": result["events"]
     }), 200 
 
+@event_blueprint.route("/getevents/byrange", methods=["GET"])
+def get_user_events_by_range():
+
+    user_id = request.args.get("user_id")
+    range_start = request.args.get("range_start")
+    range_end = request.args.get("range_end")
+
+    if not user_id:
+        return jsonify({"error": f"Missing required field user_id"}), 400
+
+    if not range_start:
+        return jsonify({"error": f"Missing required field range_start"}), 400
+    
+    if not range_end:
+        return jsonify({"error": f"Missing required field range_end"}), 400
+    
+    result = event_services.get_user_events_by_range(
+        user_id_str=user_id,
+        range_start_str=range_start,
+        range_end_str=range_end
+    )
+    
+    if not result["success"]:
+        return jsonify({"error": result["error"]}), result["status_code"]
+    
+    return jsonify({
+        "message": f"User {user_id} events fetched between {range_start} & {range_end}.", 
+        "events": result["events"]
+    }), 200
+
+
 @event_blueprint.route("getevents/byday", methods={"GET"})
 def get_user_events_by_day():
     user_id_str = request.args.get("user_id")

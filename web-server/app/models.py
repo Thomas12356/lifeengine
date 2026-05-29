@@ -131,7 +131,26 @@ class Event(db.Model):
     @classmethod
     def get_all_by_user_id(cls, user_id):
         return (cls.query.filter_by(user_id=user_id, is_active=True).all())
-    
+
+    @classmethod
+    def get_range_by_user_id(cls, user_id, range_start, range_end):
+
+        selected_columns = [
+            cls.id,
+            cls.name,
+            cls.start_time,
+            cls.end_time,
+            cls.colour
+        ]
+
+        result =  (cls.query.filter(
+            Event.user_id == user_id,
+            Event.start_time < range_end,
+            Event.end_time > range_start,
+            Event.is_active == True
+        ).with_entities(*selected_columns).all())
+
+        return result
 
     def to_dict(self):
         return {
