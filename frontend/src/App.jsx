@@ -31,7 +31,7 @@ export default function App() {
                 bg="radial-gradient(circle, #EDEDED, #EDEDED)"
                 zIndex="-1"/>
 
-            <Box pt={"widget.mTopBottom"} pb={"widget.mTopBottom"} pl={"widget.mLeftRight"} pr={"widget.mLeftRight"}>
+            <Box pt={"widget.mTopBottom"} pl={"widget.mLeftRight"} pr={"widget.mLeftRight"}>
                 {isLoginPage || isRegisterPage ? <NavBarLogin/> : <NavBar/>}
 
                 <Routes>

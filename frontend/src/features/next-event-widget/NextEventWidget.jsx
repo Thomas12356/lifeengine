@@ -1,3 +1,5 @@
+import { WidgetBox } from "@ui-components/WidgetBox";
+
 /**
  * Next Event Loayout
  *
@@ -14,27 +16,72 @@
  */
 
 /* ---------- Imports Chakra UI ----------*/
-import { Box, HStack, Stack } from "@chakra-ui/react";
+import { Box, HStack, Spacer, Stack } from "@chakra-ui/react";
 import { Text, Button } from "@chakra-ui/react";
 
 export default function NextEvent() {
     
     return(
-        <HStack>
-            <Stack>
-                <Text>Next Up</Text>
-                <Text textStyle="headingSolid">Code LifeEngine</Text>
-                {/*<Text>Starts in -- Minutes</Text> */}
-                {/* How long till user needs to begin commute */}
-            </Stack>
+        <WidgetBox>
+            <Stack
+                direction={{ base: "column", xl: "row" }}
+                justifyContent="space-between"
+                align={{ base: "start", xl: "center" }}
+                gap={5}
+                width="100%"
+            >
+                {/* Left Section */}
+                <Stack gap={0} minW={0}>
 
-            <Stack>
-                <Text>10:00 AM - 11:00 AM</Text>
-                <HStack>
-                    <Button>Cancel</Button>
-                    <Button>Reschedule</Button>
-                </HStack>
+                        <Text textStyle="darkBlueText">
+                            Next Up
+                        </Text>
+
+                        <Text textStyle="headingSolid" wordBreak="break-word">
+                            Code LifeEngine
+                        </Text>
+                        <Text textStyle="defaultText">
+                        10:00 AM - 11:00 AM
+                    </Text>
+                </Stack>
+
+                {/* Right Section */}
+                <Stack
+                    align={{ base: "start", xl: "end" }}
+                    gap={4}
+                    width={{ base: "100%", xl: "auto" }}
+                >
+                    <Text textStyle="defaultText" fontSize="sm">
+                        Starts in -- Minutes
+                    </Text>
+
+                    <HStack
+                        wrap="wrap"
+                        spacing={3}
+                        width={{ base: "100%", xl: "auto" }}
+                    >
+                        <Button
+                            borderRadius="100px"
+                            px={{ base: 4, xl: 7 }}
+                            width={{ base: "100%", xl: "auto" }}
+                            bg="warningYellow"
+                            fontSize="md"
+                        >
+                            Reschedule
+                        </Button>
+
+                        <Button
+                            borderRadius="100px"
+                            px={{ base: 4, xl: 7 }}
+                            width={{ base: "100%", xl: "auto" }}
+                            bg="errorRed"
+                            fontSize="md"
+                        >
+                            Cancel
+                        </Button>
+                    </HStack>
+                </Stack>
             </Stack>
-        </HStack>
+        </WidgetBox>
     )
 }

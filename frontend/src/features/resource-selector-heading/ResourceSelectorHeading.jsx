@@ -1,3 +1,6 @@
+// TODO redundant code
+
+import { WidgetBox } from "@ui-components/WidgetBox";
 /**
  * Resource Selector Heading Layout
  *
@@ -17,21 +20,23 @@
 import DropDown from "@ui-components/DropDown";
 import { HStack, VStack, Text, Stack } from "@chakra-ui/react";
 
-export default function ResourceSelectorHeading() {
+export default function ResourceSelectorHeading(e) {
     const username = "Thomas";
     return(
+        <WidgetBox>
         <HStack>
 
             <Stack gap={0}>
                 <Text textStyle="headingSolid">Hello, {username}!</Text> {/* TODO - Good morning and Good evening messages instead of Hello */}
-                <Text>How are you feeling today?</Text> {/* TODO - Add Hoverable Tool Tip */}
+                <Text textStyle="defaultGrey">How are you feeling today?</Text> {/* TODO - Add Hoverable Tool Tip */}
             </Stack>
 
             <HStack>
-                <DropDown title={"Energy"} type={"ResourceLevel"} value={0} allowClear={false}></DropDown>
-                <DropDown title={"Energy"} type={"ResourceLevel"} value={0} allowClear={false}></DropDown>
+                {/* <DropDown title={"Energy"} type={"ResourceLevel"} value={0} allowClear={false}></DropDown> */}
+                {/*<DropDown title={"Energy"} type={"ResourceLevel"} value={0} allowClear={false}></DropDown> */}
             </HStack>
         
         </HStack>
+        </WidgetBox>
     )
 }

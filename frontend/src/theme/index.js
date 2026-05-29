@@ -13,14 +13,14 @@ const customConfig = defineConfig({
             headingSolid: {
                 value: {
                     fontSize: "lg",
-                    fontWeight: "500",
-                    color: "text.solid",
+                    fontWeight: "normal",
+                    color: "grey.800",
                 },
             },
 
             defaultGrey: {
                 value: {
-                    fontSize: "sm",
+                    fontSize: "md",
                     fontWeight: "normal",
                     color: "grey.500",
                 },
@@ -30,21 +30,35 @@ const customConfig = defineConfig({
                 value: {
                     fontSize: "md",
                     fontWeight: "normal",
-                    color: "grey.500",
+                    color: "grey.800",
                 },
             },
             errorText: {
                 value: {
-                    fontSize: "sm",
+                    fontSize: "md",
                     fontWeight: "normal",
                     color: "errorRed"
                 }
+            },
+            blueText: {
+                value: {
+                    fontSize: "md",
+                    fontWeight: "normal",
+                    color: "blueLight.500"
+                } 
+            },
+            darkBlueText: {
+                value: {
+                    fontSize: "md",
+                    fontWeight: "normal",
+                    color: "blueDark.500"
+                } 
             },
             linkText: {
                 value: {
                     fontSize: "sm",
                     fontWeight: "normal",
-                    color: "blueLight.500",
+                    color: "blueDark.500",
                     textDecoration: "underline"
                 }
             },
@@ -60,7 +74,7 @@ const customConfig = defineConfig({
         tokens: {
             colors: {
                 blueLight: {
-                    50: { value: "#E6F4FF" },
+                    50: { value: "#E3F2FF" },
                     100: { value: "#B3DDFF" },
                     200: { value: "#80C6FF" },
                     300: { value: "#4DAFFF" },
@@ -94,29 +108,27 @@ const customConfig = defineConfig({
                     500: { value: "#9A9A9A" },
                     600: { value: "#7A7A7A" },
                     700: { value: "#5A5A5A" },
-                    800: { value: "#3A3A3A" },
+                    800: { value: "#393939" },
                     900: { value: "#1A1A1A" },
                 },
 
                 white: { value: "#ffffff" },
 
-                errorRed: { value: "#ff7272" },
+                errorRed: { value: "#ff5a5a" },
+                warningYellow: { value: "#ffc233" },
 
-                text: {
-                    "solid": { value: "#393939" },
-                },
             },
 
             fontSizes: {
                 sm: { value: "1rem" },
-                md: { value: "1.5rem" },
+                md: { value: "1.25rem" },
                 lg: { value: "1.75rem" },
                 xl: { value: "2.25rem" },
             },
 
             fontWeights: {
-                normal: { value: "400" },
-                medium: { value: "500" },
+                normal: { value: "500" },
+                medium: { value: "600" },
                 bold: { value: "700" },
             },
 

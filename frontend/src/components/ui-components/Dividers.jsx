@@ -11,3 +11,8 @@ export function HorizontalDivider() {
         <Box height="2px"/>
     )
 }
+export function GreyHorizontalDivider() {
+    return(
+        <Box height="2px" width="100%" bg="gray.200" my="2"/>
+    )
+}

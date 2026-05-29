@@ -14,9 +14,9 @@ export default function AgentTextInput({ onSendMessage }) {
     }
 
     return (
-        <HStack>
-            <Input placeholder="Type your message..." onChange={(e) => setMessage(e.target.value)} value={message}/>
-            <IconButton colorScheme="blue" onClick={handleSendMessage}>
+        <HStack width="100%" my={1}>
+            <Input textStyle="defaultText" fontWeight="400" bg="blueLight.50" p="6" mr="5" variant="plain" borderRadius="20px" width="100%" placeholder="Type your message..." onChange={(e) => setMessage(e.target.value)} value={message}/>
+            <IconButton bg="grey.800" onClick={handleSendMessage}>
                 <IoMdSend />
             </IconButton>
         </HStack>
