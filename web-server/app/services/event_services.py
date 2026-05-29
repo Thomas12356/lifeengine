@@ -29,6 +29,19 @@ def create_event(
 
         user_uuid = uuid.UUID(user_id_str)
 
+        overlapping_event = (
+            Event.query
+            .filter(Event.user_id==user_uuid)
+            .filter(Event.is_active==True)
+            .filter(Event.start_time < end_dt)
+            .filter(Event.end_time > start_dt)
+            .first()
+        )
+
+        if overlapping_event:
+            return {"success": False, "error": "Event overlaps with existing event", "status_code": 409}
+
+
         event_parameters = clean_parameters(event_parameters)
 
         if event_type_id_str:
