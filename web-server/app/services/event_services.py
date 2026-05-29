@@ -229,7 +229,7 @@ def create_event_type(user_id_str : str, parameters : dict, name : str, is_defau
         user_uuid = uuid.UUID(user_id_str)
 
         existing_type = (
-            EventType.query.filter_byt(user_id=user_uuid, name=name)
+            EventType.query.filter_by(user_id=user_uuid, name=name).first()
         )
 
         if existing_type:
@@ -248,9 +248,8 @@ def create_event_type(user_id_str : str, parameters : dict, name : str, is_defau
                 return result
             
             parameters_uuid = uuid.UUID(result["event_parameters_id"])
-        elif is_default:
 
-            
+        elif is_default:
             defaults = {
                 "ideal_energy": os.environ.get("DEFAULT_IDEAL_ENERGY"),
                 "burnout_rate": os.environ.get("DEFAULT_BURNOUT_RATE"),
@@ -258,7 +257,9 @@ def create_event_type(user_id_str : str, parameters : dict, name : str, is_defau
             }
 
             result = create_event_parameters(defaults)
-
+            if not result["success"]:
+                return result
+            
             parameters_uuid = uuid.UUID(result["event_parameters_id"])
         else:
             default_result = get_default_event_type(user_id_str)
@@ -266,7 +267,7 @@ def create_event_type(user_id_str : str, parameters : dict, name : str, is_defau
             if not default_result["success"]:
                 return default_result
             
-            parameters_uuid = uuid.UUID(default_result["event_parameters_id"])
+            parameters_uuid = uuid.UUID(default_result["event_parameter_id"])
 
         created_at = datetime.now()
 
