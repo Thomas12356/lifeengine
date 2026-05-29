@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.services import event_services
+from app.services import event_type_services
+from app.services import event_parameter_services
 
 event_blueprint = Blueprint('event',__name__)
 
@@ -71,7 +73,7 @@ def create_parameters():
         if field not in data or not data[field]:
             return jsonify({"error": f"Missing required field: {field}"}), 400
 
-    result = event_services.create_event_parameters(data)
+    result = event_parameter_services.create_event_parameters(data)
 
     if not result["success"]:
         return jsonify({"error": result["error"]}), result["status_code"]
@@ -91,7 +93,7 @@ def create_event_type():
         if field not in data or not data[field]:
             return jsonify({"error": f"Missing required field: {field}"}), 400
     
-    result = event_services.create_event_type(
+    result = event_type_services.create_event_type(
         user_id_str=data["user_id"],
         parameters=data["parameters"],
         name=data["name"],
