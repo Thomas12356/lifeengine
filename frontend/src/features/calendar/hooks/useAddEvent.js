@@ -1,7 +1,7 @@
 
 
 import { useState } from "react";
-import { addEvent } from "../utils/eventsApi";
+import { addEvent } from "@utils/eventServices";
 
 export default function useAddEvent() {
 

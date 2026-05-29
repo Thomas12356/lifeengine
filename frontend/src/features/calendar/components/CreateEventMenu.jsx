@@ -4,7 +4,7 @@ import ColourPicker from "@ui-components/ColourPicker"
 import { LuChevronRight } from "react-icons/lu"
 import { useState } from "react"
 //import useAddEvent from "../hooks/useAddEvent"
-import { createEventType } from "../utils/eventsApi"
+import { createEventType } from "@utils/eventServices"
 
 //import buildEventPayload from "../utils/buildEventPayload"
 

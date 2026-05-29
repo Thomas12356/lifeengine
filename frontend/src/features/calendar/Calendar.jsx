@@ -4,7 +4,7 @@ import CalendarHeader from "@/features/calendar/components/CalendarHeader"
 import CalendarBody from "@/features/calendar/components/CalendarBody"
 import { useState, useEffect } from "react"
 import { useWeekEvents } from "@/features/calendar/hooks/useWeekEvents"
-import { fetchEvents, deleteEvent } from "./utils/eventsApi"
+import { fetchEvents, deleteEvent } from "@utils/eventServices"
 
 // Dummy event data for testing
 const allEvents2 = [
