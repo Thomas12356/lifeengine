@@ -67,7 +67,7 @@ def create_event(
     
     except Exception as e:
         db.session.rollback()
-        return {"success": False, "error": "Internal database error.", "status_code": 500}
+        return {"success": False, "error": f"Internal database error: {str(e)}", "status_code": 500}
 
 def delete_event(user_id_str : str, event_id_str : str):
     """
