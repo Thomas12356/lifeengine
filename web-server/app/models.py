@@ -146,3 +146,19 @@ class Event(db.Model):
             "is_active": self.is_active,
             "colour" : self.colour if self.colour else None
         }
+
+class UserPreferences(db.Model):
+    
+    __tablename__ = "user_preferences"
+
+    # ----- Fields -----
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey('users.id'), unique=True, nullable=False, index=True)
+    wakeup_time = db.Column(db.Time, nullable=False)
+    bed_time = db.Column(db.Time, nullable=False)
+
+    # ----- Relationships -----
+    user = db.relationship('User', backref=db.backref('event_preferences', lazy=True, cascade="all, delete-orphan"))
+
+    def __repr__(self):
+        return f"<UserPreferences: {self.name} ({self.id})>"
