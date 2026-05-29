@@ -218,3 +218,39 @@ def get_user_events_details(user_id_str : str):
     
     except Exception as e:
         return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
+    
+def get_user_events_by_range(user_id_str : str, range_start_str : str, range_end_str : str):
+    """
+        Fetch all events within a date range using user_id
+    """
+    try:
+
+        user_uuid = uuid.UUID(user_id_str)
+        range_start = datetime.fromisoformat(range_start_str)
+        range_end = datetime.fromisoformat(range_end_str)
+
+        if range_end < range_start:
+            return {"success": False, "error": f"range_start must be before range_end", "status_code": 400}
+
+        events = Event.get_range_by_user_id(user_uuid, range_start, range_end)
+
+        events_list = [
+            {
+                "id" : event.id,
+                "name" : event.name,
+                "start_time" : event.start_time.isoformat() if event.start_time else None,
+                "end_time" : event.end_time.isoformat() if event.end_time else None,
+                "colour" : event.colour
+            }
+            for event in events
+        ]
+
+        return {"success" : True, "events" : events_list}
+    
+    except ValueError as e:
+        return {"success": False, "error": f"Invalid data format: {str(e)}", "status_code": 400}
+    
+    except Exception as e:
+        return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
+
+
