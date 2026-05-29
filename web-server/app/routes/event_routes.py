@@ -108,23 +108,20 @@ def create_event_type():
         "event_type_id": result["event_type_id"]
     }), 201
 
-@event_blueprint.route("/getuserevents", methods=["POST"])
-def get_user_events():
+@event_blueprint.route("/getuserevents/<user_id>", methods=["GET"])
+def get_user_events(user_id):
 
-    data = request.get_json()
-
-    for field in REQUIRED_GET_EVENTS_FIELDS:
-        if field not in data or not data[field]:
-            return jsonify({"error": f"Missing required field: {field}"}), 400
+    if not user_id:
+        return jsonify({"error": f"Missing required field user_id"}), 400
         
-    result = event_services.get_user_events(data["user_id"])
+    result = event_services.get_user_events(user_id)
 
     if not result["success"]:
         return jsonify({"error": result["error"]}), result["status_code"]
     
     return jsonify({
-        "message": f"User {data['user_id']} events fetched.", 
+        "message": f"User {user_id} events fetched.", 
         "events": result["events"]
-    }), 201 
+    }), 200 
         
     

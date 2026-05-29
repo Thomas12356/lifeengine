@@ -8,9 +8,7 @@ export async function addEvent(eventData) {
 
 export async function fetchEvents(userID) {
 
-    const response = await api.post("/event/getuserevents", {
-        user_id : userID
-    })
+    const response = await api.get(`/event/getuserevents/${userID}`)
 
     console.log(response)
 
