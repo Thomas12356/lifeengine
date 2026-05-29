@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, time
 from app import db
 from app.models import Event
 
@@ -158,11 +158,17 @@ def get_user_events_by_day(user_id_str : str, date_str : str):
         user_uuid = uuid.UUID(user_id_str)
         iso_date = datetime.fromisoformat(date_str)
 
+        target_date = iso_date.date()
+        day_start = datetime.combine(target_date, time.min)
+        day_end = datetime.combine(target_date, time.max)
+
         events = (
             Event.query
-            .filter_by(user_id=user_uuid,start_time=iso_date)
-            .all()
-            )
+            .filter(Event.user_id == user_uuid,
+                    Event.start_time >= day_start,
+                    Event.end_time <= day_end
+            ).all()
+        )
 
         if not events:
             return {"success": False, "error": "No events found for the given date and user", "status_code": 404}
