@@ -166,12 +166,13 @@ def get_user_events_by_day(user_id_str : str, date_str : str):
             Event.query
             .filter(Event.user_id == user_uuid,
                     Event.start_time >= day_start,
-                    Event.end_time <= day_end
+                    Event.end_time <= day_end,
+                    Event.is_active == True
             ).all()
         )
 
         if not events:
-            return {"success": False, "error": "No events found for the given date and user", "status_code": 404}
+            return {"success": True, "events": [], "status_code": 200}
 
         events_list = [
             {
