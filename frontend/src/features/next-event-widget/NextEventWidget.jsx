@@ -52,7 +52,10 @@ export default function NextEvent() {
             }
         }
         else {
-            return `${differenceMins} hours`
+            if (differenceMins == 1){
+                `${differenceMins} minutes`
+            }
+            return `${differenceMins} minutes`
         }
     }
 
