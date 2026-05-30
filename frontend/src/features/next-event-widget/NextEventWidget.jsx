@@ -22,7 +22,7 @@ import { Text, Button } from "@chakra-ui/react";
 
 export default function NextEvent() {
     
-    const { nextEvent } = useHomepage()
+    const { nextEvent, cancelEvent } = useHomepage()
 
     function formatEventTime(time) {
         return new Date(time).toLocaleTimeString([],{
@@ -128,6 +128,7 @@ export default function NextEvent() {
                             width={{ base: "100%", xl: "auto" }}
                             bg="errorRed"
                             fontSize="md"
+                            onClick={() => cancelEvent(nextEvent.id)}
                         >
                             Cancel
                         </Button>
