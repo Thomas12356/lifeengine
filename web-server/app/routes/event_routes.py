@@ -191,7 +191,7 @@ def reschedule_event():
         return jsonify({"error": result["error"]}), result["status_code"]
     else:
         return jsonify({
-            "message": f"Events {data["event_id"]} rescheduled",
+            "message": f"Events {data['event_id']} rescheduled",
         }), result["status_code"]
 
         
