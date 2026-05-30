@@ -18,8 +18,8 @@ export default function buildReschedulePayload(data, autoReschedule) {
     return {
         user_id : user.id,
         event_id : data.eventID,
-        new_end : newStart.toISOString(), // Convert local date to UTC
-        new_start : newEnd.toISOString(), // Convert local date to UTC
+        new_start : newStart.toISOString(), // Convert local date to UTC
+        new_end : newEnd.toISOString(), // Convert local date to UTC
     }
 
 }
