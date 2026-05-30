@@ -26,7 +26,7 @@ export function HomepageProvider({ children }) {
         try {
             const today = getTodaysDateISO();
             const events = await fetchEventsByDay(userID, today) // API call to fetch events
-            setTodaysEvents(events) // Update state
+            setTodaysEvents(events["events"]) // Update state
         } catch(err) {
             console.log("Failed to refresh homepage events:", err)
         }
