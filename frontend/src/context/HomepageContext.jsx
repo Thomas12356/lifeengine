@@ -12,7 +12,7 @@ export function HomepageProvider({ children }) {
     // Fetch logged-in user from local storage
     // Replace with fetch from AuthContext
     const user = JSON.parse(localStorage.getItem("user"))
-    const userID = user.id
+    const userID = user?.id
 
     // Helper function for getting the current date (FULL ISO STRING)
     function getTodaysDateISO() {
