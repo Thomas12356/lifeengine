@@ -10,7 +10,7 @@ export default function RescheduleMenu({ isOpen, onOpenChange, event, onSuccess 
         newDate : "",
         newStart : "",
         newEnd : "",
-        eventID : event.id
+        eventID : ""
     })
 
     function updateField(field, value) {
@@ -57,7 +57,9 @@ export default function RescheduleMenu({ isOpen, onOpenChange, event, onSuccess 
             newEnd : "",
             eventID : event.id
         })
-    }, [isOpen, event.id])
+
+        console.log(event)
+    }, [isOpen, event?.id])
 
     const autoReschedulable = event?.is_moveable
 
@@ -72,7 +74,7 @@ export default function RescheduleMenu({ isOpen, onOpenChange, event, onSuccess 
                     <Dialog.Content>
                         <Dialog.Header>
                             <Dialog.Title>
-                                Reschedule {event.name}
+                                Reschedule {event?.name || event?.title || "event"}
                             </Dialog.Title>
                         </Dialog.Header>
                         <Dialog.Body>

@@ -12,8 +12,10 @@
 /* --- IMPORTS --- */
 import { HStack, VStack, Text, Box, Menu } from "@chakra-ui/react"
 import { calculateEventPosition } from "../utils/dateHelpers.js"
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import { formatEventTime } from "../utils/dateHelpers.js"
+
+import RescheduleMenu from "@/features/reschedule-menu/RescheduleMenu.jsx"
 
 /* --- LOCAL COMPONENTS --- */
 
@@ -56,61 +58,86 @@ const GridBackground = () => {
  * @param {Array} events - An array of event objects to be displayed on the calendar.
  * @returns {JSX.Element} A Box component containing the event elements.
  */
-const EventLayer = ({ events, onEventDelete }) => {
+const EventLayer = ({ events, onEventDelete, onRescheduleSuccess }) => {
+
+    const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
 
     return (
-        <Box position="absolute" top="0" left="0" w="100%" h="1440px">
-            {events.map((event, index) => { // Loop through events and calculate their positions
-                const { top, height, left, width } = calculateEventPosition(event)
-                return (
-                    <Menu.Root key={index}>
-                        <Menu.Trigger asChild>
-                            <Box
-                                position="absolute" // Position each event absolutely within the calendar body
-                                top={`${top}%`} // Position from the top based on event start time
-                                left={`${left}%`} // Position from the left based on event weekday
-                                w={`${width}%`}
-                                h={`${height}%`}
-                                bg={event.colour || "blue.500"}
-                                color="white"
-                                px={2}
-                                py={1}
-                                borderRadius={"md"}
-                                boxShadow={"md"}
-                                overflow="hidden"
-                                cursor="pointer"
-                                transition="filter 0.15s ease"
-                                _hover={{
-                                    filter: "brightness(0.92)",
-                                }}
-                            >
-                                <Text fontWeight="semibold" noOfLines={1}>
-                                    {event.title}
-                                </Text>
-                                <Text noOfLines={1}>
-                                    {formatEventTime(event.start)} - {formatEventTime(event.end)} {/* Slice ISO strings to only contain HH:MM */}
-                                </Text>
-                            </Box>
-                        </Menu.Trigger>
-
-                        <Menu.Positioner>
-                            <Menu.Content>
-                                <Menu.Item
-                                    color={"red"}
+        <>
+            <Box position="absolute" top="0" left="0" w="100%" h="1440px">
+                {events.map((event, index) => { // Loop through events and calculate their positions
+                    const { top, height, left, width } = calculateEventPosition(event)
+                    return (
+                        <Menu.Root key={index}>
+                            <Menu.Trigger asChild>
+                                <Box
+                                    position="absolute" // Position each event absolutely within the calendar body
+                                    top={`${top}%`} // Position from the top based on event start time
+                                    left={`${left}%`} // Position from the left based on event weekday
+                                    w={`${width}%`}
+                                    h={`${height}%`}
+                                    bg={event.colour || "blue.500"}
+                                    color="white"
+                                    px={2}
+                                    py={1}
+                                    borderRadius={"md"}
+                                    boxShadow={"md"}
+                                    overflow="hidden"
                                     cursor="pointer"
+                                    transition="filter 0.15s ease"
                                     _hover={{
-                                        bg: "gray.200"
+                                        filter: "brightness(0.92)",
                                     }}
-                                    onClick={() => onEventDelete(event.id)}
                                 >
-                                    Delete event
-                                </Menu.Item>
-                            </Menu.Content>
-                        </Menu.Positioner>
-                    </Menu.Root>
-                )
-            })}
-        </Box>
+                                    <Text fontWeight="semibold" noOfLines={1}>
+                                        {event.title}
+                                    </Text>
+                                    <Text noOfLines={1}>
+                                        {formatEventTime(event.start)} - {formatEventTime(event.end)} {/* Slice ISO strings to only contain HH:MM */}
+                                    </Text>
+                                </Box>
+                            </Menu.Trigger>
+
+                            <Menu.Positioner>
+                                <Menu.Content>
+                                    <Menu.Item
+                                        color={"gray.500"}
+                                        cursor="pointer"
+                                        _hover={{
+                                            bg: "gray.200"
+                                        }}
+                                        onClick={() => {
+                                            setSelectedEvent(event)
+                                            setIsRescheduleOpen(true)
+                                        }}
+                                    >
+                                        Reschedule
+                                    </Menu.Item>
+                                    <Menu.Item
+                                        color={"red"}
+                                        cursor="pointer"
+                                        _hover={{
+                                            bg: "gray.200"
+                                        }}
+                                        onClick={() => onEventDelete(event.id)}
+                                    >
+                                        Delete
+                                    </Menu.Item>
+                                </Menu.Content>
+                            </Menu.Positioner>
+                        </Menu.Root>
+                    )
+                })}
+            </Box>
+
+            <RescheduleMenu 
+                isOpen={isRescheduleOpen} 
+                onOpenChange={setIsRescheduleOpen}
+                event={selectedEvent}
+                onSuccess={onRescheduleSuccess}
+            />
+        </>
     )
 }
 
@@ -143,7 +170,7 @@ const TimeIndicator = () => {
  * @param {Array} events - An array of event objects to be displayed on the calendar.
  * @returns {JSX.Element} A Box component representing the calendar body.
  */
-export default function CalendarBody({ events, onEventDelete }) {
+export default function CalendarBody({ events, onEventDelete, onRescheduleSuccess }) {
 
     const scrollContainerRef = useRef(null) // Initalise scroll reference
     const hours = Array.from({ length: 24 }, (_, i) => i) // Create an array of hours from 0 to 23 for the time axis
@@ -166,7 +193,7 @@ export default function CalendarBody({ events, onEventDelete }) {
                 </VStack>
                 <Box flex="1" h="1440px" position="relative"> {/* Main calendar body container */}
                     <GridBackground />
-                    <EventLayer events={events} onEventDelete={onEventDelete} />
+                    <EventLayer events={events} onEventDelete={onEventDelete} onRescheduleSuccess={onRescheduleSuccess}/>
                     <TimeIndicator />
                 </Box>
             </HStack>

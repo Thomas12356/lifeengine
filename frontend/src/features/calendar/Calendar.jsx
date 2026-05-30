@@ -53,6 +53,11 @@ export default function Calendar() {
         }
     }
 
+    async function handleEventReschedule() {
+        await loadEvents()
+        await refreshHomepageEvents()
+    }
+
     //console.log("ALL EVENTS:", allEvents)
 
     return (
@@ -65,7 +70,11 @@ export default function Calendar() {
                 />
                 <CalendarHeader selectedDate={selectedDate} />
                 <Box flex="1" minH={0} overflow="hidden">
-                    <CalendarBody events={visibleEvents} onEventDelete={handleEventDelete}/>
+                    <CalendarBody 
+                        events={visibleEvents} 
+                        onEventDelete={handleEventDelete}
+                        onRescheduleSuccess={handleEventReschedule}
+                    />
                 </Box>
             </VStack>
         </Box>
