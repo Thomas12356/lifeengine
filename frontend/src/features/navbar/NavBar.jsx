@@ -87,22 +87,6 @@ const NavButton = ({ to, Icon, text, onClick}) => {
     )
 }
 
-const IconNavButton = ({ to, Icon }) => {
-    return(
-        <NavLink to={to} style={{ textDecoration: 'none', display: 'block'}}>
-            {({ isActive }) => (
-                <Box
-                    {...iconNavButtonLinkStyles}
-                    color={isActive ? "blueLight.500" : "gray.500"}
-                    p={{ base: 2, lg: 0 }} //padding for smaller screens, easier to click
-                >
-                    <ChakraIcon as={Icon} {...navBarIconStyles} />
-                </Box>
-            )}
-        </NavLink>
-    )
-}
-
 {/* -------------------- Main Component -------------------- */}
 export default function NavBar() {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -135,12 +119,9 @@ export default function NavBar() {
                 <HStack gap={4} height="100%">
                     {/* Desktop Only */}
                     <HStack display={{ base: "none", lg: "flex" }} gap="general.xsSpacing">
-                        {IconNavButtons.map((button) => (
-                            <IconNavButton key={button.to} {...button} />
-                        ))}
                         <LogoutButton/>
                     </HStack>
-
+                
                     {/* Mobile Toggle Menu */}
                     <Box
                         display={{ base: "block", lg: "none" }}
