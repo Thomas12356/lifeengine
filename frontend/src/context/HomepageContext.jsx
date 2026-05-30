@@ -1,4 +1,4 @@
-import { fetchEventsByDay } from "@/utils/eventServices";
+import { fetchEventsByDay, deleteEvent } from "@/utils/eventServices";
 import { createContext, useState, useEffect, useMemo, useContext } from "react";
 
 
@@ -32,6 +32,19 @@ export function HomepageProvider({ children }) {
         }
     }
 
+    async function cancelEvent(eventID) {
+        if (!userID || !eventID) return;
+
+        try {
+            console.log(eventID)
+            await deleteEvent(userID, eventID);
+            await refreshHomepageEvents();
+        } catch (err) {
+            console.log("Failed to cancel event:", err)
+        }
+
+    }
+
     // Given an event array find the upcoming event
     function findNextEvent(events) {
         const now = new Date();
@@ -47,10 +60,10 @@ export function HomepageProvider({ children }) {
     }, [userID])
 
     // DEBUG - REMOVE LATER
-    useEffect(() => {
-        console.log("todaysEvents state changed:", todaysEvents);
-        console.log(findNextEvent(todaysEvents))
-    }, [todaysEvents]);
+    //useEffect(() => {
+    //    console.log("todaysEvents state changed:", todaysEvents);
+    //    console.log(findNextEvent(todaysEvents))
+    //}, [todaysEvents]);
 
     const nextEvent = useMemo(() => {
         return findNextEvent(todaysEvents)
@@ -60,7 +73,8 @@ export function HomepageProvider({ children }) {
     const value = useMemo(() => ({
         todaysEvents,
         refreshHomepageEvents,
-        nextEvent
+        nextEvent,
+        cancelEvent
     }), [todaysEvents, nextEvent])
 
     return (
