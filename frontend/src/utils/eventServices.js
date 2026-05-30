@@ -26,7 +26,7 @@ export async function fetchAllEvents(userID) {
 export async function fetchEventsByDay(userID, day){
     
     try {
-        const response = await api.get('/event/getevents', 
+        const response = await api.get('/event/getevents/byday', 
             {
                 params : {
                     user_id : userID,
