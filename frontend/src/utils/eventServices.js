@@ -84,3 +84,17 @@ export async function fetchEventsByRange(userID, rangeStart, rangeEnd) {
     console.log(calendarEvents)
     return calendarEvents
 }
+
+export async function rescheduleEvent(payload) {
+    console.log(payload) // DEBUG
+    const response = await api.post("event/reschedule", payload)
+
+    return response.data
+}
+
+export async function autoReschedule(payload) {
+    console.log(payload) // DEBUG
+    const response = await api.post("event/autoreschedule", payload)
+
+    return response.data
+}
