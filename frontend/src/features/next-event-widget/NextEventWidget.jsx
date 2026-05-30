@@ -24,9 +24,9 @@ export default function NextEvent() {
     return(
         <WidgetBox>
             <Stack
-                direction={{ base: "column", xl: "row" }}
+                direction={{ base: "column", lg: "row" }}
                 justifyContent="space-between"
-                align={{ base: "start", xl: "center" }}
+                align={{ base: "start", lg: "center" }}
                 gap={5}
                 width="100%"
             >
@@ -47,9 +47,9 @@ export default function NextEvent() {
 
                 {/* Right Section */}
                 <Stack
-                    align={{ base: "start", xl: "end" }}
+                    align={{ base: "start", lg: "end" }}
                     gap={4}
-                    width={{ base: "100%", xl: "auto" }}
+                    width={{ base: "100%", lg: "auto" }}
                 >
                     <Text textStyle="defaultText" fontSize="sm">
                         Starts in -- Minutes
@@ -58,12 +58,12 @@ export default function NextEvent() {
                     <HStack
                         wrap="wrap"
                         spacing={3}
-                        width={{ base: "100%", xl: "auto" }}
+                        width={{ base: "100%", lg: "auto" }}
                     >
                         <Button
                             borderRadius="100px"
-                            px={{ base: 4, xl: 7 }}
-                            width={{ base: "100%", xl: "auto" }}
+                            px={{ base: 4, lg: 7 }}
+                            width={{ base: "100%", lg: "100%" }}
                             bg="warningYellow"
                             fontSize="md"
                         >
@@ -72,8 +72,8 @@ export default function NextEvent() {
 
                         <Button
                             borderRadius="100px"
-                            px={{ base: 4, xl: 7 }}
-                            width={{ base: "100%", xl: "auto" }}
+                            px={{ base: 4, lg: 7 }}
+                            width={{ base: "100%", lg: "100%" }}
                             bg="errorRed"
                             fontSize="md"
                         >

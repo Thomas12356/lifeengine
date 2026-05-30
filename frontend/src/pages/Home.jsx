@@ -32,6 +32,7 @@ export default function Home() {
                 {/* Left Column */}
                 <VStack
                     width={{ base: "100%", lg: "50%" }}
+                    display={{ base: "none", lg: "flex" }}
                     align="stretch"
                     gap={5}
                 >

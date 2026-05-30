@@ -74,8 +74,8 @@ const NavButton = ({ to, Icon, text, onClick}) => {
                 <Box
                     {...navButtonLinkStyles}
                     color={isActive ? "blueLight.500" : "gray.500"}
-                    p={{ base: 2, xl: 0 }} //padding for smaller screens, easier to click
-                    _hover={{ bg: {base: "gray.100", xl: "transparent"}, borderRadius: "md" }} //hover effect
+                    p={{ base: 2, lg: 0 }} //padding for smaller screens, easier to click
+                    _hover={{ bg: {base: "gray.100", lg: "transparent"}, borderRadius: "md" }} //hover effect
                 >   
                     <ChakraIcon as={Icon} {...navBarIconStyles} color="inherit" />
                     {/* TODO: font size is hardcoded for now, will need to be changed when we have real text */}
@@ -94,7 +94,7 @@ const IconNavButton = ({ to, Icon }) => {
                 <Box
                     {...iconNavButtonLinkStyles}
                     color={isActive ? "blueLight.500" : "gray.500"}
-                    p={{ base: 2, xl: 0 }} //padding for smaller screens, easier to click
+                    p={{ base: 2, lg: 0 }} //padding for smaller screens, easier to click
                 >
                     <ChakraIcon as={Icon} {...navBarIconStyles} />
                 </Box>
@@ -119,7 +119,7 @@ export default function NavBar() {
                 <HStack gap="general.mdSpacing" height="100%">
                     <LifeEngineLogo />
                     {/* Hide links on smaller screens than md*/}
-                    <Box display={{ base: "none", xl: "flex" }} alignItems="center" gap={4}>
+                    <Box display={{ base: "none", lg: "flex" }} alignItems="center" gap={4}>
                     <VerticalDivider />
                     <nav>
                         <HStack gap="general.mdSpacing">
@@ -134,7 +134,7 @@ export default function NavBar() {
                 {/* Right Side: Desktop Icon Buttons and Mobile Toggle Menu */}
                 <HStack gap={4} height="100%">
                     {/* Desktop Only */}
-                    <HStack display={{ base: "none", xl: "flex" }} gap="general.xsSpacing">
+                    <HStack display={{ base: "none", lg: "flex" }} gap="general.xsSpacing">
                         {IconNavButtons.map((button) => (
                             <IconNavButton key={button.to} {...button} />
                         ))}
@@ -143,7 +143,7 @@ export default function NavBar() {
 
                     {/* Mobile Toggle Menu */}
                     <Box
-                        display={{ base: "block", xl: "none" }}
+                        display={{ base: "block", lg: "none" }}
                         onClick={() => setIsMobileOpen(!isMobileOpen)}
                         cursor="pointer"
                         p={2}
@@ -155,7 +155,7 @@ export default function NavBar() {
 
             {/* Mobile Dropdown Nav */}
             <Box 
-                display={{ base: "block", xl: "none" }}
+                display={{ base: "block", lg: "none" }}
                 overflow="hidden"
                 transition="all 0.3s ease-in-out"
                 maxHeight={isMobileOpen ? "400px" : "0px"} // expands and collapses
