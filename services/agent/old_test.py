@@ -1,4 +1,4 @@
-from agent import *
+from services.agent.old_agent import *
 
 if __name__ == "__main__":
     print("Agent test")
