@@ -3,12 +3,16 @@ import { WidgetBox } from "@ui-components/WidgetBox";
 import DropDown from "@ui-components/DropDown"
 import { NumberInput } from "@chakra-ui/react";
 import ColourPicker from "@/components/ui-components/ColourPicker";
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useEventTypes } from "@/context/EventTypeContext";
 
-export default function EventPreferenceWidget({...props}){
+export default function EventTypesMenu({...props}){
+
+    const { eventTypes, getEventTypeByName, getEventTypeIDByName } = useEventTypes()
+    const eventTypeNames = eventTypes.map((type) => type.name)
 
     const [formData, setFormData] = useState({
-        eventTypeID: 1, // We need to read in event types IDs and map to names
+        eventTypeName: "", // We need to read in event types IDs and map to names
         labelColour: "#3182CE",
         idealEnergy: "",
         burnoutRate: "",
@@ -24,7 +28,7 @@ export default function EventPreferenceWidget({...props}){
         }));
     }
 
-    {/* NOTE : Slider operates on minutes since 00:00, so we need to convert minutes into HH:MM*/}
+    // NOTE : Slider operates on minutes since 00:00, so we need to convert minutes into HH:MM
     function minutesToTime(minutes) {
         const hours = Math.floor(minutes / 60);
         const mins = minutes % 60;
@@ -32,17 +36,32 @@ export default function EventPreferenceWidget({...props}){
         return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
     }
 
+    // Fill formdata with selected event type
+    useEffect(() => {
+        if (!formData.eventTypeName) return
+
+        const selectedEventType = getEventTypeByName(formData.eventTypeName)
+        if (!selectedEventType) return
+
+        setFormData((prev) => ({
+            ...prev,
+            eventTypeID: selectedEventType.id,
+            labelColour: selectedEventType.colour
+        }))
+    }, [formData.eventTypeName, getEventTypeByName])
+
     return(
         <WidgetBox {...props}>
             <Stack direction={"row"}>
                 <Text textStyle={"headingSolid"}>Event Type Preferences</Text>
                 <DropDown 
                     title={""} 
-                    type={"EventCategory"} 
+                    type={"EventType"} 
                     placeholder={"Default"}
-                    value={formData.eventTypeID}
-                    onChange={(value) => updateField("eventTypeID", value)}
+                    value={formData.eventTypeName}
+                    onChange={(value) => updateField("eventTypeName", value)}
                     allowClear={false}
+                    options={eventTypeNames}
                 />
             </Stack>
             <Stack mt={"general.xsSpacing"}>
