@@ -1,4 +1,6 @@
+MAX_MESSAGE_HISTORY = 10
 sessions = {}
+
 
 def get_session(session_id):
     if session_id not in sessions:
@@ -15,6 +17,8 @@ def add_message(session_id, role, content):
         "role" : role,
         "content" : content,
     })
+
+    session["messages"] = session["messages"][-MAX_MESSAGE_HISTORY:]
 
 def get_messages(session_id):
     session = get_session(session_id)
