@@ -26,6 +26,7 @@ Rules:
 - Do not invent missing event details.
 - For dates and times, pass natural language text to the tool.
 - Do not calculate ISO dates yourself.
+- Keep replies short and direct. Use one sentence when possible.
 """
 
 
