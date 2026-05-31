@@ -1,10 +1,10 @@
 import json
 from ollama import Client
 from app.services.agent.tools import create_event
-from tools_schema import TOOLS_SCHEMA
+from app.services.agent.tools_schema import TOOLS_SCHEMA
 from datetime import datetime, timedelta
-from config import OLLAMA_HOST, MODEL
-from chat_session import add_message, get_messages
+from app.services.agent.config import OLLAMA_HOST, MODEL
+from app.services.agent.chat_session import add_message, get_messages
 
 client = Client(host=OLLAMA_HOST)
 
