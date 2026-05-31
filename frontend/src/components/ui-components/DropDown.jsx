@@ -12,13 +12,13 @@
 import { HStack, Text, Menu, Button, Portal } from "@chakra-ui/react";
 
 var staticTypes = {
-    "EventCategory" : ["Gym", "Work", "Study"],
+    "EventType" : ["Gym", "Work", "Study"],
     "ResourceLevel" : ["High", "Medium", "Low"]
 }
 
-export default function DropDown({ title, type, value, onChange, placeholder, allowClear }) {
-    {/* { type } will make an api call and run the handler named { type } */}
-    var typeOptions = staticTypes[type]
+export default function DropDown({ title, type, value, onChange, placeholder, allowClear, options }) {
+    
+    const typeOptions = options ?? staticTypes[type]
 
     function handleSelect(opt) {
         onChange?.(opt)

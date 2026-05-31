@@ -97,3 +97,15 @@ export async function autoReschedule(payload) {
 
     return response.data
 }
+
+export async function fetchEventTypes(userID) {
+    const response = await api.get("/event/geteventtypes", 
+        {
+            params : {
+                user_id : userID
+            }
+        }
+    )
+
+    return response.data.event_types
+}

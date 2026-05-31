@@ -67,7 +67,6 @@ def get_default_event_type(user_id_str):
             "status_code": 500
         }
     
-
 def create_event_type(user_id_str : str, parameters : dict, name : str, colour: str, is_default: bool = False):
     """
     Creates a new event type and saves to db.
@@ -138,4 +137,22 @@ def create_event_type(user_id_str : str, parameters : dict, name : str, colour: 
     
     except Exception as e:
         db.session.rollback()
+        return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
+    
+def get_user_event_types(user_id_str : str):
+    """
+        Given a user ID fetch all their event types
+
+    """
+    try:
+
+        user_uuid = uuid.UUID(user_id_str)
+        result = EventType.get_all_by_user_id(user_uuid)
+        
+        return {"success": True, "event_types": [event_type.to_dict() for event_type in result], "status_code" : 200}
+
+    except ValueError as e:
+        return {"success": False, "error": f"Invalid data format: {str(e)}", "status_code": 400}
+    
+    except Exception as e:
         return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}

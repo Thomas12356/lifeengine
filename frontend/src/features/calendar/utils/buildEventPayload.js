@@ -12,7 +12,7 @@ export default function buildEventPayload(eventData) {
         name : eventData.eventName,
         start_time : localStart.toISOString(), // Convert local date to UTC
         end_time : localEnd.toISOString(), // Convert local date to UTC
-        event_type_id : eventData.category,
+        event_type_id : eventData.eventTypeID,
         is_moveable : eventData.isMoveable,
         parameters : {
             ideal_energy : eventData.idealEnergy,

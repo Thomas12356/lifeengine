@@ -5,10 +5,13 @@ import { LuChevronRight } from "react-icons/lu"
 import { useState } from "react"
 //import useAddEvent from "../hooks/useAddEvent"
 import { createEventType } from "@utils/eventServices"
+import { useEventTypes } from "@/context/EventTypeContext"
 
 //import buildEventPayload from "../utils/buildEventPayload"
 
 export default function CreateEventTypeMenu({ onClose, onEventTypeCreated }){
+
+    const { refreshEventTypes } = useEventTypes()
 
     const[formData, setFormData] = useState({
         eventTypeName : "",
@@ -44,7 +47,8 @@ export default function CreateEventTypeMenu({ onClose, onEventTypeCreated }){
 
             console.log(eventTypeData)
 
-            const createdEventType = await createEventType(eventTypeData)
+            await createEventType(eventTypeData)
+            await refreshEventTypes()
             onClose()
         } catch (err) {
             console.error("Failed to create event type.", {err})

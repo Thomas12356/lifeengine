@@ -3,17 +3,21 @@ import { Button, Input, Stack, Field, HStack, Collapsible, NumberInput, Checkbox
 import { LuChevronRight } from "react-icons/lu"
 import { useState } from "react"
 import useAddEvent from "../hooks/useAddEvent"
+import { useEventTypes } from "@/context/EventTypeContext"
 
 import buildEventPayload from "../utils/buildEventPayload"
 
 export default function AddEventMenu({ onClose, onEventAdded }){
 
+    const { eventTypes, getEventTypeIDByName } = useEventTypes()
+    const eventTypeNames = eventTypes.map((type) => type.name)
+
     const[formData, setFormData] = useState({
         eventName : "",
         date : "",
         startTime : "",
+        eventTypeName : "",
         endTime : "",
-        category : "",
         idealEnergy : "",
         priority : "",
         burnoutRate : "",
@@ -31,12 +35,14 @@ export default function AddEventMenu({ onClose, onEventAdded }){
 
     async function handleSave() {
 
-        const payload = buildEventPayload(formData)
+        // If type has not been selected, assigned default type, otherwise fetch type ID
+        const eventTypeID = formData.eventTypeName === ""
+            ? getEventTypeIDByName("Default")
+            : getEventTypeIDByName(formData.eventTypeName)
 
-        // DEBUG
-        console.log(payload)
+        const payload = buildEventPayload({...formData, eventTypeID}) // Include ID in payload data
         
-        const result = await sumbitEvent(payload)
+        await sumbitEvent(payload)
         
         onEventAdded()
         onClose()
@@ -84,13 +90,13 @@ export default function AddEventMenu({ onClose, onEventAdded }){
             <Field.Root>
                 <Field.Label>Event Type</Field.Label>
                 <DropDown 
-                    title="Category"
-                    type={"EventCategory"}
-                    value={formData.category}
-                    option={0}
-                    onChange={(value) => updateField("category", value)}
+                    title=""
+                    type={"EventType"}
+                    value={formData.eventTypeName}
+                    onChange={(value) => updateField("eventTypeName", value)}
                     placeholder="No Category"
                     allowClear={true}
+                    options={eventTypeNames}
                 />
             </Field.Root>
             <Collapsible.Root>

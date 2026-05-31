@@ -58,9 +58,21 @@ class EventParameter(db.Model):
     def __repr__(self):
         return f"<EventParameter: {self.id}>"
     
-
-
-
+    def to_dict(self):
+        return {
+            "id" : self.id,
+            "ideal_energy" : self.ideal_energy,
+            "burnout_rate" : self.burnout_rate,
+            "priority" : self.priority
+        }
+    
+    @classmethod
+    def find_by_id(cls, parameter_id):
+        """
+        Finds a event parameters by its ID.
+        """
+        return cls.query.get(parameter_id)
+    
 class EventType(db.Model):
     __tablename__ = 'event_types'
 
@@ -84,6 +96,26 @@ class EventType(db.Model):
 
     def __repr__(self):
         return f"<EventType: {self.name} ({self.id})>"
+    
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "user_id": str(self.user_id),
+            "event_parameter_id": str(self.event_parameter_id) if self.event_parameter_id else None,
+            "name": self.name,
+            "is_moveable": self.is_moveable,
+            "is_active": self.is_active,
+            "colour" : self.colour,
+            "availability_start" : self.availability_start,
+            "availability_end" : self.availability_end,
+            "preference_start" : self.preference_start,
+            "preference_end" : self.preference_end,
+            "parameters" : self.parameter.to_dict()
+        }
+
+    @classmethod
+    def get_all_by_user_id(cls, user_id):
+        return (cls.query.filter_by(user_id=user_id, is_active=True).all())
     
 
 
