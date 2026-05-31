@@ -5,7 +5,7 @@ from app.models import Event
 
 from app.services.event_parameter_services import create_event_parameters
 from app.services.event_type_services import get_default_event_type
-from app.utils.events_util import clean_parameters
+from app.services.utils.events_util import clean_parameters
 
 def create_event(
         user_id_str: str,

@@ -5,7 +5,7 @@ from app.models import EventType
 import os
 
 from app.services.event_parameter_services import create_event_parameters
-from app.utils.events_util import clean_parameters
+from app.services.utils.events_util import clean_parameters
 
 def get_default_event_type(user_id_str):
     try:

@@ -1,6 +1,6 @@
 from app import db
 from app.models import User
-from app.utils.auth_util import verify_password, generate_new_hash
+from app.services.utils.auth_util import verify_password, generate_new_hash
 
 
 def register_user(email, password, first_name, last_name):
