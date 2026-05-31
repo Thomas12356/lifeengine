@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Blueprint
 
-from ollama_agent import ask_llm
+from app.services.agent.ollama_agent import ask_llm
 
-app = Flask(__name__)
+agent_blueprint = Blueprint("agent", __name__, url_prefix="/api/agent")
 
-@app.post("/chat")
+@agent_blueprint.post("/chat")
 def chat():
     data = request.get_json(silent = True) or {}
 
@@ -21,5 +21,6 @@ def chat():
 
     return jsonify({
         "ok" : True,
+        "session_id" : session_id,
         "result" : result,
     })
