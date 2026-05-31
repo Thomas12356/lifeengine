@@ -156,3 +156,55 @@ def get_user_event_types(user_id_str : str):
     
     except Exception as e:
         return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
+
+def update_event_type_parameters(event_type : EventType, parameters : dict):
+    """
+        Helper function for update_event_type
+    """
+    event_parameters = event_type.parameter
+
+    if "ideal_energy" in parameters:
+        event_parameters.ideal_energy = parameters["ideal_energy"]
+
+    if "burnout_rate" in parameters:
+        event_parameters.burnout_rate = parameters["burnout_rate"]
+
+    if "priority" in parameters:
+        event_parameters.priority = parameters["priority"]
+
+
+def update_event_type(event_type_id_str : str, data: dict):
+    """
+        Given an event ID, update its values using data
+    """
+
+    try:
+
+        event_type_id = uuid.UUID(event_type_id_str)
+        user_id = uuid.UUID(data["user_id"])
+
+        event_type = EventType.get_by_id(
+            user_id=user_id,
+            event_type_id=event_type_id
+        )
+
+        if not event_type:
+            return {"success": False, "error": "Event type not found", "status_code": 404}
+        
+        if "colour" in data:
+            event_type.colour = data["colour"]
+
+        if "parameters" in data:
+            update_event_type_parameters(event_type, data["parameters"])
+
+        db.session.commit()
+
+        return {"success": True, "event_type": event_type.to_dict(), "status_code": 200}
+    
+    except ValueError as e:
+        return {"success": False, "error": f"Invalid data format: {str(e)}", "status_code": 400}
+    
+    except Exception as e:
+        return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
+
+        

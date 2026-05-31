@@ -203,3 +203,18 @@ def get_user_event_types():
             "message": f"User {user_id_str} event types fetched.",
             "event_types" : result["event_types"]
         }), result["status_code"]
+    
+@event_blueprint.route("/updateeventtype", methods=["PATCH"])
+def update_event_type():
+
+    data = request.get_json()
+    event_type_id_str = data["event_type_id"]
+
+    result = event_type_services.update_event_type(event_type_id_str=event_type_id_str, data=data)
+
+    if not result["success"]:
+        return jsonify({"error": result["error"]}), result["status_code"]
+    else:
+        return jsonify({
+            "message": f"Event {event_type_id_str} updated."
+        }), result["status_code"]

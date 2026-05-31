@@ -117,6 +117,10 @@ class EventType(db.Model):
     def get_all_by_user_id(cls, user_id):
         return (cls.query.filter_by(user_id=user_id, is_active=True).all())
     
+    @classmethod
+    def get_by_id(cls, event_type_id, user_id):
+        return (cls.query.filter_by(user_id=user_id, id=event_type_id).first())
+    
 
 
 
