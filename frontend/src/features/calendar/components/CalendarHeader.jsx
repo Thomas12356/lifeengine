@@ -24,10 +24,10 @@ export default function CalendarHeader({ selectedDate }) {
     const days = getWeekDays(selectedDate); // Fetch the dates of the current week being viewed based on the selected date
 
     return (
-        <HStack w="100%" spacing={0} borderBottom="2px solid" borderColor="#94949442" pb={5}>
+        <HStack w="100%" borderBottom="2px solid" borderColor="#94949442" pb={4}>
             <Box w="60px"/>
             {days.map((day, index) => ( // Loop through the days of the week and render a header cell for each day
-                <VStack key={index} flex="1">
+                <VStack key={index} flex="1" lineHeight={1}>
                     <Text fontWeight="medium" fontSize="sm" color="#3a3a3a">
                         {day.toLocaleString('en-US', { weekday: 'short' })}
                     </Text>

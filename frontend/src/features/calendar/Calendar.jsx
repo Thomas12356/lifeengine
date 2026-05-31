@@ -5,6 +5,7 @@ import CalendarBody from "@/features/calendar/components/CalendarBody"
 import { useState, useEffect } from "react"
 import { startOfWeek, endOfWeek } from "date-fns"
 import { fetchEventsByRange, deleteEvent } from "@utils/eventServices"
+import { WidgetBox } from "@ui-components/WidgetBox"
 
 export default function Calendar() {
 
@@ -52,7 +53,7 @@ export default function Calendar() {
     //console.log("ALL EVENTS:", allEvents)
 
     return (
-        <Box h="100%" border="1px solid" borderColor="gray.200" borderRadius="xl" p={25} bg="white" overflow="hidden">
+        <Box h="100%" border="1px solid" borderColor="gray.200" borderRadius="widgetRadii" p={5} bg="white" overflowY="scroll">
             <VStack h="100%" spacing={0} align="stretch">
                 <CalendarMenu 
                     selectedDate={selectedDate}

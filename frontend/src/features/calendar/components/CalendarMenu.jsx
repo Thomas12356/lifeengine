@@ -20,7 +20,8 @@ export default function CalendarMenu( { selectedDate, setSelectedDate, onEventAd
             align="center"
             justify="space-between"
             px={4}
-            py={3}
+            pb={2}
+
         >
             <DateSelectMenu selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
             <Flex gap={2}>
