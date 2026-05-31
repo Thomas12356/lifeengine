@@ -97,6 +97,7 @@ def create_event_type():
         user_id_str=data["user_id"],
         parameters=data["parameters"],
         name=data["name"],
+        colour=data["colour"]
     )
 
     if not result["success"]:

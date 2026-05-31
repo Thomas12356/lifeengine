@@ -67,7 +67,7 @@ def get_default_event_type(user_id_str):
         }
     
 
-def create_event_type(user_id_str : str, parameters : dict, name : str, is_default: bool = False):
+def create_event_type(user_id_str : str, parameters : dict, name : str, colour: str, is_default: bool = False):
     """
     Creates a new event type and saves to db.
     """
@@ -123,7 +123,8 @@ def create_event_type(user_id_str : str, parameters : dict, name : str, is_defau
             user_id = user_uuid,
             event_parameter_id = parameters_uuid,
             name = name,
-            created_at = created_at
+            created_at = created_at,
+            colour = colour
         )
 
         db.session.add(new_event_type)
