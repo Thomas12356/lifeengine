@@ -85,6 +85,25 @@ class EventType(db.Model):
     def __repr__(self):
         return f"<EventType: {self.name} ({self.id})>"
     
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "user_id": str(self.user_id),
+            "event_parameter_id": str(self.event_parameter_id) if self.event_parameter_id else None,
+            "name": self.name,
+            "is_moveable": self.is_moveable,
+            "is_active": self.is_active,
+            "colour" : self.colour,
+            "availability_start" : self.availability_start,
+            "availability_end" : self.availability_end,
+            "preference_start" : self.preference_start,
+            "preference_end" : self.preference_end
+        }
+
+    @classmethod
+    def get_all_by_user_id(cls, user_id):
+        return (cls.query.filter_by(user_id=user_id, is_active=True).all())
+    
 
 
 

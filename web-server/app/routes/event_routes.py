@@ -61,9 +61,6 @@ def delete_event():
         "message" : "Event deleted successfully."
     }), 200
 
-
-
-
 @event_blueprint.route("/createparameters", methods=['POST'])
 def create_parameters():
 
@@ -82,7 +79,6 @@ def create_parameters():
         "message": "Event parameters created successfully", 
         "event_parameters_id": result["event_parameters_id"]
     }), 201
-
 
 @event_blueprint.route("/createeventtype", methods=["POST"])
 def create_event_type():
@@ -154,7 +150,6 @@ def get_user_events_by_range():
         "events": result["events"]
     }), 200
 
-
 @event_blueprint.route("getevents/byday", methods={"GET"})
 def get_user_events_by_day():
     user_id_str = request.args.get("user_id")
@@ -193,8 +188,18 @@ def reschedule_event():
         return jsonify({
             "message": f"Events {data['event_id']} rescheduled",
         }), result["status_code"]
+        
+@event_blueprint.route("/geteventtypes", methods=["GET"])
+def get_user_event_types():
+    
+    user_id_str = request.args.get("user_id")
 
-        
-    
-        
-    
+    result = event_type_services.get_user_event_types(user_id_str=user_id_str)
+
+    if not result["success"]:
+        return jsonify({"error": result["error"]}), result["status_code"]
+    else:
+        return jsonify({
+            "message": f"User {user_id_str} event types fetched.",
+            "event_types" : result["event_types"]
+        }), result["status_code"]
