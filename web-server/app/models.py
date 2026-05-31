@@ -73,6 +73,7 @@ class EventParameter(db.Model):
         """
         return cls.query.get(parameter_id)
     
+    
 class EventType(db.Model):
     __tablename__ = 'event_types'
 
@@ -85,10 +86,10 @@ class EventType(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     colour = db.Column(db.String, nullable=False)
     is_moveable = db.Column(db.Boolean, default=False)
-    availability_start = db.Column(db.DateTime(timezone=True))
-    availability_end = db.Column(db.DateTime(timezone=True))
-    preference_start = db.Column(db.DateTime(timezone=True))
-    preference_end = db.Column(db.DateTime(timezone=True))
+    availability_start = db.Column(db.Time(timezone=True))
+    availability_end = db.Column(db.Time(timezone=True))
+    preference_start = db.Column(db.Time(timezone=True))
+    preference_end = db.Column(db.Time(timezone=True))
 
     # ----- Relationships -----
     user = db.relationship('User', backref=db.backref('event_types', lazy=True, cascade="all, delete-orphan"))
@@ -220,3 +221,15 @@ class UserPreferences(db.Model):
 
     def __repr__(self):
         return f"<UserPreferences: {self.name} ({self.id})>"
+
+    @classmethod
+    def get_user_preferences(cls, user_id):
+        return (cls.query.filter_by(user_id=user_id)).first()
+    
+    def to_dict(self):
+        return {
+            "id" : self.id,
+            "user_id" : self.user_id,
+            "wakeup_time" : self.wakeup_time,
+            "bed_time" : self.bed_time
+        }
