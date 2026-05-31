@@ -3,7 +3,7 @@ import { WidgetBox } from "@ui-components/WidgetBox";
 import DropDown from "@ui-components/DropDown"
 import { NumberInput } from "@chakra-ui/react";
 import ColourPicker from "@/components/ui-components/ColourPicker";
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useEventTypes } from "@/context/EventTypeContext";
 import { updateEventType } from "@/utils/eventServices";
 
@@ -11,6 +11,7 @@ export default function EventTypesMenu({...props}){
 
     const { eventTypes, getEventTypeByName, refreshEventTypes } = useEventTypes()
     const eventTypeNames = eventTypes.map((type) => type.name)
+    const hasInitialEventType = useRef(false)
 
     const [formData, setFormData] = useState({
         eventTypeName: "", // We need to read in event types IDs and map to names
@@ -22,21 +23,23 @@ export default function EventTypesMenu({...props}){
         preferenceWindow: [0, 1440],
     });
 
-    useEffect(() => { // On load set selected event type to Default
-        if (eventTypes.length === 0) return
-
-        const defaultEventType =
-            eventTypes.find((type) => type.name === "Default")
-
-        updateField("eventTypeName", defaultEventType.name)
-    }, [eventTypes])
-
     function updateField(field, value) {
         setFormData((prev) => ({
             ...prev,
             [field]: value,
         }));
     }
+
+    useEffect(() => { // On load set selected event type to Default
+        if (hasInitialEventType.current) return
+        if (eventTypes.length === 0) return
+
+        const defaultEventType =
+            eventTypes.find((type) => type.name === "Default")
+
+        updateField("eventTypeName", defaultEventType.name)
+        hasInitialEventType.current = true
+    }, [eventTypes])
 
     // NOTE : Slider operates on minutes since 00:00, so we need to convert minutes into HH:MM
     function minutesToTime(minutes) {
