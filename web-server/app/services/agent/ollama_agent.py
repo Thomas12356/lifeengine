@@ -1,6 +1,6 @@
 import json
 from ollama import Client
-from app.services.agent.tools import create_event
+from app.services.agent.tools import create_event_tool
 from app.services.agent.tools_schema import TOOLS_SCHEMA
 from app.services.agent.config import OLLAMA_HOST, MODEL
 from app.services.agent.chat_session import add_message, get_messages
@@ -10,7 +10,7 @@ client = Client(host=OLLAMA_HOST)
 
 
 AVAILABLE_TOOLS = {
-    "create_event": create_event,
+    "create_event_tool": create_event_tool,
 }
 
 
@@ -85,11 +85,12 @@ def run_tool(function_name: str, function_args: dict, runtime_context: dict | No
     runtime_context = runtime_context or {}
 
     try:
-        if function_name == "create_event":
+        if function_name == "create_event_tool":
             function_args = {
                 **function_args,
                 "timezone" : runtime_context.get("timezone", "UTC"),
                 "base_time" : runtime_context.get("base_time"),
+                "user_id" : runtime_context.get("user_id")
             }
         return tool_function(**function_args)
     
@@ -128,7 +129,7 @@ def build_summary(results):
         
     return "Done."
     
-def ask_llm(user_message: str, session_id: str, timezone: str = "UTC", base_time=None):
+def ask_llm(user_id: str, user_message: str, session_id: str, timezone: str = "UTC", base_time=None):
     message_history = get_messages(session_id)
 
     messages = [
@@ -170,6 +171,7 @@ def ask_llm(user_message: str, session_id: str, timezone: str = "UTC", base_time
     log = []
 
     runtime_context = {
+        "user_id" : user_id,
         "timezone" : timezone,
         "base_time" : base_time,
     }

@@ -165,7 +165,7 @@ def get_user_events_by_day(user_id_str : str, date_str : str):
                     Event.start_time >= day_start,
                     Event.end_time <= day_end,
                     Event.is_active == True
-            ).all()
+            ).order_by(Event.start_time.asc()).all()
         )
 
         if not events:

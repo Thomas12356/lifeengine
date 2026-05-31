@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 import dateparser
+from uuid import UUID
+from app.services.event_services import create_event
 
 UTC = ZoneInfo("UTC")
 
@@ -70,10 +72,7 @@ def parse_event_datetime(timezone, base_time, date_text, start_text, end_text=No
     
 
 
-
-
-
-def create_event(title, date_text, start_text, end_text, timezone="UTC", base_time=None):
+def create_event_tool(user_id, title, date_text, start_text, end_text, timezone="UTC", base_time=None):
     parsed = parse_event_datetime(
         timezone=timezone,
         base_time=base_time,
@@ -82,22 +81,35 @@ def create_event(title, date_text, start_text, end_text, timezone="UTC", base_ti
         end_text=end_text,
     )
 
+    event = {
+        "title": title,
+        "user_id" : user_id,
+        "start": parsed["start_utc"].isoformat(),
+        "end": parsed["end_utc"].isoformat(),
+        "start_local": parsed["start_local"].isoformat(),
+        "end_local": parsed["end_local"].isoformat(),
+        "timezone": timezone,
+    }
+
     log = {
         "ok": True,
         "message": f"Event '{title}' created.",
-        "event": {
-            "title": title,
-            "start": parsed["start_utc"].isoformat(),
-            "end": parsed["end_utc"].isoformat(),
-            "start_local": parsed["start_local"].isoformat(),
-            "end_local": parsed["end_local"].isoformat(),
-            "timezone": timezone,
-        },
+        "event": event,
     }
     print(log)
+
+    result = create_event(user_id_str=event["user_id"], name=event["title"], start_time_str=event["start"], end_time_str=event["end"])
+    if not result["success"]:
+        return {
+            "ok": False,
+            "message": result.get("error", "Could not create event."),
+            "status_code": result.get("status_code", 500),
+        }
 
     return {
         "ok": True,
         "message": f"Event '{title}' created.",
-        "event": log,
+        "event": {
+            "id": result["event_id"],
+        },
     }

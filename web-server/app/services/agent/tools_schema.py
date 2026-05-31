@@ -2,7 +2,7 @@ TOOLS_SCHEMA = [
     {
         "type": "function",
         "function": {
-            "name": "create_event",
+            "name": "create_event_tool",
             "description": (
                 "Create a new calendar event. Use this when the user wants to add, create, schedule, or put something in their calendar."
             ),

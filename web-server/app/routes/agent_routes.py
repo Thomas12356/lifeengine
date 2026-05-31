@@ -11,6 +11,8 @@ def chat():
     data = request.get_json(silent = True) or {}
 
     user_message = data.get("message")
+    user_id = data.get("user_id")
+    print(user_id)
     timezone = data.get("timezone")
     session_id = data.get("session_id")
     
@@ -19,6 +21,12 @@ def chat():
         return jsonify({
             "ok" : False,
             "error" : "Missing message!"
+        }), 400
+    
+    if not user_id:
+        return jsonify({
+            "ok" : False,
+            "error" : "Missing user_id!"
         }), 400
 
     if not session_id:
@@ -34,6 +42,7 @@ def chat():
     base_time = datetime.now(user_timezone)
     
     result = ask_llm(
+        user_id=user_id,
         user_message=user_message,
         session_id=session_id,
         timezone=timezone,

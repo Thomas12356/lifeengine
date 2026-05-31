@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import api from "@/api/api";
+import { useHomepage } from "@/context/HomepageContext";
 
 // Dummy API data
 import { chatHistory as dummyChatHistory } from "../util/chatService";
@@ -38,6 +39,7 @@ function getAgentReply(data){
 export default function useChatHistory(chat_session_id) {
     const [chatHistory, setChatHistory] = useState([])
     const [isLoading, setIsLoading] = useState(false);
+    const { refreshHomepageEvents } = useHomepage()
 
     useEffect(() => {
         if (!chat_session_id) return
@@ -64,11 +66,11 @@ export default function useChatHistory(chat_session_id) {
         ]);
 
         setIsLoading(true);
-
         try{
             const response = await api.post("/agent/chat", {
                 session_id: chat_session_id,
                 message: trimmedMessage,
+                user_id : JSON.parse(localStorage.getItem("user")).id,
                 timezone: getTimezone(),
             });
 
@@ -85,6 +87,7 @@ export default function useChatHistory(chat_session_id) {
                 agentMessage,
 
             ]);
+            refreshHomepageEvents()
         } catch (error){
             const errorMessage = 
             error.response?.data?.error || 
