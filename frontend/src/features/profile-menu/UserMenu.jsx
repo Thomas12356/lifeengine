@@ -3,6 +3,7 @@ import { Text, Field, Input, Stack } from "@chakra-ui/react"
 import { WidgetBox } from "@ui-components/WidgetBox";
 import { LuSunrise } from "react-icons/lu";
 import { RiMoonClearLine } from "react-icons/ri";
+import { useState, useEffect } from "react"
 
 
 export default function UserMenu() {
@@ -11,6 +12,22 @@ export default function UserMenu() {
 
     const dummyWakeup = "07:00"
     const dummySleep = "23:00"
+
+    const [formData, setFormData] = useState({
+        wakeupTime : dummyWakeup,
+        bedTime : dummySleep
+    })
+
+    function updateField(field, value) {
+        setFormData((prev) => ({
+            ...prev,
+            [field] : value
+        }))
+    }
+
+    useEffect(() => { // Sumbit on change, will need review before backend wiring
+        console.log("User preferences changed:", formData);
+    }, [formData]);
 
     return (
         <WidgetBox>
@@ -29,9 +46,10 @@ export default function UserMenu() {
                         Ideal wakeup time
                         <LuSunrise/>
                     </Field.Label>
-                    <Input 
+                    <Input
                         type="time"
-                        value={dummyWakeup}
+                        value={formData.wakeupTime}
+                        onChange={(e) => updateField("wakeupTime", e.target.value)}
                     />
                 </Field.Root>
                 <Field.Root>
@@ -41,7 +59,8 @@ export default function UserMenu() {
                     </Field.Label>
                     <Input 
                         type="time"
-                        value={dummySleep}
+                        value={formData.bedTime}
+                        onChange={(e) => updateField("bedTime", e.target.value)}
                     />
                 </Field.Root>
             </Stack>

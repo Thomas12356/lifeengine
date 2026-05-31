@@ -8,7 +8,7 @@ import { useState } from "react"
 export default function EventPreferenceWidget({...props}){
 
     const [formData, setFormData] = useState({
-        eventTypeID: 1,
+        eventTypeID: 1, // We need to read in event types IDs and map to names
         labelColour: "#3182CE",
         idealEnergy: "",
         burnoutRate: "",
