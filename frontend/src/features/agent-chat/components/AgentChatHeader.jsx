@@ -23,8 +23,8 @@ export default function AgentChatHeader() {
             <Text textStyle="headingSolid">Ellie Agent</Text>
 
             <HStack alignItems="end" gap={2} alignSelf="flex-end">
-                <Link textStyle="linkText">Action history</Link>
-                <Link textStyle="linkText">Customise Ellie</Link>
+                {/* <Link textStyle="linkText">Action history</Link>
+                <Link textStyle="linkText">Customise Ellie</Link> */}
             </HStack>
         </HStack>
     )
