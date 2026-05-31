@@ -77,7 +77,7 @@ const EventLayer = ({ events, onEventDelete, onRescheduleSuccess }) => {
                                     left={`${left}%`} // Position from the left based on event weekday
                                     w={`${width}%`}
                                     h={`${height}%`}
-                                    bg={event.colour || "blue.500"}
+                                    bg={"blue.500"}
                                     color="white"
                                     px={2}
                                     py={1}

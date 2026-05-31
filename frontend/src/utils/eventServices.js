@@ -16,8 +16,7 @@ export async function fetchAllEvents(userID) {
         id : event.id,
         title : event.name,
         start : event.start_time,
-        end : event.end_time,
-        colour : event.colour
+        end : event.end_time
     }))
 
     return calendarEvents
@@ -79,8 +78,7 @@ export async function fetchEventsByRange(userID, rangeStart, rangeEnd) {
         title : event.name,
         start : event.start_time,
         end : event.end_time,
-        is_moveable : event.is_moveable,
-        colour : event.colour
+        is_moveable : event.is_moveable
     }))
 
     return calendarEvents
