@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import { fetchEventTypes } from "@/utils/eventServices";
+import { useAuth } from "./AuthContext";
 
 // Initialise event type context
 const EventTypeContext = createContext(null);
@@ -7,16 +8,13 @@ const EventTypeContext = createContext(null);
 export function EventTypeProvider({ children }) {
     // Initialise state values
     const [eventTypes, setEventTypes] = useState([])
-
-    // Fetch logged-in user from local storage
-    // Replace with fetch from AuthContext
-    const user = JSON.parse(localStorage.getItem("user"))
+    const { user } = useAuth()
 
     async function refreshEventTypes() {
         if (!user?.id) return
 
         try {
-            const eventTypes = await fetchEventTypes(user.id)
+            const eventTypes = await fetchEventTypes(user?.id)
             setEventTypes(eventTypes)
         } catch (err) {
             console.log("Failed to fetch event types", err)
@@ -68,8 +66,10 @@ export function EventTypeProvider({ children }) {
 
     // Refresh event types on mount
     useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user"))
+        if (!user?.id) return
         refreshEventTypes()
-    }, [])
+    }, [user?.id])
 
     // DEBUG - REMOVE LATER
     //useEffect(() => {
