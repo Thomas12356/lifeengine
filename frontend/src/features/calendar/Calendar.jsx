@@ -63,9 +63,9 @@ export default function Calendar() {
 
     return (
         <Box
+            boxShadow={"md"}
             h="100%"
             minH="0"
-            border="1px solid"
             borderColor="gray.200"
             borderRadius="widgetRadii"
             p={{ base: 3, md: 5 }}
