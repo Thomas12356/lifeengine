@@ -9,11 +9,13 @@ from ..dto.mapper import map_event, map_preferences, convert_slot_index
 from ..config import SCHEDULE_RESOLUTION, SLOT_SIZE
 from ..energy_predictor import get_baseline_array
 from ..scheduler import SchedulerGA
+from dataclasses import replace
 
 def auto_reschedule(
         event_to_reschedule : tuple,
         day_array : list[tuple],
-        user_preferences_dto : dbUserPreferenceInput
+        user_preferences_dto : dbUserPreferenceInput,
+        same_day : bool
     ):
     
     events_to_schedule = [] # Initalise array to feed into GA
@@ -23,6 +25,11 @@ def auto_reschedule(
     (event_dto, event_type_dto) = event_to_reschedule
     reschedule_id = event_dto.id # Record ID so we can fetch from GA result and add to array
     events_to_schedule.append(map_event(event_dto=event_dto, event_type_dto=event_type_dto))
+
+    if same_day: # If the event requested for reschedule is today, block all other events from moving
+        for index, event in enumerate(events_to_schedule):
+            if event.event_id != reschedule_id:
+                events_to_schedule[index] = replace(event, is_moveable=False)
 
     # Map wakeup and bed times to slot indexes
     WAKEUP_SLOT, BED_TIME_SLOT = map_preferences(user_preferences_dto)
@@ -48,9 +55,6 @@ def auto_reschedule(
         
     ) # Initalise new GA instance
     result = scheduler.run() # Run the scheduler
-
-    result.visualise()
-
     return result
 
 

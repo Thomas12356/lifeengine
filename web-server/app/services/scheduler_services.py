@@ -5,7 +5,8 @@ from app.services.schedule_optimiser.dto.input_dto import dbEventInput, dbEventT
 from app.services.schedule_optimiser.dto.mapper import convert_slot_index
 from app.services.schedule_optimiser.tasks.auto_reschedule import auto_reschedule
 from app.services import event_type_services, event_services
-import uuid, datetime
+from datetime import datetime
+import uuid
 
 def auto_reschedule_event(event_id_str):
     """
@@ -17,6 +18,12 @@ def auto_reschedule_event(event_id_str):
     user_id = event["user_id"] # Fetch user ID, in future replace with JWT fetch
 
     event_date = event["start_time"][:10]
+
+    same_day = False
+    today_date = datetime.now().date().isoformat()
+    print(event_date, today_date)
+    if today_date == event_date:
+        same_day = True
 
     event_to_reschedule = None
     day_events = (event_services.get_user_events_by_day(user_id, event["start_time"]))["events"]
@@ -73,7 +80,7 @@ def auto_reschedule_event(event_id_str):
         bed_time=user_preferences["bed_time"]
     )
 
-    result = auto_reschedule(event_to_reschedule, day_array, user_preferences_dto)
+    result = auto_reschedule(event_to_reschedule, day_array, user_preferences_dto, same_day=same_day)
     new_schedule = []
     for event in result.fetch_events():
         new_schedule.append(
