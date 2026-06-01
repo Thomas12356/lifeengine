@@ -1,4 +1,6 @@
 
+import { levelToFloat } from "@/utils/parametersHelper"
+
 export default function buildEventPayload(eventData) {
 
     // Build local date object using form data
@@ -15,9 +17,9 @@ export default function buildEventPayload(eventData) {
         event_type_id : eventData.eventTypeID,
         is_moveable : eventData.isMoveable,
         parameters : {
-            ideal_energy : eventData.idealEnergy,
+            ideal_energy : levelToFloat(eventData.idealEnergy),
             priority : eventData.priority,
-            burnout_rate : eventData.burnoutRate
+            burnout_rate : levelToFloat(eventData.burnoutRate)
         }
     }
 

@@ -6,6 +6,7 @@ import { useState } from "react"
 //import useAddEvent from "../hooks/useAddEvent"
 import { createEventType } from "@utils/eventServices"
 import { useEventTypes } from "@/context/EventTypeContext"
+import { levelToFloat } from "@/utils/parametersHelper"
 
 //import buildEventPayload from "../utils/buildEventPayload"
 
@@ -39,8 +40,8 @@ export default function CreateEventTypeMenu({ onClose, onEventTypeCreated }){
                 name : formData.eventTypeName,
                 colour : formData.colour,   
                 parameters : {
-                    ideal_energy : formData.idealEnergy,
-                    burnout_rate : formData.burnoutRate,
+                    ideal_energy : levelToFloat(formData.idealEnergy),
+                    burnout_rate : levelToFloat(formData.burnoutRate),
                     priority : formData.priority,     
                 }
             }

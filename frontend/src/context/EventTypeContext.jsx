@@ -72,9 +72,9 @@ export function EventTypeProvider({ children }) {
     }, [])
 
     // DEBUG - REMOVE LATER
-    useEffect(() => {
-        console.log(eventTypes)
-    }, [eventTypes])
+    //useEffect(() => {
+    //    console.log(eventTypes)
+    //}, [eventTypes])
 
     const value = {
         eventTypes,

@@ -109,3 +109,9 @@ export async function fetchEventTypes(userID) {
 
     return response.data.event_types
 }
+
+export async function updateEventType(payload) {
+    const response = await api.patch("event/updateeventtype", payload)
+
+    return response.data
+}

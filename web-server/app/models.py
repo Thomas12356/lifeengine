@@ -73,6 +73,7 @@ class EventParameter(db.Model):
         """
         return cls.query.get(parameter_id)
     
+    
 class EventType(db.Model):
     __tablename__ = 'event_types'
 
@@ -85,10 +86,10 @@ class EventType(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     colour = db.Column(db.String, nullable=False)
     is_moveable = db.Column(db.Boolean, default=False)
-    availability_start = db.Column(db.DateTime(timezone=True))
-    availability_end = db.Column(db.DateTime(timezone=True))
-    preference_start = db.Column(db.DateTime(timezone=True))
-    preference_end = db.Column(db.DateTime(timezone=True))
+    availability_start = db.Column(db.Time(timezone=True))
+    availability_end = db.Column(db.Time(timezone=True))
+    preference_start = db.Column(db.Time(timezone=True))
+    preference_end = db.Column(db.Time(timezone=True))
 
     # ----- Relationships -----
     user = db.relationship('User', backref=db.backref('event_types', lazy=True, cascade="all, delete-orphan"))
@@ -106,16 +107,20 @@ class EventType(db.Model):
             "is_moveable": self.is_moveable,
             "is_active": self.is_active,
             "colour" : self.colour,
-            "availability_start" : self.availability_start,
-            "availability_end" : self.availability_end,
-            "preference_start" : self.preference_start,
-            "preference_end" : self.preference_end,
+            "availability_start": self.availability_start.strftime("%H:%M") if self.availability_start else None,
+            "availability_end": self.availability_end.strftime("%H:%M") if self.availability_end else None,
+            "preference_start": self.preference_start.strftime("%H:%M") if self.preference_start else None,
+            "preference_end": self.preference_end.strftime("%H:%M") if self.preference_end else None,
             "parameters" : self.parameter.to_dict()
         }
 
     @classmethod
     def get_all_by_user_id(cls, user_id):
         return (cls.query.filter_by(user_id=user_id, is_active=True).all())
+    
+    @classmethod
+    def get_by_id(cls, event_type_id, user_id):
+        return (cls.query.filter_by(user_id=user_id, id=event_type_id).first())
     
 
 
@@ -216,3 +221,15 @@ class UserPreferences(db.Model):
 
     def __repr__(self):
         return f"<UserPreferences: {self.name} ({self.id})>"
+
+    @classmethod
+    def get_user_preferences(cls, user_id):
+        return (cls.query.filter_by(user_id=user_id)).first()
+    
+    def to_dict(self):
+        return {
+            "id" : self.id,
+            "user_id" : self.user_id,
+            "wakeup_time" : self.wakeup_time,
+            "bed_time" : self.bed_time
+        }

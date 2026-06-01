@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from app import db
-from app.models import EventType
+from app.models import EventType, EventParameter, UserPreferences
 import os
 
 from app.services.event_parameter_services import create_event_parameters
@@ -36,12 +36,18 @@ def get_default_event_type(user_id_str):
 
         parameter_uuid = uuid.UUID(result["event_parameters_id"])
 
+        user_preferences = UserPreferences.get_user_preferences(user_uuid)
+
         default_event_type = EventType(
             user_id=user_uuid,
             event_parameter_id=parameter_uuid,
             name="Default",
             created_at=datetime.now(),
-            colour=os.environ.get("DEFAULT_COLOUR")
+            colour=os.environ.get("DEFAULT_COLOUR"),
+            availability_start = user_preferences.wakeup_time,
+            availability_end = user_preferences.bed_time,
+            preference_start = user_preferences.wakeup_time,
+            preference_end = user_preferences.bed_time
         )
 
         db.session.add(default_event_type)
@@ -117,6 +123,8 @@ def create_event_type(user_id_str : str, parameters : dict, name : str, colour: 
             
             parameters_uuid = uuid.UUID(default_result["event_parameter_id"])
 
+        user_preferences = UserPreferences.get_user_preferences(user_uuid)
+
         created_at = datetime.now()
 
         new_event_type = EventType(
@@ -124,7 +132,12 @@ def create_event_type(user_id_str : str, parameters : dict, name : str, colour: 
             event_parameter_id = parameters_uuid,
             name = name,
             created_at = created_at,
-            colour = colour
+            colour = colour,
+            availability_start = user_preferences.wakeup_time,
+            availability_end = user_preferences.bed_time,
+            preference_start = user_preferences.wakeup_time,
+            preference_end = user_preferences.bed_time
+
         )
 
         db.session.add(new_event_type)
@@ -156,3 +169,83 @@ def get_user_event_types(user_id_str : str):
     
     except Exception as e:
         return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
+
+def update_event_type_parameters(event_type : EventType, parameters : dict, user_id_str : str):
+    """
+        Helper function for update_event_type
+    """
+    event_parameters = event_type.parameter
+
+    default = get_default_event_type(user_id_str=user_id_str)
+    default_id = default["event_parameter_id"]
+    
+    if str(event_parameters.id) == str(default_id): # Check if event type is assigned default params
+        new_params = EventParameter( # If so create new row so we dont overwrite Defaults params
+            ideal_energy=parameters["ideal_energy"],
+            burnout_rate=parameters["burnout_rate"],
+            priority=parameters["priority"],
+        )
+
+        db.session.add(new_params)
+        db.session.flush()
+
+        event_type.event_parameter_id = new_params.id
+        event_type.parameter = new_params
+        event_parameters = event_type.parameter
+
+    if "ideal_energy" in parameters:
+        event_parameters.ideal_energy = parameters["ideal_energy"]
+
+    if "burnout_rate" in parameters:
+        event_parameters.burnout_rate = parameters["burnout_rate"]
+
+    if "priority" in parameters:
+        event_parameters.priority = parameters["priority"]
+
+def update_event_type(event_type_id_str : str, data: dict):
+    """
+        Given an event ID, update its values using data
+    """
+
+    try:
+
+        event_type_id = uuid.UUID(event_type_id_str)
+        user_id = uuid.UUID(data["user_id"])
+
+        event_type = EventType.get_by_id(
+            user_id=user_id,
+            event_type_id=event_type_id
+        )
+
+        if not event_type:
+            return {"success": False, "error": "Event type not found", "status_code": 404}
+        
+        if "colour" in data:
+            event_type.colour = data["colour"]
+
+        if "parameters" in data:
+            update_event_type_parameters(event_type, data["parameters"], data["user_id"])
+
+        if "availability_start" in data:
+            event_type.availability_start = data["availability_start"]
+
+        if "availability_end" in data:
+            event_type.availability_end = data["availability_end"]
+
+        if "preference_start" in data:
+            event_type.preference_start = data["preference_start"]
+
+        if "preference_end" in data:
+            event_type.preference_end = data["preference_end"]
+
+        db.session.commit()
+
+        return {"success": True, "event_type": event_type.to_dict(), "status_code": 200}
+    
+    except ValueError as e:
+        return {"success": False, "error": f"Invalid data format: {str(e)}", "status_code": 400}
+    
+    except Exception as e:
+        return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
+
+        

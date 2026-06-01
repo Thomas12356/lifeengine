@@ -9,7 +9,7 @@ import buildEventPayload from "../utils/buildEventPayload"
 
 export default function AddEventMenu({ onClose, onEventAdded }){
 
-    const { eventTypes, getEventTypeIDByName } = useEventTypes()
+    const { eventTypes, getEventTypeIDByName, refreshEventTypes } = useEventTypes()
     const eventTypeNames = eventTypes.map((type) => type.name)
 
     const[formData, setFormData] = useState({
@@ -45,6 +45,7 @@ export default function AddEventMenu({ onClose, onEventAdded }){
         await sumbitEvent(payload)
         
         onEventAdded()
+        await refreshEventTypes()
         onClose()
     }
 
