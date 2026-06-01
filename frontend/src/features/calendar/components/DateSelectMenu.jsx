@@ -12,7 +12,7 @@
 /* --- IMPORTS ---*/
 import { DatePicker } from '@ark-ui/react/date-picker'
 import { Portal } from '@ark-ui/react/portal'
-import { Text, HStack, Box, Button } from '@chakra-ui/react'
+import { Text, HStack, Box, Button, Center } from '@chakra-ui/react'
 import { LuChevronDown, LuChevronLeft, LuChevronRight } from 'react-icons/lu'
 import { useArkCalendar } from "../hooks/useArkCalendar.js"
 
@@ -60,10 +60,11 @@ export default function DateSelectMenu({ selectedDate, setSelectedDate }) {
               background: "white",
               border: "1px solid #E2E8F0",
               borderRadius: "12px",
-              padding: "12px",
+              padding: "14px",
               boxShadow: "0 12px 30px rgba(0, 0, 0, 0.12)",
               zIndex: 50,
-              userSelect: "none"
+              userSelect: "none",
+              minWidth: "280px",
             }}
           >
             <DatePicker.View view="day">
@@ -75,13 +76,16 @@ export default function DateSelectMenu({ selectedDate, setSelectedDate }) {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            marginBottom: "8px",
+                            marginBottom: "12px",
+                            paddingBottom: "8px",
+                            borderBottom: "1px solid #EDF2F7",
                         }}
                     >
                         <DatePicker.PrevTrigger
                             style={{
                                 padding: "6px",
                                 borderRadius: "8px",
+                                cursor: "pointer",
                             }}
                         >
                             <LuChevronLeft />
@@ -91,6 +95,7 @@ export default function DateSelectMenu({ selectedDate, setSelectedDate }) {
                             style={{
                                 fontWeight: 600,
                                 fontSize: "14px",
+                                cursor: "pointer",
                             }}
                         >
                             <DatePicker.RangeText />
@@ -100,21 +105,23 @@ export default function DateSelectMenu({ selectedDate, setSelectedDate }) {
                             style={{
                                 padding: "6px",
                                 borderRadius: "8px",
+                                cursor: "pointer",
                             }}
                         >
                             <LuChevronRight />
                         </DatePicker.NextTrigger>
                     </DatePicker.ViewControl>
-                    <DatePicker.Table style={{
+                    <DatePicker.Table 
+                      style={{
                         width: "100%",
                         borderCollapse: "separate",
-                        borderSpacing: "4px",
+                        borderSpacing: "6px",
                     }}>
                       <DatePicker.TableHead>
                         <DatePicker.TableRow>
                           {datePicker.weekDays.map((weekDay, id) => (
                             <DatePicker.TableHeader key={id}>
-                              <Text fontWeight={"medium"}>{weekDay.short}</Text>
+                              <Text fontSize="xs" fontWeight={"medium"} textAlign="center">{weekDay.short}</Text>
                             </DatePicker.TableHeader>
                           ))}
                         </DatePicker.TableRow>
@@ -124,7 +131,16 @@ export default function DateSelectMenu({ selectedDate, setSelectedDate }) {
                           <DatePicker.TableRow key={id}>
                             {week.map((day, id) => (
                               <DatePicker.TableCell key={id} value={day}>
-                                <DatePicker.TableCellTrigger>
+                                <DatePicker.TableCellTrigger
+                                  style={{
+                                    width: "34px",
+                                    height: "34px",
+                                    borderRadius: "10px",
+                                    fontSize: "14px",
+                                    cursor: "pointer",
+                                    textAlign: "center"
+                                  }}
+                                >
                                   {day.day}
                                 </DatePicker.TableCellTrigger>
                               </DatePicker.TableCell>
