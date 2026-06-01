@@ -122,6 +122,10 @@ class EventType(db.Model):
     def get_by_id(cls, event_type_id, user_id):
         return (cls.query.filter_by(user_id=user_id, id=event_type_id).first())
     
+    @classmethod
+    def get_by_own_id(cls, event_type_id):
+        return (cls.query.filter_by(id=event_type_id).first())
+    
 
 
 

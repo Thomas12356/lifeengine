@@ -1,14 +1,14 @@
 # This is just a temp file to test the scheduler
 
-from services.schedule_optimiser.scheduler.scheduler_ga import SchedulerGA
+from app.services.schedule_optimiser.scheduler.scheduler_ga import SchedulerGA
 
 # Custom data types import
-from services.schedule_optimiser.scheduler.models import EventType, Event
+from .models import EventType, Event
 
 # Resource predictor import
-from services.schedule_optimiser.energy_predictor import get_baseline_array
+from app.services.schedule_optimiser.energy_predictor import get_baseline_array
 
-from services.schedule_optimiser.config import SCHEDULE_RESOLUTION, WAKE_UP_SLOT, BED_SLOT
+from app.services.schedule_optimiser.config import SCHEDULE_RESOLUTION, WAKE_UP_SLOT, BED_SLOT, WAKE_UP_TIME, BED_TIME
 
 global_avail_window = (WAKE_UP_SLOT + 4, BED_SLOT - 4) # 1 hour after wakeup, 1 hour before bed
 default_pref_window = global_avail_window
@@ -69,8 +69,14 @@ events_to_schedule = [
     Event(4, "Evening Workout", event_types["Default"], start_slot=68, duration_slots=4, importance=10, is_moveable=True),
     Event(5, "Study Session", event_types["Study"], start_slot=52, duration_slots=8, importance=1, is_moveable=True),
 ]
+    # NOTE : REVIEW PHI1 & PHI2 CALC
+baseline_energy, _ = get_baseline_array(phi1=WAKE_UP_TIME + 1, phi2=WAKE_UP_TIME, resolution=SCHEDULE_RESOLUTION) # Fetch baseline energy landscape from resource predictor
 
-baseline_energy, baseline_focus = get_baseline_array(phi1=7, phi2=12, resolution=SCHEDULE_RESOLUTION) # Fetch baseline energy landscape from resource predictor
-
-scheduler = SchedulerGA(events_to_schedule, energy_focus_landscape=list(zip(baseline_energy, baseline_focus))) # Initalise new GA instance
+scheduler = SchedulerGA(
+    events_to_schedule,
+    energy_focus_landscape=list(zip(baseline_energy,_)),
+    wakeup_slot=WAKE_UP_SLOT,
+    bed_time_slot=BED_SLOT
+    
+) # Initalise new GA instance
 scheduler.run() # Run the scheduler

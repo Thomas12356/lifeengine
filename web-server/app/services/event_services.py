@@ -177,7 +177,9 @@ def get_user_events_by_day(user_id_str : str, date_str : str):
                 "name": event.name,
                 "start_time": event.start_time.isoformat(),
                 "end_time": event.end_time.isoformat(),
-                "is_moveable" : event.is_moveable
+                "is_moveable" : event.is_moveable,
+                "event_type_id" : str(event.event_type_id),
+                "event_parameter_id" : str(event.event_parameter_id)
             }
             for event in events
         ]

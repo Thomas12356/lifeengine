@@ -13,6 +13,7 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+from ..config import SLOT_SIZE
 
 # Sigmoid function to map raw baseline values to a 0-1 range
 def sigmoid(x):
@@ -26,9 +27,13 @@ def get_baseline(t, phi1, phi2):
     B = 0.8 # Amplitude of the circasemidian component
     #offset = -1 # Baseline offset to adjust the overall level of energy and focus
 
+    slots_per_hours = 60 // SLOT_SIZE
+    circadian_time_period_slots = 24 * slots_per_hours
+    circasemidian_time_period_slots  = 12 * slots_per_hours
+
     # f(t) = A * sin(2π(t-phi1)/24) + B * sin(2π(t-phi2)/12)
-    circadian_component = A * math.sin((2*math.pi * (t-phi1)) / 24)
-    circasemidian_component = B * math.sin((2*math.pi * (t-phi2)) / 12)
+    circadian_component = A * math.sin((2*math.pi * (t-phi1)) / circadian_time_period_slots)
+    circasemidian_component = B * math.sin((2*math.pi * (t-phi2)) / circasemidian_time_period_slots)
 
     energy_baseline = circadian_component + circasemidian_component
 
@@ -80,8 +85,8 @@ def plot_baselines(phi1, phi2):
 
 def demo():
 
-    phi1 = float(input("Enter an approximate wake up time (0-24): "))
-    phi2 = phi1 - 3.0
+    phi1 = float(input("Enter an approximate wake up time (0-24): ")) + 1
+    phi2 = phi1 - 1
 
     plot_baselines(phi1, phi2)
 

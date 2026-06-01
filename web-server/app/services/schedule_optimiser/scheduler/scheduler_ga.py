@@ -1,91 +1,32 @@
-""""
-    Genetic Algorithm Scheduler - MVP Implementation
-
-    This is an inital implementation of a genetic algorithm based scheduler.
-    Given a list of events and a landscape of predicted energy and focus levels for each time slot, 
-    the algorithm will evolve a candidate schedules over multiple generations to
-    find an optimal or near optimal schedule that maximizes the fit of events to time slots.
-
-    V1: Static user state
-       - Basic event and time slot models
-       - User state is static and defined by predicted energy and focus levels for each time slot
-
-    V2: Dynamic user state and feedback loop
-        - Simple user state dynamics model impacted by S process and residual fatigue from previous events
-        - Feedback loop where the schedule impacts user state, which in turn impacts the fit score of subsequent events in the schedule
-
-    DEV NOTES  v1:
-    Prerequisites:
-    - A list of events to be scheduled, each with an associated EventType that defines its ideal energy and focus levels, as well as the weights for energy and focus in the fit score calculation
-    - A landscape of predicted energy and focus levels for each time slot (e.g. each hour of the day), which can be generated using the baseline predictor
-
-    GA Flow :
-        1. Initialise a population of candidate schedules (chromosomes)
-        2. For each chromosone :
-            a. Initialise a starting user state at time 0 (beginning of the day)
-            b. Loop through each time slot in the schedule :
-                - Calculate user state match score for event in time slot t
-                - Apply the decay functions
-                    * S(t+1) = S(t) - Decay(Event, UserState) + Recovery(UserState)
-                - If S(t) falls below a threshold, apply a burnout penalty to the score and subsequent time slots until recovery occurs
-            c. Aggregate the scores across all time slots to get a total fitness score for the schedule
-        3. Select the top performing schedules based on fitness scores
-        4. Apply crossover and mutation to create a new generation of schedules
-            - We must use respect contraints during cross over and mutation to prevent invalid schedules (e.g. two events scheduled at the same time, or events scheduled outside of their allowed time windows)
-        5. Use tournament selection to select best indivduals for reproduction
-        6. Preserve some of the top performing schedules (elitism)
-        5. Repeat for a set number of generations or until convergence
-
-
-    DEV NOTES 8/05/26 (v2):
-    - GA now simulates a candidate schedule measuring predicted yield of each event based on effective energy
-    - Effective enery is calculated using the predicted energy, fatigue build up from previous events and the S process
-    - The simulation provides the GA with a more realistic fitness score that is impacted dynamically by the schedule itself, 
-    - This allows for discovery of schedules that strategically place high impact events to maximise energy and yield
-    - While also placing low impact events in a way that allows for recovery and prevents burnout
-"""
-"""
-    TODO : 
-    - Locate bug which results in fitness scores not showing for the found solution
-    - Tune the parameters of the simulation (e.g. fatigue build up, recovery rate)
-    - Implement a model for focus states and integrate into the simulation and fitness evaluation
-    
-"""
-
-# Class imports
-from services.schedule_optimiser.evaluator import Evaluator
-from .schedule import Schedule
-from services.schedule_optimiser.config import SCHEDULE_RESOLUTION, SLOT_SIZE
-
 # Library imports
 import random
 import copy
-
-# NOTE : These constants should be moved to a GA config file
-POPULATION_SIZE = 50 # Number of candidates in a population
-NUM_GENERATIONS = 100 # Number of generations the GA runs for
-ELITISM_RATE = 0.02 # Top % of population carried over for elitism
-TOURNAMENT_SIZE = 5 # The size of the subset of individuals picked from for parent selection
-MUTATION_RATE = 0.15 # Probability that a child will be mutatated
-
-WAKE_UP_TIME = 7 # 7am
-SLEEP_DURATION = 8 # User-reported ideal sleep duration
-#BED_TIME = (WAKE_UP_TIME + 24 - SLEEP_DURATION) % 24 # NOTE : This is not being used, could be removed
-#SCHEDULE_RESOLUTION = 24 # Number of timeslots to divide the day into (24 = 1 timeslot per hour)
-
-SHIFT_RANGE_HOURS = 2
-SHIFT_RANGE = (SHIFT_RANGE_HOURS * 60) // SLOT_SIZE
+# Class & config imports
+from ..evaluator import Evaluator
+from .schedule import Schedule
+from ..config import (
+    SCHEDULE_RESOLUTION,
+    SLOT_SIZE,
+    POPULATION_SIZE,
+    NUM_GENERATIONS,
+    ELITISM_RATE,
+    TOURNAMENT_SIZE,
+    MUTATION_RATE,
+    SHIFT_RANGE
+)
 
 class SchedulerGA:
-    def __init__(self, events, energy_focus_landscape):
+    def __init__(self, events, energy_focus_landscape, wakeup_slot, bed_time_slot):
         self.events = events
         self.energy_focus_landscape = energy_focus_landscape
         self.energy_landscape, _ = list(zip(*self.energy_focus_landscape))
+        self.wakeup_slot = wakeup_slot
+        self.bed_time_slot = bed_time_slot
         self.population = self.initialise_population()
         self.next_gen = []
-        self.fixed_events = []
-        self.flexible_events = []
-        self.base_schedule = []
+        #self.fixed_events = []
+        #self.flexible_events = []
+        #self.base_schedule = []
         self.generation = 0
     
     def initialise_population(self):
@@ -93,7 +34,13 @@ class SchedulerGA:
 
         for i in range(POPULATION_SIZE): # Iterate over population size
 
-            candidate = Schedule(id=i, events=self.events, energy_landscape=self.energy_focus_landscape) # Intialise a new candidate schedule
+            candidate = Schedule(
+                id=i,
+                events=self.events,
+                energy_landscape=self.energy_focus_landscape,
+                wakeup_slot=self.wakeup_slot,
+                bed_time_slot=self.bed_time_slot
+            ) # Intialise a new candidate schedule
 
             random.shuffle(candidate.events) # Shuffle list of events to be scheduled to increase diversity
 
@@ -145,8 +92,8 @@ class SchedulerGA:
         #child2_events = [timeslot.event for timeslot in child2_slots if timeslot is not None]
 
         # Create schedule objects using childrens event lists
-        child1 = Schedule(id=len(self.next_gen), events=self.events, energy_landscape=self.energy_focus_landscape)
-        child2 = Schedule(id=len(self.next_gen) + 1, events=self.events, energy_landscape=self.energy_focus_landscape)
+        child1 = Schedule(id=len(self.next_gen), events=self.events, energy_landscape=self.energy_focus_landscape, wakeup_slot=self.wakeup_slot, bed_time_slot=self.bed_time_slot)
+        child2 = Schedule(id=len(self.next_gen) + 1, events=self.events, energy_landscape=self.energy_focus_landscape, wakeup_slot=self.wakeup_slot, bed_time_slot=self.bed_time_slot)
 
         # Set children timeslots
         child1.timeslots = child1_slots
@@ -253,7 +200,7 @@ class SchedulerGA:
     def run(self):
         
         energy_landscape, _ = zip(*self.energy_focus_landscape) # Unpack energy landscape
-        evaluator = Evaluator(self.population, list(energy_landscape)) # Initalise evaluator
+        evaluator = Evaluator(list(energy_landscape), self.wakeup_slot, self.bed_time_slot) # Initalise evaluator
         best_individual = None
         
         while self.generation < NUM_GENERATIONS: # Repeat until max number of generations has been reached
@@ -266,8 +213,9 @@ class SchedulerGA:
             seen = set() 
             for ind in self.population:
                seen.add(ind.simulation_score)
-           
-            print(f"Generation {self.generation} max fitness : {self.population[0].total_fitness}, n unique scores = {len(seen)}")
+
+            # DEBUG
+            #print(f"Generation {self.generation} max fitness : {self.population[0].total_fitness}, n unique scores = {len(seen)}")
 
             # Compare best individual of current generation against overall best
             if best_individual:
@@ -282,5 +230,6 @@ class SchedulerGA:
         
         self.population = evaluator.evaluate_population(self.population)
         self.population.sort(key=lambda x: x.total_fitness, reverse=True) # Sort population
-        best_individual.visualise() # DEBUG - Used to visualise the schedule of the best individual across all generations
+        
+        return best_individual
 

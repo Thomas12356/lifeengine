@@ -9,13 +9,12 @@
 
 """
 
-from dataclasses import dataclass
-from .models import Event, TimeSlot
-from services.schedule_optimiser.config import SCHEDULE_RESOLUTION, SLOTS_PER_DAY, WAKE_UP_SLOT, BED_SLOT, SLOT_SIZE
+from ..models import TimeSlot
+from ..config import SCHEDULE_RESOLUTION, SLOTS_PER_DAY, SLOT_SIZE
 import random
 
 class Schedule:
-    def __init__(self, id, events, energy_landscape):
+    def __init__(self, id, events, energy_landscape, wakeup_slot, bed_time_slot):
         self.id = id # Unique identifier for the schedule
         self.events = list(events) # Container for events to be scheduled
         self.timeslots = [None] * SCHEDULE_RESOLUTION # Initialize empty timeslots for the schedule
@@ -29,6 +28,8 @@ class Schedule:
         self.sleep_penalty_total = 0.0
         self.fatigue_drain_total = 0.0
         self.preference_penalty_total = 0.0
+        self.wakeup_slot = wakeup_slot
+        self.bed_time_slot = bed_time_slot
 
     # Given an event and start slot index, return True if the event can be scheduled at that index, False otherwise
     def check_availability(self, event, start_slot):
@@ -37,10 +38,10 @@ class Schedule:
             return False # Event cannot be scheduled as it exceeds the day boundary
         
         if event.is_moveable:
-            if start_slot < WAKE_UP_SLOT:
+            if start_slot < self.wakeup_slot:
                 return False
             
-            if start_slot + event.duration_slots > BED_SLOT:
+            if start_slot + event.duration_slots > self.bed_time_slot:
                 return False
 
         (start, end) = event.EventType.availability_window
@@ -56,6 +57,8 @@ class Schedule:
     # Given an event and start slot, attempt to insert the event into the schedule at the specified index
     # Return True if the event was successfully inserted, False otherwise
     def insert_event(self, event, start_slot):
+        if self.contains_event(event.event_id):
+            return False
         if self.check_availability(event, start_slot):
             for slot in range(event.duration_slots):
                 slot_index = start_slot + slot
@@ -197,7 +200,7 @@ class Schedule:
                         i += 1 # Increment pointer
                     else:
                         break # Stop clearing as new event or empty slot has been reached
-                if event not in unscheduled_events:
+                if event.event_id not in {e.event_id for e in unscheduled_events}:
                     unscheduled_events.append(event) # Push event to unscheduled events to be re inserted later
             else: # Event integrity has been preserved
                 i += duration # Jump to end of event
@@ -259,6 +262,29 @@ class Schedule:
                 return slot.slot_index # If so, return the current timeslots index
             i += 1
         return None # Event not in schedule, so return None
+    
+    def contains_event(self, event_id):
+        return any(
+            slot is not None and slot.event.event_id == event_id
+            for slot in self.timeslots
+        )
+    
+    def fetch_events(self):
+        events = []
+        i = 0
+        while i < len(self.timeslots):
+            timeslot = self.timeslots[i]
+            if timeslot is not None:
+                events.append({
+                    "id" : timeslot.event.event_id,
+                    "name" : timeslot.event.name,
+                    "start_slot" : timeslot.slot_index
+                })
+                i += timeslot.event.duration_slots
+            i += 1
+
+        return events
+
             
 
 
