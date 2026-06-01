@@ -8,6 +8,7 @@ import { useEventTypes } from "@/context/EventTypeContext";
 import { updateEventType } from "@/utils/eventServices";
 import { floatToLevel, levelToFloat } from "@/utils/parametersHelper";
 
+
 export default function EventTypesMenu({...props}){
 
     const { eventTypes, getEventTypeByName, refreshEventTypes } = useEventTypes()
@@ -119,9 +120,16 @@ export default function EventTypesMenu({...props}){
 
     return(
         <WidgetBox {...props}>
-            <Stack direction={"row"}>
-                <Text textStyle={"headingSolid"}>Event Type Preferences</Text>
+            <Stack
+                direction={{ base: "row", md: "row" }}
+                justify="space-between"
+                align={{ base: "stretch", md: "center" }}
+                gap={3}
+            >
+                <Text textStyle={"darkBlueText"}>Event Type Preferences</Text>
                 <DropDown 
+                    bg={formData.labelColour}
+                    color="white"
                     title={""} 
                     type={"EventType"} 
                     placeholder={"Default"}
@@ -149,7 +157,7 @@ export default function EventTypesMenu({...props}){
                     onChange={(value) => updateField("idealEnergy", value)}
                     allowClear={false}
                 />
-                <DropDown 
+                <DropDown
                     title={"Burnout rate"}
                     type={"ResourceLevel"}
                     placeholder={"Default"}
@@ -191,8 +199,8 @@ export default function EventTypesMenu({...props}){
                             onValueChange={(details) => updateField("availabilityWindow", details.value)}
                         >
                             <Slider.Control>
-                                <Slider.Track>
-                                    <Slider.Range />
+                                <Slider.Track bg="grey.50">
+                                    <Slider.Range bg={formData.labelColour}/>
                                 </Slider.Track>
                                 <Slider.Thumbs />
                             </Slider.Control>
@@ -218,8 +226,8 @@ export default function EventTypesMenu({...props}){
                             onValueChange={(details) => updateField("preferenceWindow", details.value)}
                         >
                             <Slider.Control>
-                                <Slider.Track>
-                                    <Slider.Range />
+                                <Slider.Track bg="grey.50">
+                                    <Slider.Range bg={formData.labelColour} />
                                 </Slider.Track>
                                 <Slider.Thumbs />
                             </Slider.Control>
@@ -230,7 +238,7 @@ export default function EventTypesMenu({...props}){
                         {minutesToTime(formData.preferenceWindow[1])}
                     </Text>
                 </Field.Root>
-                <Button onClick={handleSave}> {/* DEBUG */}
+                <Button onClick={handleSave} my="6px" bg={formData.labelColour} _hover={{filter: "brightness(0.92)"}}> {/* DEBUG */}
                     Save Preferences
                 </Button>
             </Stack>

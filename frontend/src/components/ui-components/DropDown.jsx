@@ -16,7 +16,7 @@ var staticTypes = {
     "ResourceLevel" : ["High", "Medium", "Low"]
 }
 
-export default function DropDown({ title, type, value, onChange, placeholder, allowClear, options }) {
+export default function DropDown({ title, type, value, onChange, placeholder, allowClear, options, ...props }) {
     
     const typeOptions = options ?? staticTypes[type]
 
@@ -34,7 +34,7 @@ export default function DropDown({ title, type, value, onChange, placeholder, al
             <Menu.Root>
                 <Menu.Trigger asChild>
                     {/* Custom button variant needed */}
-                    <Button variant="outline" color={"brand.blueDark"} size={"sm"}>
+                    <Button  variant="outline" color={"grey.800"} size={"sm"} px="50px" {...props}>
                         {value || placeholder}
                         {/*drop down icon */}
                     </Button>

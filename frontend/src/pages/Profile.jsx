@@ -9,19 +9,33 @@
  * Last updated: 18/04/2026 by te215@kent.ac.uk
  */
 import { Box, Stack, Flex } from "@chakra-ui/react";
-import UserInfoWidget from "@/features/user-info-widget/UserInfoWidget";
-import EventPreferenceWidget from "@/features/event-preferences-widget/EventPreferencesWidget";
 import UserMenu from "@/features/profile-menu/UserMenu";
 import EventTypesMenu from "@/features/profile-menu/EventTypesMenu"
 
 export default function Profile(){
     return(
-        <Box>
-            <Stack direction={"row"}>
-                    <UserMenu/>
-                    <EventTypesMenu/>  
+        <Box
+            w="100%"
+            h="100%"
+            minH={0}
+
+            px={3}
+            py={2}
+            overflow="scroll"
+            pb="10"
+        >
+            <Stack
+                direction={{ base: "column", lg: "row" }}
+                gap={{ base: 4, md: 6 }}
+                align="stretch"
+                w="100%"
+            >
+
+                <UserMenu flex={{ base: "unset", lg: "0 0 380px" }}/>
+                <EventTypesMenu flex="1" minW={0}/>
+
             </Stack>
-        </Box>    
+        </Box>
         
     )
 }
