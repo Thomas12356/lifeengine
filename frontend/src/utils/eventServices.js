@@ -93,9 +93,17 @@ export async function rescheduleEvent(payload) {
 
 export async function autoReschedule(payload) {
     console.log(payload) // DEBUG
-    const response = await api.post("/event/autoreschedule", payload)
+    const response = await api.post("/event/autoreschedule/run", payload)
 
     return response.data
+}
+
+export async function acceptAutoReschedule(auto_reschedule_id) {
+    const response = await api.post("/events/autoreschedule/accept", {
+        auto_reschedule_id : auto_reschedule_id,
+    });
+
+    return response.data;
 }
 
 export async function fetchEventTypes(userID) {

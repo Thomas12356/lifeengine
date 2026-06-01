@@ -1,15 +1,7 @@
 
-export default function buildReschedulePayload(data, autoReschedule) {
+export default function buildReschedulePayload(data) {
 
     const user = JSON.parse(localStorage.getItem("user"))
-
-    if (autoReschedule) {
-        console.log("auto")
-        return {
-            user_id : user.id,
-            event_id : data.eventID,
-        }
-    }
 
     // Build local date object using form data
     const newStart = new Date(`${data.newDate}T${data.newStart}`)
