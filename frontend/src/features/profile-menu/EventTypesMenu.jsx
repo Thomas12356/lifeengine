@@ -20,8 +20,8 @@ export default function EventTypesMenu({...props}){
         idealEnergy: "",
         burnoutRate: "",
         priority: 1,
-        availabilityWindow: [0, 1440],
-        preferenceWindow: [0, 1440],
+        availabilityWindow: [0, 1425],
+        preferenceWindow: [0, 1425],
     });
 
     function updateField(field, value) {
@@ -185,7 +185,7 @@ export default function EventTypesMenu({...props}){
                             width="350px"
                             value={formData.availabilityWindow}
                             min = {0}
-                            max = {1440}
+                            max = {1425}
                             minStepsBetweenThumbs={4} 
                             step={15} 
                             onValueChange={(details) => updateField("availabilityWindow", details.value)}
@@ -212,7 +212,7 @@ export default function EventTypesMenu({...props}){
                             width="350px" 
                             value={formData.preferenceWindow}
                             min = {0} 
-                            max = {1440}
+                            max = {1425}
                             minStepsBetweenThumbs={4} 
                             step={15} 
                             onValueChange={(details) => updateField("preferenceWindow", details.value)}
