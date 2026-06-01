@@ -242,20 +242,20 @@ def auto_reschedule_event():
         if not result.get("ok"):
             return jsonify(result), 400
 
-        #auto_reschedule_id = str(uuid.uuid4())
+        auto_reschedule_id = str(uuid.uuid4())
 
-        # AUTO_RESCHEDULE_PENDING[auto_reschedule_id] = {
-        #     "user_id": data["user_id"],
-        #     "event_id": data["event_id"],
-        #     "changes": result.get("changes", []),
-        # }
+        AUTO_RESCHEDULE_PENDING[auto_reschedule_id] = {
+            "user_id": data["user_id"],
+            "event_id": data["event_id"],
+            "changes": result.get("changes", []),
+        }
 
         time.sleep(5)
         print(result)
 
         return jsonify({
             "ok": True,
-            "auto_reschedule_id": "auto_reschedule_id",
+            "auto_reschedule_id": auto_reschedule_id,
             "old_schedule": result["old_schedule"],
             "new_schedule": result["new_schedule"],
         }), 200
