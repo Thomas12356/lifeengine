@@ -28,7 +28,6 @@ def get_baseline(t, phi1, phi2):
     #offset = -1 # Baseline offset to adjust the overall level of energy and focus
 
     slots_per_hours = 60 // SLOT_SIZE
-    print(slots_per_hours)
     circadian_time_period_slots = 24 * slots_per_hours
     circasemidian_time_period_slots  = 12 * slots_per_hours
 

@@ -213,8 +213,9 @@ class SchedulerGA:
             seen = set() 
             for ind in self.population:
                seen.add(ind.simulation_score)
-           
-            print(f"Generation {self.generation} max fitness : {self.population[0].total_fitness}, n unique scores = {len(seen)}")
+
+            # DEBUG
+            #print(f"Generation {self.generation} max fitness : {self.population[0].total_fitness}, n unique scores = {len(seen)}")
 
             # Compare best individual of current generation against overall best
             if best_individual:
@@ -229,5 +230,6 @@ class SchedulerGA:
         
         self.population = evaluator.evaluate_population(self.population)
         self.population.sort(key=lambda x: x.total_fitness, reverse=True) # Sort population
-        best_individual.visualise() # DEBUG - Used to visualise the schedule of the best individual across all generations
+        
+        return best_individual
 

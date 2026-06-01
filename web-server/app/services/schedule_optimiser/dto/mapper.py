@@ -31,7 +31,7 @@ def map_event(event_dto : dbEventInput, event_type_dto : dbEventTypeInput):
     ideal_energy = event_dto.ideal_energy if event_dto.ideal_energy is not None else event_type_dto.ideal_energy
     burnout_rate = event_dto.burnout_rate if event_dto.burnout_rate is not None else event_type_dto.burnout_rate
     priority = event_dto.priority if event_dto.priority else event_type_dto.priority
-    is_moveable = event_dto.is_moveable if event_dto.is_moveable else event_type_dto.is_moveable
+    is_moveable = event_dto.is_moveable if not event_dto.is_moveable else event_type_dto.is_moveable
 
     scheduler_event_type = EventType(
         name=event_type_dto.name,

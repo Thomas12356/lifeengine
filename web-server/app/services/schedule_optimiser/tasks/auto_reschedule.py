@@ -47,7 +47,9 @@ def auto_reschedule(
         bed_time_slot=BED_TIME_SLOT
         
     ) # Initalise new GA instance
-    scheduler.run() # Run the scheduler
+    result = scheduler.run() # Run the scheduler
+
+    result.visualise()
 
 
     

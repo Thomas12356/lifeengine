@@ -57,6 +57,8 @@ class Schedule:
     # Given an event and start slot, attempt to insert the event into the schedule at the specified index
     # Return True if the event was successfully inserted, False otherwise
     def insert_event(self, event, start_slot):
+        if self.contains_event(event.event_id):
+            return False
         if self.check_availability(event, start_slot):
             for slot in range(event.duration_slots):
                 slot_index = start_slot + slot
@@ -198,7 +200,7 @@ class Schedule:
                         i += 1 # Increment pointer
                     else:
                         break # Stop clearing as new event or empty slot has been reached
-                if event not in unscheduled_events:
+                if event.event_id not in {e.event_id for e in unscheduled_events}:
                     unscheduled_events.append(event) # Push event to unscheduled events to be re inserted later
             else: # Event integrity has been preserved
                 i += duration # Jump to end of event
@@ -260,6 +262,13 @@ class Schedule:
                 return slot.slot_index # If so, return the current timeslots index
             i += 1
         return None # Event not in schedule, so return None
+    
+    def contains_event(self, event_id):
+        return any(
+            slot is not None and slot.event.event_id == event_id
+            for slot in self.timeslots
+        )
+
             
 
 
