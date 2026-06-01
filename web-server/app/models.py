@@ -230,6 +230,6 @@ class UserPreferences(db.Model):
         return {
             "id" : self.id,
             "user_id" : self.user_id,
-            "wakeup_time" : self.wakeup_time,
-            "bed_time" : self.bed_time
+            "wakeup_time" : self.wakeup_time.strftime("%H:%M") if self.wakeup_time else None,
+            "bed_time" : self.bed_time.strftime("%H:%M") if self.bed_time else None
         }
