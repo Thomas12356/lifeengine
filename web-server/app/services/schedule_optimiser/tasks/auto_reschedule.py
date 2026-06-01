@@ -5,7 +5,7 @@
 """
 
 from ..dto.input_dto import dbUserPreferenceInput
-from ..dto.mapper import map_event, map_preferences
+from ..dto.mapper import map_event, map_preferences, convert_slot_index
 from ..config import SCHEDULE_RESOLUTION, SLOT_SIZE
 from ..energy_predictor import get_baseline_array
 from ..scheduler import SchedulerGA
@@ -50,6 +50,9 @@ def auto_reschedule(
     result = scheduler.run() # Run the scheduler
 
     result.visualise()
+
+    return result
+
 
 
     

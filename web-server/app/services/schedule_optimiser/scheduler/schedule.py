@@ -268,6 +268,22 @@ class Schedule:
             slot is not None and slot.event.event_id == event_id
             for slot in self.timeslots
         )
+    
+    def fetch_events(self):
+        events = []
+        i = 0
+        while i < len(self.timeslots):
+            timeslot = self.timeslots[i]
+            if timeslot is not None:
+                events.append({
+                    "id" : timeslot.event.event_id,
+                    "name" : timeslot.event.name,
+                    "start_slot" : timeslot.slot_index
+                })
+                i += timeslot.event.duration_slots
+            i += 1
+
+        return events
 
             
 

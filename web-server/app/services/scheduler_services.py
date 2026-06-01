@@ -2,21 +2,21 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from app.models import Event, EventType, EventParameter, UserPreferences
 from app.services.schedule_optimiser.dto.input_dto import dbEventInput, dbEventTypeInput, dbUserPreferenceInput
+from app.services.schedule_optimiser.dto.mapper import convert_slot_index
 from app.services.schedule_optimiser.tasks.auto_reschedule import auto_reschedule
 from app.services import event_type_services, event_services
-import uuid, os
+import uuid, datetime
 
 def auto_reschedule_event(event_id_str):
     """
     Generate a proposed schedule.
     Do not save changes here.
     """
-    old_schedule = [{"name" : "Old", "start_time" : "2026-06-01T19:00:00", "end_time" : "2026-06-01T20:00:00"}]
-    # TODO: replace this with your real scheduling algorithm.
-    new_schedule = [{"name" : "New", "start_time" : "2026-06-01T19:00:00", "end_time" : "2026-06-01T20:00:00"}]
 
     event = Event.find_by_id(uuid.UUID(event_id_str)).to_dict() # Fetch event details
     user_id = event["user_id"] # Fetch user ID, in future replace with JWT fetch
+
+    event_date = event["start_time"][:10]
 
     event_to_reschedule = None
     day_events = (event_services.get_user_events_by_day(user_id, event["start_time"]))["events"]
@@ -73,11 +73,22 @@ def auto_reschedule_event(event_id_str):
         bed_time=user_preferences["bed_time"]
     )
 
-    auto_reschedule(event_to_reschedule, day_array, user_preferences_dto)
+    result = auto_reschedule(event_to_reschedule, day_array, user_preferences_dto)
+    new_schedule = []
+    for event in result.fetch_events():
+        new_schedule.append(
+            {
+                "id" : event["id"],
+                "name" : event["name"],
+                "start_time" : event_date + "T" + convert_slot_index(event["start_slot"])
+            }
+            
+        )
+
     
     return {
         "ok": True,
-        "old_schedule": old_schedule,
+        "old_schedule": day_events,
         "new_schedule": new_schedule,
         # "changes": [
         #     {
