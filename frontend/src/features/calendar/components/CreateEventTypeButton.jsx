@@ -16,10 +16,14 @@ export default function CreateEventTypeButton() {
         >
             <Popover.Trigger asChild>
                 <Button
+                    size={{ base: "xs", md: "md" }}
+                    width={{ base: "x3", sm: "auto" }}
                     bg="transparent"
                     color="blue.500"
                     border="1px solid"
-                    borderRadius="xl"
+                    borderRadius="lg"
+                    px={{ base: 3, md: 4 }}
+                    fontSize={{ base: "xs", md: "sm" }}
                     _hover={{
                         filter: "brightness(0.92)",
                     }}

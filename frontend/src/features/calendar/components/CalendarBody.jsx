@@ -23,11 +23,13 @@ import RescheduleMenu from "@/features/reschedule-menu/RescheduleMenu.jsx"
  * GridBackground creates the grid lines for the calendar body using CSS background images.
  * @returns {JSX.Element} A Box component with the grid background.
  */
+const CALENDAR_HEIGHT = 1440;
+
 const GridBackground = () => {
     return (
         <Box
             position="relative"
-            h="1440px"
+            h={`${CALENDAR_HEIGHT}px`}
             flex="1"
             bgImage={`
                 repeating-linear-gradient( /* Horizontal hour lines */
@@ -65,7 +67,7 @@ const EventLayer = ({ events, onEventDelete, onRescheduleSuccess }) => {
 
     return (
         <>
-            <Box position="absolute" top="0" left="0" w="100%" h="1440px">
+            <Box position="absolute" top="0" left="0" w="100%" h={`${CALENDAR_HEIGHT}px`}>
                 {events.map((event, index) => { // Loop through events and calculate their positions
                     const { top, height, left, width } = calculateEventPosition(event)
                     return (
@@ -79,21 +81,22 @@ const EventLayer = ({ events, onEventDelete, onRescheduleSuccess }) => {
                                     h={`${height}%`}
                                     bg={"blue.500"}
                                     color="white"
-                                    px={2}
-                                    py={1}
+                                    px={{ base: 1, md: 2 }}
+                                    py={{ base: 0.5, md: 1 }}
                                     borderRadius={"md"}
                                     boxShadow={"md"}
                                     overflow="hidden"
                                     cursor="pointer"
                                     transition="filter 0.15s ease"
+                                    fontSize={{ base: "xs", md: "sm" }}
                                     _hover={{
                                         filter: "brightness(0.92)",
                                     }}
                                 >
-                                    <Text fontWeight="semibold" noOfLines={1}>
+                                    <Text fontWeight="semibold" noOfLines={1} fontSize={{ base: "xs", md: "sm" }}>
                                         {event.title}
                                     </Text>
-                                    <Text noOfLines={1}>
+                                    <Text noOfLines={1} fontSize={{ base: "2xs", md: "xs" }}>
                                         {formatEventTime(event.start)} - {formatEventTime(event.end)} {/* Slice ISO strings to only contain HH:MM */}
                                     </Text>
                                 </Box>
@@ -149,7 +152,7 @@ const TimeIndicator = () => {
     const now = new Date() // Get current date and time
     const hours = now.getHours() // Get current hour
     const minutes = now.getMinutes() // Get current minute
-    const topPosition = (hours * 60 + minutes) / 1440 * 100 // Calculate position as percentage of the day (1440 minutes)
+    const topPosition = ((hours * 60 + minutes) / CALENDAR_HEIGHT) * 100;
 
     return (
         <Box
@@ -159,6 +162,7 @@ const TimeIndicator = () => {
             w="100%"
             h="2px"
             bg="red.500"
+            zIndex={2}
         />
     )
 }
@@ -182,16 +186,16 @@ export default function CalendarBody({ events, onEventDelete, onRescheduleSucces
     })
 
     return (
-        <Box w="100%" h="100%" overflowY="auto" overflowX="hidden" position="relative" ref={scrollContainerRef}> {/* Main container for the calendar body */}
-            <HStack align="start" spacing={0} w="100%" h="100%">
-                <VStack w="60px" h="1440px" position="relative"> {/* Container for the time axis */}
+        <Box w="100%" h="100%" minH="0" overflowY="auto" overflowX="hidden" position="relative" ref={scrollContainerRef} p={2}> {/* Main container for the calendar body */}
+            <HStack align="start" gap={0} w="100%" h={`${CALENDAR_HEIGHT}px`}>
+                <VStack w={{ base: "42px", md: "60px" }} h={`${CALENDAR_HEIGHT}px`} position="relative" flexShrink={0} align="stretch"> {/* Container for the time axis */}
                     {hours.map(hour => ( // Loop through hours and render time labels inside the container
-                        <Text key={hour} top={`${hour * 60}px`} position="absolute" transform={hour === 0 ? "none" : "translateY(-50%)"}>
+                        <Text key={hour} top={`${hour * 60}px`} position="absolute" transform={hour === 0 ? "none" : "translateY(-50%)"} fontSize={{ base: "xs", md: "sm" }} color="gray.600">
                             {hour}:00
                         </Text>
                     ))}
                 </VStack>
-                <Box flex="1" h="1440px" position="relative"> {/* Main calendar body container */}
+                <Box flex="1" h={`${CALENDAR_HEIGHT}px`} position="relative" minW="0"> {/* Main calendar body container */}
                     <GridBackground />
                     <EventLayer events={events} onEventDelete={onEventDelete} onRescheduleSuccess={onRescheduleSuccess}/>
                     <TimeIndicator />

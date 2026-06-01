@@ -22,7 +22,6 @@ export default function CalendarPage() {
             display="flex"
             flexDirection="column"
             px={3}
-            py={2}
             overflow="hidden"
         >
             <Calendar />

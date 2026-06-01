@@ -17,17 +17,29 @@ import CreateEventTypeButton from "./CreateEventTypeButton"
 export default function CalendarMenu( { selectedDate, setSelectedDate, onEventAdded }) {
     return (
         <Flex
-            align="center"
-            justify="space-between"
-            px={4}
+            align={{ base: "stretch", md: "center" }}
+            justify={{ base: "start", md: "space-between" }}
+            direction={{ base: "column", md: "row" }}
+            gap={{ base: 3, md: 4 }}
+            px={{ base: 1, md: 4 }}
             pb={2}
-
+            width="100%"
         >
-            <DateSelectMenu selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-            <Flex gap={2}>
+            <Flex width={{ base: "100%", md: "auto" }} minW={0}>
+                <DateSelectMenu
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate}
+                />
+            </Flex>
 
-                <CreateEventTypeButton/>
-                <AddEventButton onEventAdded={onEventAdded}/>
+            <Flex
+                gap={2}
+                width={{ base: "100%", md: "auto" }}
+                direction={{ base: "column", md: "row" }}
+                justify={{ base: "stretch", md: "end" }}
+            >
+                <CreateEventTypeButton />
+                <AddEventButton onEventAdded={onEventAdded} />
             </Flex>
         </Flex>
     )

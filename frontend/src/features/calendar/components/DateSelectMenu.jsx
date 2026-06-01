@@ -37,7 +37,11 @@ export default function DateSelectMenu({ selectedDate, setSelectedDate }) {
         <DatePicker.Trigger asChild>
           <Box as="button">
             <HStack>
-              <Text fontSize="xl" fontWeight="medium" color="gray.700"> {/* Display the currently selected date in a readable format */}
+              <Text
+                fontSize={{ base: "md", md: "xl" }}
+                fontWeight="medium"
+                color="gray.700"
+              > {/* Display the currently selected date in a readable format */}
                 {selectedDate.toLocaleDateString("en-GB", {month : "short", year : "numeric"})}
               </Text> 
               <LuChevronDown /> {/* Icon indicating that this is a dropdown menu */}

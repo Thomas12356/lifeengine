@@ -62,22 +62,60 @@ export default function Calendar() {
     //console.log("ALL EVENTS:", allEvents)
 
     return (
-        <Box h="100%" border="1px solid" borderColor="gray.200" borderRadius="widgetRadii" p={5} bg="white" overflowY="scroll">
-            <VStack h="100%" spacing={0} align="stretch">
-                <CalendarMenu 
-                    selectedDate={selectedDate}
-                    setSelectedDate={setSelectedDate} 
-                    onEventAdded={handleEventAdded}
-                />
-                <CalendarHeader selectedDate={selectedDate} />
-                <Box flex="1" minH={0} overflow="hidden">
-                    <CalendarBody 
-                        events={visibleEvents} 
-                        onEventDelete={handleEventDelete}
-                        onRescheduleSuccess={handleEventReschedule}
+        <Box
+            h="100%"
+            minH="0"
+            border="1px solid"
+            borderColor="gray.200"
+            borderRadius="widgetRadii"
+            p={{ base: 3, md: 5 }}
+            bg="white"
+            overflow="hidden"
+        >
+            <VStack
+                h="100%"
+                minH="0"
+                gap={0}
+                align="stretch"
+            >
+                <Box flexShrink={0}>
+                    <CalendarMenu
+                        selectedDate={selectedDate}
+                        setSelectedDate={setSelectedDate}
+                        onEventAdded={handleEventAdded}
                     />
+                </Box>
+                <Box
+                    flex="1"
+                    minH="0"
+                    overflowX="auto"
+                    overflowY="hidden"
+                >
+                    <VStack
+                        minW={{ base: "520px", md: "100%" }}
+                        h="100%"
+                        minH="0"
+                        align="stretch"
+                        gap={0}
+                    >
+                        <Box flexShrink={0}>
+                            <CalendarHeader selectedDate={selectedDate} />
+                        </Box>
+
+                        <Box
+                            flex="1"
+                            minH="0"
+                            overflow="hidden"
+                        >
+                            <CalendarBody
+                                events={visibleEvents}
+                                onEventDelete={handleEventDelete}
+                                onRescheduleSuccess={handleEventReschedule}
+                            />
+                        </Box>
+                    </VStack>
                 </Box>
             </VStack>
         </Box>
-    )
+    );
 }

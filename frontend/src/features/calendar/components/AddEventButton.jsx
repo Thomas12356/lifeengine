@@ -31,9 +31,13 @@ export default function AddEventButton({ onEventAdded }) {
         >
             <Popover.Trigger asChild>
                 <Button
+                    size={{ base: "xs", md: "md" }}
+                    width={{ base: "100%", sm: "auto" }}
                     bg="blue.500"
                     color="white"
                     borderRadius="lg"
+                    px={{ base: 3, md: 4 }}
+                    fontSize={{ base: "xs", md: "sm" }}
                     _hover={{
                         filter: "brightness(0.92)",
                     }}
