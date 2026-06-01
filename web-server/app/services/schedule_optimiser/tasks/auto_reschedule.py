@@ -8,6 +8,7 @@ from ..dto.input_dto import dbUserPreferenceInput
 from ..dto.mapper import map_event, map_preferences
 from ..config import SCHEDULE_RESOLUTION, SLOT_SIZE
 from ..energy_predictor import get_baseline_array
+from ..scheduler import SchedulerGA
 
 def auto_reschedule(
         event_to_reschedule : tuple,
@@ -37,8 +38,16 @@ def auto_reschedule(
 
     # Fetch baseline energy prediction
     # NOTE : the predictor still returns baseline focus array, but we can ignore it
-    baseline_energy, _ = get_baseline_array(phi1=ciradian_time_shift, phi2=circasemidian_time_shift, resolution=SCHEDULE_RESOLUTION) 
+    baseline_energy, _ = get_baseline_array(phi1=ciradian_time_shift, phi2=circasemidian_time_shift, resolution=SCHEDULE_RESOLUTION)
 
+    scheduler = SchedulerGA(
+        events_to_schedule,
+        energy_focus_landscape=list(zip(baseline_energy,_)),
+        wakeup_slot=WAKEUP_SLOT,
+        bed_time_slot=BED_TIME_SLOT
+        
+    ) # Initalise new GA instance
+    scheduler.run() # Run the scheduler
 
 
     
