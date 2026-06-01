@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { RegisterForm } from '@features/auth/components/AuthForms';
 // Services
 import { registerUser } from '@features/auth/utils/authService';
+import { Box } from "@chakra-ui/react"
 
 export default function Register() {
     const [error, setError] = useState('');
@@ -19,6 +20,13 @@ export default function Register() {
     }
 
     return (
-        <RegisterForm onSubmit={handleSubmit} error={error}/>
+        <Box
+            w="100%"
+            alignItems="center"
+            justifyContent="center"
+            mt="2"
+        >
+            <RegisterForm onSubmit={handleSubmit} error={error}/>
+        </Box>
     )
 }

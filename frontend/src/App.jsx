@@ -42,7 +42,8 @@ export default function App() {
                 overflow="hidden"
             >
                 <Box flexShrink={0}>
-                    {isLoginPage || isRegisterPage ? <NavBarLogin /> : <NavBar />}
+                    {isLoginPage && <NavBarLogin />}
+                    {!isLoginPage && !isRegisterPage && <NavBar />}
                 </Box>
 
                 <Box minH={0} overflow="hidden" display="flex">

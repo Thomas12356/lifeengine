@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { Box, Button, Field, Input, Stack, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Field, Input, Stack, Heading, Text} from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
+import { LuSunrise } from "react-icons/lu";
+import { RiMoonClearLine } from "react-icons/ri";
 
 export function LoginForm({ onSubmit, error, message }) {
     const [data, setData] = useState({ email: '', password: ''});
@@ -10,10 +12,11 @@ export function LoginForm({ onSubmit, error, message }) {
         onSubmit(data);
     };
 
+
     return (
         <form onSubmit={handleSubmit}>
-            <Box bg="white" maxW="400px" mx="auto" mt="general.lgSpacing" p="general.lgSpacing" borderWidth="1px" borderRadius="xl" boxShadow="md">
-                <Stack gap="5">
+            <Box bg="white" maxW="400px" mx="auto" p="general.lgSpacing" borderWidth="1px" borderRadius="xl" boxShadow="md">
+                <Stack gap="5" >
                     <Heading size="lg" textAlign="center" color="text.solid">Log In</Heading>
                     {error && <Text textAlign="center" textStyle="errorText">{error}</Text>}
                     {message && <Text textAlign="center" textStyle="successText">{message}</Text>}
@@ -42,7 +45,7 @@ export function LoginForm({ onSubmit, error, message }) {
 
 
 export function RegisterForm({ onSubmit, error }) {
-    const [data, setData] = useState({ email: '', password: '', first_name: '', last_name: ''});
+    const [data, setData] = useState({ email: '', password: '', first_name: '', last_name: '', wake_up: '', bed_time: ''});
 
     function handleSubmit(e){
         e.preventDefault();
@@ -51,9 +54,9 @@ export function RegisterForm({ onSubmit, error }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Box bg="white" maxW="400px" mx="auto" mt="general.lgSpacing" p="general.lgSpacing" borderWidth="1px" borderRadius="xl" boxShadow="md">
+            <Box bg="white" maxW="400px" mx="auto" py="20px" mt="12px" px="30px" borderRadius="xl" boxShadow="md">
                 <Stack gap="5">
-                    <Heading size="lg" textAlign="center" color="text.solid">Register</Heading>
+
                     {error && <Text textAlign="center" textStyle="errorText">{error}</Text>}
                     <Field.Root required>
                         <Field.Label color="text.solid">First Name</Field.Label>
@@ -77,6 +80,21 @@ export function RegisterForm({ onSubmit, error }) {
                         <Field.Label color="text.solid">Password</Field.Label>
 
                         <Input color="text.solid" type="password" placeholder="Enter your password" value={data.password} onChange={(e) => setData({...data, password: e.target.value })} />
+                    </Field.Root>
+                    <Field.Root>
+                        <Field.Label>
+                            Ideal wakeup time
+                            <LuSunrise/>
+                        </Field.Label>
+                            <Input textAlign="center" type="time" value={data.wake_up} onChange={(e) => setData({...data, wake_up: e.target.value })}/>
+                    </Field.Root>
+
+                    <Field.Root>
+                        <Field.Label>
+                            Ideal bed time
+                            <RiMoonClearLine/>
+                        </Field.Label>
+                        <Input textAlign="center" type="time" value={data.bed_time} onChange={(e) => setData({...data, bed_time: e.target.value })}/>
                     </Field.Root>
 
                     <Button type="submit" bg="blueLight.500">Create Account</Button>

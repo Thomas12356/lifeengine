@@ -4,6 +4,7 @@ import { loginUser } from '@features/auth/utils/authService';
 import { LoginForm } from "@/features/auth/components/AuthForms";
 import { useAuth } from "@context/AuthContext";
 import { useLocation } from "react-router-dom";
+import { Box } from "@chakra-ui/react"
 
 export default function LoginPage(){
     const [error, setError] = useState('');
@@ -33,9 +34,14 @@ export default function LoginPage(){
     }
 
     return (
-        <div>
-            <LoginForm onSubmit={handleLoginAttempt} error={error} message={message} />
-        </div>
+        <Box
+            w="100%"
+            alignItems="center"
+            justifyContent="center"
+            mt="2"
+        >
+                <LoginForm onSubmit={handleLoginAttempt} error={error} message={message} />
+        </Box>
     )
 }
 

@@ -66,7 +66,9 @@ def register():
         email=data.get('email'),
         password=data.get('password'),
         first_name=data.get('first_name'),
-        last_name=data.get('last_name')
+        last_name=data.get('last_name'),
+        wake_up=data.get('wake_up'),
+        bed_time=data.get('bed_time'),
     )
 
     if error:
