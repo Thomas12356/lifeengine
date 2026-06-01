@@ -14,6 +14,6 @@ from ..dto.mapper import map_event
 
 def auto_reschedule(event_to_reschedule : dbEventInput, event_type : dbEventTypeInput, user_preferences : dbUserPreferenceInput):
     
-    print(map_event(event_dto=event_to_reschedule, event_type_dto=event_type))
+    print(map_event(event_dto=event_to_reschedule, event_type_dto=event_type), user_preferences)
 
     

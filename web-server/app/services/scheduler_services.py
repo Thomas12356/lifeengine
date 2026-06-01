@@ -1,7 +1,7 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
-from app.models import Event, EventType, EventParameter
-from app.services.schedule_optimiser.dto.input_dto import dbEventInput, dbEventTypeInput
+from app.models import Event, EventType, EventParameter, UserPreferences
+from app.services.schedule_optimiser.dto.input_dto import dbEventInput, dbEventTypeInput, dbUserPreferenceInput
 from app.services.schedule_optimiser.tasks.auto_reschedule import auto_reschedule
 from app.services import event_type_services
 import uuid, os
@@ -16,6 +16,7 @@ def auto_reschedule_event(event_id_str):
     new_schedule = [{"name" : "New", "start_time" : "2026-06-01T19:00:00", "end_time" : "2026-06-01T20:00:00"}]
 
     event = Event.find_by_id(uuid.UUID(event_id_str)).to_dict() # Fetch event details
+    user_id = event["user_id"] # Fetch user ID, in future replace with JWT fetch
     event_type = EventType.get_by_own_id(uuid.UUID(event["event_type_id"])).to_dict() # Fetch event type details
     
     # If event has custom paramters, fetch them, otherwise use EventTypes parameters
@@ -23,7 +24,7 @@ def auto_reschedule_event(event_id_str):
     event_parameters = EventParameter.find_by_id(uuid.UUID(parameter_id)).to_dict()
 
     # Get the users default event type
-    user_default_type = event_type_services.get_default_event_type(event["user_id"])
+    user_default_type = event_type_services.get_default_event_type(user_id)
     default_params = EventParameter.find_by_id(uuid.UUID(user_default_type["event_parameter_id"])).to_dict()
 
     ideal_energy = event_parameters.get("ideal_energy") # Try to retrieve parameters
@@ -55,7 +56,14 @@ def auto_reschedule_event(event_id_str):
         priority=event_parameters["priority"]
     )
 
-    print(auto_reschedule(event_dto, event_type_dto, None))
+    # Fetch user preferences
+    user_preferences = UserPreferences.get_user_preferences(user_id).to_dict()
+    user_preferences_dto = dbUserPreferenceInput(
+        wakeup_time=user_preferences["wakeup_time"],
+        bed_time=user_preferences["bed_time"]
+    )
+
+    print(auto_reschedule(event_dto, event_type_dto, user_preferences_dto))
     
     return {
         "ok": True,
