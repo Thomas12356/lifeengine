@@ -4,6 +4,7 @@ export default function buildAutoReschedulePayload(data) {
     }
     
     return {
+        user_id : JSON.parse(localStorage.getItem("user")).id,
         event_id : data.eventID,
     };
 }
