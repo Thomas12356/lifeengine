@@ -242,40 +242,28 @@ export default function RescheduleMenu({ isOpen, onOpenChange, event, onSuccess 
                         <Dialog.Footer>
                             {!autoRescheduleResult && (
                                 <>
-                                    <Tooltip 
-                                        content="WARNING : 
-                                            This button will attempt to reschedule this event into an optimal timeslot based on your predicted energy.
-                                            Depending on your scheduled events, a valid time may not be found.
-                                            "
-                                        contentProps={{
-                                            bg: "white",
-                                            color: "gray.500",
-                                            px: 3,
-                                            py: 1.5,
-                                            borderRadius: "md",
-                                            fontSize: "sm",
-                                            fontWeight: "normal",
-                                            boxShadow: "md",
-                                        }}
-                                    >
-                                        <Button
-                                            disabled={autoLoading}
-                                            onClick={handleAutoReschedule}
-                                            size={{ base: "xs", md: "md" }}
-                                            width={{ base: "x3", sm: "auto" }}
-                                            bg="transparent"
-                                            color="blueLight.500"
-                                            border="1px solid"
-                                            borderRadius="lg"
-                                            px={{ base: 3, md: 4 }}
-                                            fontSize={{ base: "xs", md: "sm" }}
-                                            _hover={{
-                                                filter: "brightness(0.92)",
+                                    <Text>
+                                        <Text color={"red"}>WARNING : </Text>
+                                        Auto-reschedule attempt to reschedule this event into an optimal timeslot based on your predicted energy.
+                                        Depending on your scheduled events, a valid time may not be found.
+                                    </Text>
+                                    <Button
+                                        disabled={autoLoading}
+                                        onClick={handleAutoReschedule}
+                                        size={{ base: "xs", md: "md" }}
+                                        width={{ base: "x3", sm: "auto" }}
+                                        bg="transparent"
+                                        color="blueLight.500"
+                                        border="1px solid"
+                                        borderRadius="lg"
+                                        px={{ base: 3, md: 4 }}
+                                        fontSize={{ base: "xs", md: "sm" }}
+                                        _hover={{
+                                            filter: "brightness(0.92)",
                                             }}
                                         >
                                             Auto reschedule
-                                        </Button>
-                                    </Tooltip>
+                                    </Button>
 
 
                                     <Button
