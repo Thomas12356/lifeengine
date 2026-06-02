@@ -23,7 +23,6 @@ def auto_reschedule_event(event_id_str):
 
     same_day = False
     today_date = datetime.now().date().isoformat()
-    print(event_date, today_date)
     if today_date == event_date:
         same_day = True
 
@@ -85,11 +84,13 @@ def auto_reschedule_event(event_id_str):
     result = auto_reschedule(event_to_reschedule, day_array, user_preferences_dto, same_day=same_day)
     new_schedule = []
     for event in result.fetch_events():
+        end_slot = event["start_slot"] + event["duration_slots"]
         new_schedule.append(
             {
                 "id" : event["id"],
                 "name" : event["name"],
-                "start_time" : event_date + "T" + convert_slot_index(event["start_slot"])
+                "start_time" : event_date + "T" + convert_slot_index(event["start_slot"]),
+                "end_time" : event_date + "T" + convert_slot_index(end_slot)
             }
             
         )
@@ -119,6 +120,10 @@ def apply_auto_reschedule(user_id_str: str, pending_reschedule: dict):
 
     for event in new_schedule:
         event_id = event.get("id")
+        event_services.delete_event(user_id_str, event_id)
+
+    for event in new_schedule:
+        event_id = event.get("id")
         new_start = event.get("start_time")
         new_end = event.get("end_time")
 
@@ -128,11 +133,14 @@ def apply_auto_reschedule(user_id_str: str, pending_reschedule: dict):
                 "error": "Invalid event in proposed schedule.",
             }
         
+        event_services.delete_event(user_id_str, event_id)
+        
         result = reschedule_event(
             user_id_str=user_id_str,
             event_id_str=str(event_id),
             new_start=new_start,
             new_end=new_end,
+            bulk=True
         )
 
         if not result.get("success"):

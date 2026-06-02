@@ -226,7 +226,7 @@ def get_user_events_by_range(user_id_str : str, range_start_str : str, range_end
     except Exception as e:
         return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
     
-def reschedule_event(user_id_str : str, event_id_str : str, new_start: str, new_end : str):
+def reschedule_event(user_id_str : str, event_id_str : str, new_start: str, new_end : str, bulk : bool = False):
     """
         Given a user ID and event ID, fetch the event and reschedule its start and end time
     """
@@ -245,7 +245,7 @@ def reschedule_event(user_id_str : str, event_id_str : str, new_start: str, new_
         overlapping_event = (
             Event.query
             .filter(Event.user_id==user_uuid)
-            .filter(Event.is_active==True)
+            .filter(Event.is_active==(not bulk))
             .filter(Event.start_time < new_end)
             .filter(Event.end_time > new_start)
             .first()
@@ -278,5 +278,3 @@ def reschedule_event(user_id_str : str, event_id_str : str, new_start: str, new_
     except Exception as e:
         db.session.rollback()
         return {"success": False, "error": f"Internal database error. {str(e)}", "status_code": 500}
-
-

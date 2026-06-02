@@ -278,7 +278,8 @@ class Schedule:
                 events.append({
                     "id" : timeslot.event.event_id,
                     "name" : timeslot.event.name,
-                    "start_slot" : timeslot.slot_index
+                    "start_slot" : timeslot.slot_index,
+                    "duration_slots" : timeslot.event.duration_slots
                 })
                 i += timeslot.event.duration_slots
             i += 1
