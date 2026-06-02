@@ -83,6 +83,17 @@ def auto_reschedule_event(event_id_str):
 
     result = auto_reschedule(event_to_reschedule, day_array, user_preferences_dto, same_day=same_day)
     new_schedule = []
+    
+    success = result.get("ok")
+    if not success:
+        return {
+            "success": False,
+            "error": "Failed to find a valid time.",
+            "status_code": 422,
+        }
+    
+    result = result["result"]
+
     for event in result.fetch_events():
         end_slot = event["start_slot"] + event["duration_slots"]
         new_schedule.append(

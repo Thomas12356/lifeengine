@@ -75,8 +75,14 @@ export default function RescheduleMenu({ isOpen, onOpenChange, event, onSuccess 
             console.log("AUTO RESCHEDULE RESULT:", autoRescheduleResult);
 
         } catch (err) {
-            console.log("Failed to auto-reschedule event:", err)
-            setError(err.message || "Failed to auto reschedule event.")
+            console.log(err.status)
+            if (err.status === 422) {
+                setError("Failed to find a new time.")
+            }
+            else {
+                console.log("Failed to auto-reschedule event:", err)
+                setError(err.message || "Failed to auto reschedule event.")
+            }
         } finally{
             setAutoLoading(false);
         }
@@ -131,8 +137,6 @@ export default function RescheduleMenu({ isOpen, onOpenChange, event, onSuccess 
 
         console.log(event)
     }, [isOpen, event?.id])
-
-    const autoReschedulable = Boolean(event?.is_moveable)
 
     return (
         <Dialog.Root 

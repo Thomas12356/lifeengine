@@ -240,7 +240,7 @@ def auto_reschedule_event():
         )
 
         if not result.get("ok"):
-            return jsonify(result), 400
+            return jsonify({"error": "Failed to find a valid time.", "status_code" : 422}), 422
 
         auto_reschedule_id = str(uuid.uuid4())
 

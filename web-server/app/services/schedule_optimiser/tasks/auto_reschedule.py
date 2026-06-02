@@ -68,7 +68,7 @@ def auto_reschedule(
         if new_event_start < current_time:
             return {"error": "Failed to find a valid time today.", "ok": False}
 
-    return result
+    return {"result": result, "ok": True}
 
 
 
