@@ -58,7 +58,6 @@ def auto_reschedule(
         
     ) # Initalise new GA instance
     result = scheduler.run() # Run the scheduler
-    result.visualise()
 
     # If the event being rescheduled is today, we should reject a new start time earlier than the current time
     # NOTE : We can improve this by including the logic in the fitness function, because currently if we try
