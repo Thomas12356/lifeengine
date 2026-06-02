@@ -1,5 +1,5 @@
 import { autoReschedule, rescheduleEvent, acceptAutoReschedule } from "@/utils/eventServices";
-import { Button, Dialog, CloseButton, Portal, Stack, Input, Field, Text, HStack, Box, Spinner} from "@chakra-ui/react";
+import { Button, Dialog, CloseButton, Portal, Stack, Input, Field, Text, HStack, Box, Spinner, Center} from "@chakra-ui/react";
 import { Tooltip } from "@/components/ui/tooltip"
 import { useState, useEffect } from "react"
 import buildReschedulePayload from "@features/reschedule-menu/utils/buildReschedulePayload";
@@ -145,9 +145,9 @@ export default function RescheduleMenu({ isOpen, onOpenChange, event, onSuccess 
             onOpenChange={handleOpenChange}
         >
             <Portal>
-                <Dialog.Backdrop/>
+                <Dialog.Backdrop />
                 <Dialog.Positioner>
-                    <Dialog.Content maxW="900px">
+                    <Dialog.Content maxW="900px" w={{base: "70%",md: "50%", lg: "35%"}}>
                         <Dialog.Header>
                             <Dialog.Title>
                                 Reschedule {event?.name || "event"}
@@ -241,17 +241,25 @@ export default function RescheduleMenu({ isOpen, onOpenChange, event, onSuccess 
 
                         <Dialog.Footer>
                             {!autoRescheduleResult && (
-                                <>
-                                    <Text>
-                                        <Text color={"red"}>WARNING : </Text>
+                                <Stack
+                                    width="100%"
+                                    direction={{ base: "column", md: "column" }}
+                                    align={{ base: "stretch", md: "stretch" }}
+                                    justify="space-between"
+                                    gap={3}
+                                >
+                                    <Box width="190px">
+                                        <Text lineHeight={{base: "0", sm: "1"}} color={"errorRed"} fontSize={{ base: "xs", lg: "xs" }}>WARNING </Text>
+                                    </Box>
+                                    <Text fontSize={{ base: "xs", md: "xs" }} lineHeight={"1.2"} mb="2px">
                                         Auto-reschedule attempt to reschedule this event into an optimal timeslot based on your predicted energy.
                                         Depending on your scheduled events, a valid time may not be found.
-                                    </Text>
+                                    </Text >
                                     <Button
                                         disabled={autoLoading}
                                         onClick={handleAutoReschedule}
                                         size={{ base: "xs", md: "md" }}
-                                        width={{ base: "x3", sm: "auto" }}
+                                        width={{ base: "auto", sm: "auto" }}
                                         bg="transparent"
                                         color="blueLight.500"
                                         border="1px solid"
@@ -282,7 +290,7 @@ export default function RescheduleMenu({ isOpen, onOpenChange, event, onSuccess 
                                     >
                                         Reschedule
                                     </Button>
-                                </>
+                                </Stack>
                             )}
 
                             {autoRescheduleResult && (
