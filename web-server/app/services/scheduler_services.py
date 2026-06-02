@@ -100,8 +100,8 @@ def auto_reschedule_event(event_id_str):
             {
                 "id" : event["id"],
                 "name" : event["name"],
-                "start_time" : event_date + "T" + convert_slot_index(event["start_slot"]),
-                "end_time" : event_date + "T" + convert_slot_index(end_slot)
+                "start_time" : event_date + "T" + convert_slot_index(event["start_slot"]) + "+00:00",
+                "end_time" : event_date + "T" + convert_slot_index(end_slot) + "+00:00"
             }
             
         )
