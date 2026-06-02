@@ -20,7 +20,7 @@ export default function CreateEventTypeMenu({ onClose, onEventTypeCreated }){
         priority : "",
         burnoutRate : "",
         isMoveable : false,
-        colour : "#3182CE", 
+        colour : "#39A3FF"
     })
 
     function updateField(field, value) {
