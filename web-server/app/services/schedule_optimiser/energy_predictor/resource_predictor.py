@@ -12,7 +12,7 @@
 """
 import math
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from ..config import SLOT_SIZE
 
 # Sigmoid function to map raw baseline values to a 0-1 range
@@ -63,32 +63,32 @@ def get_baseline_array(phi1, phi2, resolution):
     return energy_baseline, focus_baseline
 
 # Plot the predicted energy and focus baselines over a 24 hour period to visualize the model
-def plot_baselines(phi1, phi2):
-    t = np.linspace(0, 24, 100)
-    energy = []
-    focus = []
+# def plot_baselines(phi1, phi2):
+#     t = np.linspace(0, 24, 100)
+#     energy = []
+#     focus = []
 
-    for time in t:
-        energy_baseline, focus_baseline = get_baseline(time, phi1=phi1, phi2=phi2)
-        energy.append(energy_baseline)
-        focus.append(focus_baseline)
+#     for time in t:
+#         energy_baseline, focus_baseline = get_baseline(time, phi1=phi1, phi2=phi2)
+#         energy.append(energy_baseline)
+#         focus.append(focus_baseline)
 
-    plt.figure(figsize=(12, 6))
-    plt.plot(t, energy, label='Energy Baseline')
-    plt.plot(t, focus, label='Focus Baseline')
-    plt.title('Predicted Energy and Focus Baselines Over 24 Hours')
-    plt.xlabel('Time (hours)')
-    plt.ylabel('Baseline Level')
-    plt.legend()
-    plt.grid()
-    plt.show()
+#     plt.figure(figsize=(12, 6))
+#     plt.plot(t, energy, label='Energy Baseline')
+#     plt.plot(t, focus, label='Focus Baseline')
+#     plt.title('Predicted Energy and Focus Baselines Over 24 Hours')
+#     plt.xlabel('Time (hours)')
+#     plt.ylabel('Baseline Level')
+#     plt.legend()
+#     plt.grid()
+#     plt.show()
 
 def demo():
 
     phi1 = float(input("Enter an approximate wake up time (0-24): ")) + 1
     phi2 = phi1 - 1
 
-    plot_baselines(phi1, phi2)
+#    plot_baselines(phi1, phi2)
 
 
 # Test the baseline predictor by plotting the predicted energy and focus levels over a 24 hour period
