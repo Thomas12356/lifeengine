@@ -17,3 +17,4 @@ Daniel Dixon:
 ## Project status
 **Active Development as of 21.02.26**
 * University of Kent Compuer Science Bachelor's Degree Student Project
+* **Development Paused as of 19.06.26**
