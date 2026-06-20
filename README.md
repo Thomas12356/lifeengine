@@ -2,6 +2,10 @@
 
 LifeEngine is a full-stack scheduling application designed to help users organise their time more intelligently. The platform combines a React frontend with a Flask backend and uses an AI-assisted planning interface and genetic sorting algorithm to support event management, calendar workflows, and adaptive scheduling decisions.
 
+<img width="288" height="139.8" alt="image" src="https://github.com/user-attachments/assets/ecac1546-3b6a-4245-84f8-b6d4531bb0b4" />
+<img width="287.8" height="137.4" alt="image" src="https://github.com/user-attachments/assets/de817de5-ac27-433a-9fc5-603853d5f56a" />
+
+
 ## Features
 
 - Manage events and schedules through a web dashboard
